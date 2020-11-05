@@ -251,7 +251,7 @@ module.exports = {
       default: '1',
     },
     fontFamily: {
-      sans: [
+      /* sans: [
         'system-ui',
         '-apple-system',
         'BlinkMacSystemFont',
@@ -267,7 +267,8 @@ module.exports = {
         '"Noto Color Emoji"',
       ],
       serif: ['Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
-      mono: ['Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace'],
+      mono: ['Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace'], */
+      poppins: ['Poppins', 'sans-serif']
     },
     fontSize: {
       xs: '0.75rem',
