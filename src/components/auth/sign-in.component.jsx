@@ -10,8 +10,8 @@ import {
 const SignIn = () => {
 
     return (
-        <form class="w-full">
-            <div class="flex flex-wrap -mx-3 mb-6">
+        <form className="w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
                 <InputIcon
                     icon={faUserCircle}
                     label="ID de usuario"
@@ -22,7 +22,7 @@ const SignIn = () => {
                     placeholder="Ingresa tus 6 dígitos" />
 
                 <div className="keyboard-container text-center mt-10 w-full">
-                    <button class="bg-blue-500 hover:bg-blue-600 text-white shadow-md active:shadow-none font-bold outline-none py-2 rounded w-2/5 text-3xl">
+                    <button className="bg-blue-500 hover:bg-blue-600 text-white shadow-md active:shadow-none font-bold outline-none py-2 rounded w-2/5 text-3xl">
                         <FontAwesomeIcon icon={faKeyboard} />
                     </button>
                 </div>

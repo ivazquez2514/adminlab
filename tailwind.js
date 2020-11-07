@@ -93,7 +93,7 @@ module.exports = {
         100: '#ebf8ff',
         200: '#bee3f8',
         300: '#90cdf4',
-        400: '#63b3ed',
+        400: '#02b8ff',
         500: '#4299e1',
         600: '#3182ce',
         700: '#2b6cb0',
@@ -302,6 +302,9 @@ module.exports = {
     inset: {
       '0': '0',
       auto: 'auto',
+      '-4': '-1rem',
+      '-8': '-2rem',
+      '-16': '-4rem',
     },
     letterSpacing: {
       tighter: '-0.05em',
