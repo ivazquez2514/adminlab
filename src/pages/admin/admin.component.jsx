@@ -1,9 +1,21 @@
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faColumns, faSearch, faCubes, faUsers, faPlus } from '@fortawesome/free-solid-svg-icons'
 
+import {
+    Content,
+    Dialog
+} from '../../components';
+
 const AdminPage = () => {
+    const [openDialog, setOpenDialog] = useState(false);   
+
     return (
-        <div className="min-w-screen min-h-screen flex flex-col items-center bg-gray-300">
+        <div className="min-w-screen min-h-screen flex flex-col items-center bg-gray-300 relative">
+
+            {/* Dialogs */}
+            {openDialog && <Dialog title="Crear nuevo" onClose={() => setOpenDialog(false)} />}
+            
             <div className="container w-4/5 flex flex-col h-screen">
                 <header className="w-full rounded-b-lg py-4 px-6 shadow-lg rounded bg-white flex">
                     <p className="text-blue-400 text-center w-2/12 px-3">LOGO</p>
@@ -30,12 +42,10 @@ const AdminPage = () => {
                         <button className="bg-red-600 hover:bg-red-500 focus:bg-red-700 focus:outline-none text-white w-full h-full rounded">Salir</button>
                     </div>
                 </header>
-                <main className="flex-1 overflow-y-auto py-5">
-                    Contenido principal
-                </main>
+                <Content />
                 <footer className="rounded-t-lg py-4 px-6 pr-20 shadow-lg rounded bg-white relative">
-                    <button className="text-white bg-blue-400 hover:bg-blue-500 focus:bg-blue-600 focus:outline-none absolute -mt-12 right-0 mr-8 py-3 px-5 rounded font-bold text-2xl">
-                        <FontAwesomeIcon icon={faPlus} />
+                    <button className="text-white bg-blue-400 hover:bg-blue-300 focus:bg-blue-600 focus:outline-none absolute -mt-12 right-0 mr-8 py-3 px-5 rounded font-bold text-2xl">
+                        <FontAwesomeIcon icon={faPlus} onClick={() => setOpenDialog(true)} />
                     </button>
                     <nav className="w-full flex text-gray-600">
                         <div className="flex-1 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400">

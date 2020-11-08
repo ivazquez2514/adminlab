@@ -1,4 +1,5 @@
 const postcssCustomProperties = require('postcss-custom-properties');
+const tailwindcss = require('tailwindcss');
 
 module.exports = {
   plugins: [
@@ -9,7 +10,7 @@ module.exports = {
       },
       stage: 3,
     }),
-    require('tailwindcss'),
+    tailwindcss('./tailwind.js'),
     require('autoprefixer'),
     require('postcss-import'),
     require('postcss-nested'),

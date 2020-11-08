@@ -23,6 +23,8 @@ module.exports = {
       black: '#000',
       white: '#fff',
 
+      primary: '#02b8ff',
+
       gray: {
         100: '#f7fafc',
         200: '#edf2f7',
@@ -205,6 +207,7 @@ module.exports = {
       default: '1px',
       '0': '0',
       '2': '2px',
+      '3': '3px',
       '4': '4px',
       '8': '8px',
     },
