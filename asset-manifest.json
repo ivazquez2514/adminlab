@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/adminlab/static/css/main.bacb0087.chunk.css",
-    "main.js": "/adminlab/static/js/main.9b34f81d.chunk.js",
-    "main.js.map": "/adminlab/static/js/main.9b34f81d.chunk.js.map",
+    "main.js": "/adminlab/static/js/main.9beb0afc.chunk.js",
+    "main.js.map": "/adminlab/static/js/main.9beb0afc.chunk.js.map",
     "runtime-main.js": "/adminlab/static/js/runtime-main.c34baa8c.js",
     "runtime-main.js.map": "/adminlab/static/js/runtime-main.c34baa8c.js.map",
     "static/js/2.7b44eedf.chunk.js": "/adminlab/static/js/2.7b44eedf.chunk.js",
@@ -15,12 +15,12 @@
     "static/css/main.bacb0087.chunk.css.map": "/adminlab/static/css/main.bacb0087.chunk.css.map",
     "static/js/2.7b44eedf.chunk.js.LICENSE.txt": "/adminlab/static/js/2.7b44eedf.chunk.js.LICENSE.txt",
     "static/media/auth.3fdfc46f.png": "/adminlab/static/media/auth.3fdfc46f.png",
-    "static/media/logo.bacb5b38.svg": "/adminlab/static/media/logo.bacb5b38.svg"
+    "static/media/logo.3f1bd720.svg": "/adminlab/static/media/logo.3f1bd720.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.c34baa8c.js",
     "static/js/2.7b44eedf.chunk.js",
     "static/css/main.bacb0087.chunk.css",
-    "static/js/main.9b34f81d.chunk.js"
+    "static/js/main.9beb0afc.chunk.js"
   ]
 }
