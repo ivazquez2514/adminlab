@@ -1,5 +1,6 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import {
   AuthPage,
@@ -9,16 +10,38 @@ import {
 import './assets/styles/tailwind.css';
 import './App.css';
 
-function App() {
+function App({isAuthenticated, authenticatedUser, authenticate}) {
+
+  const authInfo = JSON.parse(localStorage.getItem('adminlab-auth'));
+  
+  if (authInfo && !isAuthenticated) {
+    authenticate(authInfo.collaborator);
+  }
+
   return (
     <div className="App min-h-screen min-w-screen font-poppins">
-      <Switch>
-        <Route path="/auth" component={AuthPage} />
-        <Route path="/admin" component={AdminPage} />
-        <Redirect to="/admin" />
-      </Switch>
+      {
+        isAuthenticated ?
+          <Switch>
+            <Route path="/admin" component={AdminPage} />
+            <Redirect to="/admin" />
+          </Switch> :
+          <Switch>
+            <Route path="/auth" component={AuthPage} />
+            <Redirect to="/auth" />
+          </Switch>
+      }
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  authenticatedUser: state.auth.authenticatedUser
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  authenticate: credentials => dispatch.auth.authenticate(credentials)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

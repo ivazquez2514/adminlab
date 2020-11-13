@@ -1,62 +1,128 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { withRouter } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useQuery, useMutation } from '@apollo/client';
+import { AREA_LIST } from '../../api/queries';
+import { COLLABORATOR_CREATE } from '../../api/mutations';
 
-const CollaboratorForm = React.memo(() => {
+const ROLES = [
+    'ADMIN',
+    'MANAGER',
+    'USER'
+];
+
+const CollaboratorForm = React.memo(({history, toggleHideFooter}) => {
+    const { register, handleSubmit, errors } = useForm();
+    const { data: areasResponse } = useQuery(AREA_LIST);
+    const [ collaboratorCreate ] = useMutation(COLLABORATOR_CREATE);
+
+    let areas = [];
+
+    if (areasResponse) {
+        areas = areasResponse.areaList;
+    }
+
+    const onSubmit = (data) => {
+        collaboratorCreate({variables: {collaborator: {...data}}})
+            .then(response => {
+                console.log(response);
+                history.push('./');
+            }).catch(error => {
+                console.log(error);
+            });
+    }
+
+    useEffect(() => {
+        toggleHideFooter();
+
+        return toggleHideFooter;
+    }, [])
+
+    console.log(errors);
+
     return (
-        <div className="w-full">
+        <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
             <div className="w-full mb-6 flex">
                 <div className="w-1/2 px-3">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" for="name">
+                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
                         Área
                     </label>
                     <select
-                        className="appearance-none font-medium text-gray-500 block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl"
-                        id="area"
-                        name="area"
+                        className={`${errors.areaId ? 'border-red-500 placeholder-red-500 text-red-500' : 'border-gray-500'} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl`}
+                        id="areaId"
+                        name="areaId"
+                        ref={register({required: true})}
                         placeholder="Seleccionar Área (Hospital)">
                         <option value="">Selecciona una opción</option>
+                        {areas.map(area => <option key={area.id} value={area.id}>{area.name}</option>)}
                     </select>
                 </div>
                 <div className="w-1/2 px-3">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" for="name">
+                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
                         Rol de usuario
                     </label>
                     <select
-                        className="appearance-none font-medium block text-gray-500 border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl"
-                        id="rol"
-                        name="rol"
+                        className={`${errors.role ? 'border-red-500 placeholder-red-500 text-red-500' : 'border-gray-500'} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl`}
+                        id="role"
+                        name="role"
+                        ref={register({required: true})}
                         placeholder="Seleccionar rol">
                         <option value="">Selecciona una opción</option>
+                        {ROLES.map(role => <option key={role} value={role}>{role}</option>)}
                     </select>
                 </div>
             </div>
             <div className="w-full flex">
                 <div className="w-1/2 px-3 mb-6 md:mb-0">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" for="name">
+                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="username">
                         ID de usuario
                     </label>
                     <input
-                        className="appearance-none text-center text-gray-500 font-medium block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl"
-                        id="usersQuantity"
+                        className={`${errors.username ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl`}
+                        id="username"
                         type="text"
-                        name="usersQuantity"
-                        placeholder="Escribir un nombre..."
-                        onChange={() => {}} />
+                        name="username"
+                        ref={register({required: true})}
+                        placeholder="Escribir un nombre..." />
                 </div>
                 <div className="w-1/2 px-3 mb-6 md:mb-0">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" for="cabinetsLamellaeQuantity">
+                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="password">
                         Clave de usuario
                     </label>
                     <input
-                        className="appearance-none text-center text-gray-500 font-medium block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl"
-                        id="cabinetsLamellaeQuantity"
+                        className={`${errors.password ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl`}
+                        id="password"
                         type="text"
-                        name="cabinetsLamellaesQuantity"
+                        name="password"
+                        ref={register({required: true})}
                         placeholder="Asignar 6 dígitos"
-                        onChange={() => {}} />
+                        maxLength="6" />
                 </div>
             </div>
-        </div>
+            <div className="px-4 mt-10 flex text-white gap-8">
+                <button
+                    type="button"
+                    className="bg-red-600 w-1/2 rounded-lg py-2 text-5xl"
+                    onClick={() => history.push('./')}>
+                    <FontAwesomeIcon icon={faTimes} />
+                </button>
+                <button
+                    type="submit"
+                    className="bg-green-500 w-1/2 rounded-lg py-2 text-5xl">
+                    <FontAwesomeIcon icon={faCheck} />
+                </button>
+            </div>
+        </form>
     );
 })
 
-export default CollaboratorForm;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        toggleHideFooter: () => dispatch.ui.toggleHideFooter()
+    }
+};
+
+export default connect(null, mapDispatchToProps)(withRouter(CollaboratorForm));
