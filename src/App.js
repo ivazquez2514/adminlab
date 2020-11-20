@@ -24,7 +24,7 @@ function App({isAuthenticated, authenticatedUser, authenticate}) {
         isAuthenticated ?
           <Switch>
             <Route path="/admin" component={AdminPage} />
-            <Redirect to="/admin" />
+            <Redirect to="/admin/movements-history" />
           </Switch> :
           <Switch>
             <Route path="/auth" component={AuthPage} />

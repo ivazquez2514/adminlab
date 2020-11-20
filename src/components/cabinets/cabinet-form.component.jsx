@@ -63,14 +63,14 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
     }, []);
 
     return (
-        <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-            <div className="w-full mb-6 flex">
-                <div className="w-1/2 px-3">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" for="name">
+        <form className="w-full h-full relative" onSubmit={handleSubmit(onSubmit)}>
+            <div className="w-full md:mb-6 md:flex">
+                <div className="w-full md:w-1/2 px-3">
+                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
                         Tipo de gabinete
                     </label>
                     <select
-                        className="appearance-none font-medium text-gray-500 block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl"
+                        className="appearance-none font-medium text-gray-500 block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl"
                         id="cabinetType"
                         name="cabinetType"
                         ref={register()}>
@@ -78,12 +78,12 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                         {CABINETS_TYPES.map(type => <option value={type.value}>{type.name}</option>)}
                     </select>
                 </div>
-                <div className="w-1/2 px-3">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" for="name">
+                <div className="w-full md:w-1/2 px-3">
+                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
                         Cantidad de modulos
                     </label>
                     <input
-                        className="appearance-none text-center text-gray-500 font-medium block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl"
+                        className="appearance-none text-center text-gray-500 font-medium block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl"
                         id="modulesQuantity"
                         name="modulesQuantity"
                         type="number"
@@ -92,12 +92,12 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                 </div>
             </div>
             <div className="w-full flex">
-                <div className="w-1/2 px-3 mb-6 md:mb-0">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" for="name">
+                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
                         Capacidad de cajón
                     </label>
                     <input
-                        className="appearance-none text-center text-gray-500 font-medium block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-3xl"
+                        className="appearance-none text-center text-gray-500 font-medium block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl"
                         id="boxCapacity"
                         name="boxCapacity"
                         type="number"
@@ -105,16 +105,16 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                         ref={register()} />
                 </div>
             </div>
-            <div className="px-4 mt-10 flex text-white gap-8">
+            <div className="w-full px-4 mt-10 flex text-white gap-8 absolute md:relative bottom-0">
                 <button
                     type="button"
-                    className="bg-red-600 w-1/2 rounded-lg py-2 text-5xl"
+                    className="bg-red-600 w-1/2 rounded-lg py-2 text-4xl md:text-5xl"
                     onClick={() => history.push('./')}>
                     <FontAwesomeIcon icon={faTimes} />
                 </button>
                 <button
                     type="submit"
-                    className="bg-green-500 w-1/2 rounded-lg py-2 text-5xl">
+                    className="bg-green-500 w-1/2 rounded-lg py-2 text-4xl md:text-5xl">
                     <FontAwesomeIcon icon={faCheck} />
                 </button>
             </div>

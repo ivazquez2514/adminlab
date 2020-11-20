@@ -30,13 +30,13 @@ const Notification = ({data, setNotification}) => {
     const getIcon = () => {
         switch(data.type) {
             case types.SUCCESS:
-                return <FontAwesomeIcon icon={faCheckCircle} className="text-3xl mr-6" />;
+                return <FontAwesomeIcon icon={faCheckCircle} className="text-xl md:text-3xl mr-6" />;
                 break;
             case types.INFO:
-                return <FontAwesomeIcon icon={faInfoCircle} className="text-3xl mr-6" />;
+                return <FontAwesomeIcon icon={faInfoCircle} className="text-xl md:text-3xl mr-6" />;
                 break
             case types.ERROR:
-                return <FontAwesomeIcon icon={faExclamationCircle} className="text-3xl mr-6" />;
+                return <FontAwesomeIcon icon={faExclamationCircle} className="text-xl md:text-3xl mr-6" />;
                 break;
         }
     };
@@ -50,7 +50,7 @@ const Notification = ({data, setNotification}) => {
     return (
         <div className={`${getColor()} p-5 w-full absolute z-50 text-white flex items-center`}>
             {getIcon()}
-            <p className="text-lg">{data?.message}</p>
+            <p className="text-normal md:text-lg">{data?.message}</p>
         </div>
     );
 };

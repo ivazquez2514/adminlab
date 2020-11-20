@@ -27,3 +27,4 @@ export {default as CollaboratorForm} from './collaborators/collaborator-form.com
 
 /* Cabinets */
 export {default as CabinetForm} from './cabinets/cabinet-form.component';
+export {default as CabinetList} from './cabinets/cabinet-list.component';

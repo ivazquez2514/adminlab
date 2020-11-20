@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faColumns, faCheckCircle, faCubes, faUsers, faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -11,9 +11,15 @@ import {
     Notification
 } from '../../components';
 
-const AdminPage = ({logout, activeForm, notification}) => {
-    const [openDialog, setOpenDialog] = useState(false);
+const ROUTES = {
+    MOVEMENTS: '/admin/movements-history',
+    CABINETS: '/admin/cabinets',
+};
 
+const AdminPage = ({logout, activeForm, notification, history}) => {
+    const [openDialog, setOpenDialog] = useState(false);
+    const location = useLocation();
+    
     const logoutHandler = () => {
         logout();
         localStorage.removeItem('adminlab-auth');
@@ -43,11 +49,14 @@ const AdminPage = ({logout, activeForm, notification}) => {
                         <FontAwesomeIcon icon={faPlus} />
                     </button>
                     <nav className="w-full flex text-gray-600">
-                        <div className="flex-1 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400">
+                        <div
+                            onClick={() => history.push('./movements-history')} className={`${ location.pathname === ROUTES.MOVEMENTS ? 'text-blue-400' : '' } flex-1 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400`}>
                             <FontAwesomeIcon icon={faColumns} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Panel de control</p>
                         </div>
-                        <div className="flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400">
+                        <div
+                            onClick={() => history.push('./cabinets')}
+                            className={`${ location.pathname === ROUTES.CABINETS ? 'text-blue-400' : '' } flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400`}>
                             <FontAwesomeIcon icon={faCubes} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Almacenamiento</p>
                         </div>

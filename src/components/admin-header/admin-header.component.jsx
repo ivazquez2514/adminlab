@@ -54,7 +54,7 @@ const FormHeader = React.memo(({activeForm, history}) => (
             onClick={() => history.push(activeForm.backUrl)}>
             <FontAwesomeIcon icon={faArrowLeft} />
         </div>
-        <h4>{activeForm.title}</h4>
+        <h4 className="text-xl md:text-2xl">{activeForm.title}</h4>
     </header>
 ));
 
