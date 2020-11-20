@@ -6,9 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useMutation } from '@apollo/client';
 import { AREA_CREATE } from '../../api/mutations';
+import { FormTitlesEnum } from '../../enums';
+import { types } from '../notification/notification.component';
 
-
-const HospitalAreaForm = React.memo(({toggleHideFooter, history}) => {
+const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification}) => {
     const { register, handleSubmit, errors } = useForm();
     const [ areaCreate ] = useMutation(AREA_CREATE);
 
@@ -27,17 +28,30 @@ const HospitalAreaForm = React.memo(({toggleHideFooter, history}) => {
         }}})
             .then(response => {
                 console.log(response);
+                setNotification({
+                    message: 'El area ha sido creada exitosamente.',
+                    type: types.SUCCESS
+                });
                 history.push('./');
             }).catch(error => {
+                setNotification({
+                    message: 'Un error ha ocurrido. Favor de intentarlo de nuevo.',
+                    type: types.ERRORR
+                });
                 console.log(error);
             });
     }
 
 
     useEffect(() => {
-        toggleHideFooter();
+        setActiveForm({
+            title: FormTitlesEnum.HOSPITAL_AREA,
+            backUrl: './'
+        });
 
-        return toggleHideFooter;
+        return () => {
+            setActiveForm(null);
+        };
     }, [])
 
     return (
@@ -114,10 +128,9 @@ const HospitalAreaForm = React.memo(({toggleHideFooter, history}) => {
     );
 })
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        toggleHideFooter: () => dispatch.ui.toggleHideFooter()
-    }
-};
+const mapDispatchToProps = (dispatch) => ({
+    setActiveForm: dispatch.ui.setActiveForm,
+    setNotification: dispatch.ui.setNotification,
+});
 
 export default connect(null, mapDispatchToProps)(withRouter(HospitalAreaForm));

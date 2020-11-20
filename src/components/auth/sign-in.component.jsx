@@ -13,7 +13,7 @@ import {
 
 const SignIn = ({authenticate}) => {
     const { register, handleSubmit, errors } = useForm();
-    const [ collaboratorLogin, { loading } ] = useMutation(COLLABORATOR_LOGIN);
+    const [ collaboratorLogin ] = useMutation(COLLABORATOR_LOGIN);
 
     const onSubmit = (data) => {
         collaboratorLogin({variables: {...data}})

@@ -4,6 +4,12 @@ export {default as SignIn} from './auth/sign-in.component';
 /* Forms */
 export {default as InputIcon} from './forms/input-icon/input-icon.component';
 
+/* Admin header */
+export {default as AdminHeader} from './admin-header/admin-header.component';
+
+/* Notification */
+export {default as Notification} from './notification/notification.component';
+
 /* Content */
 export {default as Content} from './content/content.component';
 

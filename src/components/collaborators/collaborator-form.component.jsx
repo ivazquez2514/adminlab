@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form';
 import { useQuery, useMutation } from '@apollo/client';
 import { AREA_LIST } from '../../api/queries';
 import { COLLABORATOR_CREATE } from '../../api/mutations';
+import { FormTitlesEnum } from '../../enums';
+import { types } from '../notification/notification.component';
 
 const ROLES = [
     'ADMIN',
@@ -14,7 +16,7 @@ const ROLES = [
     'USER'
 ];
 
-const CollaboratorForm = React.memo(({history, toggleHideFooter}) => {
+const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) => {
     const { register, handleSubmit, errors } = useForm();
     const { data: areasResponse } = useQuery(AREA_LIST);
     const [ collaboratorCreate ] = useMutation(COLLABORATOR_CREATE);
@@ -29,16 +31,29 @@ const CollaboratorForm = React.memo(({history, toggleHideFooter}) => {
         collaboratorCreate({variables: {collaborator: {...data}}})
             .then(response => {
                 console.log(response);
+                setNotification({
+                    message: 'El colaborador ha sido creado exitosamente.',
+                    type: types.SUCCESS
+                });
                 history.push('./');
             }).catch(error => {
+                setNotification({
+                    message: 'Un error ha ocurrido. Favor de intentarlo de nuevo.',
+                    type: types.ERRORR
+                });
                 console.log(error);
             });
     }
 
     useEffect(() => {
-        toggleHideFooter();
+        setActiveForm({
+            title: FormTitlesEnum.COLLABORATOR,
+            backUrl: './'
+        });
 
-        return toggleHideFooter;
+        return () => {
+            setActiveForm(null);
+        };
     }, [])
 
     console.log(errors);
@@ -119,10 +134,9 @@ const CollaboratorForm = React.memo(({history, toggleHideFooter}) => {
     );
 })
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        toggleHideFooter: () => dispatch.ui.toggleHideFooter()
-    }
-};
+const mapDispatchToProps = (dispatch) => ({
+    setActiveForm: dispatch.ui.setActiveForm,
+    setNotification: dispatch.ui.setNotification,
+});
 
 export default connect(null, mapDispatchToProps)(withRouter(CollaboratorForm));

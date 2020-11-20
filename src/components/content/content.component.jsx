@@ -15,7 +15,7 @@ const Content = () => {
                 <Route path="/admin/movements-history" component={MovementsHistory} />
                 <Route path="/admin/hospital-areas/new" component={HospitalAreaForm} />
                 <Route path="/admin/collaborators/new" component={CollaboratorForm} />
-                <Route path="/admin/cabinets/new" component={CabinetForm} />
+                <Route exact path="/admin/cabinets/new" component={CabinetForm} />
                 <Redirect to="/admin/movements-history" />
             </Switch>
         </main>
