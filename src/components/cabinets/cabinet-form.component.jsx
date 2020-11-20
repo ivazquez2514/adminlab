@@ -12,11 +12,11 @@ import { types } from '../notification/notification.component'
 const CABINETS_TYPES = [
     {
         name: 'Laminillas',
-        value: 'LAMELLAS'
+        value: 'Laminillas'
     },
     {
         name: 'Bloques',
-        value: 'BLOCKS'
+        value: 'Bloques'
     },
 ];
 

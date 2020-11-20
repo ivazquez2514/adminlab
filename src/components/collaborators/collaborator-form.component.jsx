@@ -11,9 +11,9 @@ import { FormTitlesEnum } from '../../enums';
 import { types } from '../notification/notification.component';
 
 const ROLES = [
-    'ADMIN',
-    'MANAGER',
-    'USER'
+    'Administrador',
+    'Encargado',
+    'Usuario'
 ];
 
 const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) => {
@@ -35,7 +35,7 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) 
                     message: 'El colaborador ha sido creado exitosamente.',
                     type: types.SUCCESS
                 });
-                history.push('./');
+                history.push('/admin/movements-history');
             }).catch(error => {
                 setNotification({
                     message: 'Un error ha ocurrido. Favor de intentarlo de nuevo.',
