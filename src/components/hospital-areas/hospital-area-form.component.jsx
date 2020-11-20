@@ -32,7 +32,7 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification}) 
                     message: 'El area ha sido creada exitosamente.',
                     type: types.SUCCESS
                 });
-                history.push('./');
+                history.push('/admin/movements-history');
             }).catch(error => {
                 setNotification({
                     message: 'Un error ha ocurrido. Favor de intentarlo de nuevo.',

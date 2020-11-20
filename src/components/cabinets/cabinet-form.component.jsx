@@ -41,7 +41,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                 message: 'El gabinete ha sido creado exitosamente.',
                 type: types.SUCCESS
             });
-            history.push('./');
+            history.push('/admin/movements-history');
         }).catch(error => {
             console.error(error);
             setNotification({
