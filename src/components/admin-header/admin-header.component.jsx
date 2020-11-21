@@ -3,9 +3,9 @@ import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { ReactComponent as LogoNova } from '../../assets/svg/logo_nova.svg';
+import { ReactComponent as MobileLogo } from '../../assets/svg/mobile_logo.svg';
 
 const AdminHeader = React.memo(({user, logoutHandler, activeForm, history}) => {
-    console.log(history);
     return (
         activeForm ? <FormHeader activeForm={activeForm} history={history} /> : <MainHeader user={user} logoutHandler={logoutHandler}/>
     );
@@ -13,9 +13,9 @@ const AdminHeader = React.memo(({user, logoutHandler, activeForm, history}) => {
 
 const MainHeader = React.memo(({user, logoutHandler}) => (
     <header className="w-full rounded-b-lg py-4 px-3 md:px-6 shadow-lg rounded bg-white flex">
-        <div className="text-blue-400 text-center w-1/6 md:w-2/12 px-3">
+        <div className="text-blue-400 flex justify-center w-1/6 md:w-2/12 px-3">
             <LogoNova className="hidden md:block"/>
-            <p className="md:hidden">Logo</p>
+            <MobileLogo className="md:hidden"/>
         </div>
         
         <div className="w-4/6 md:w-5/12 px-2 md:px-3">
