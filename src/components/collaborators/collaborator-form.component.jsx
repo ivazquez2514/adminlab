@@ -56,8 +56,6 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) 
         };
     }, [])
 
-    console.log(errors);
-
     return (
         <form className="w-full h-full relative" onSubmit={handleSubmit(onSubmit)}>
             <div className="w-full md:mb-6 md:flex">

@@ -6,7 +6,9 @@ import {
     HospitalAreaForm,
     CollaboratorForm,
     CabinetForm,
-    CabinetList
+    CabinetList,
+    PatientRecordForm,
+    CabinetDetail
 } from '../../components';
 
 const Content = () => {
@@ -18,6 +20,8 @@ const Content = () => {
                 <Route path="/admin/collaborators/new" component={CollaboratorForm} />
                 <Route exact path="/admin/cabinets/new" component={CabinetForm} />
                 <Route exact path="/admin/cabinets" component={CabinetList} />
+                <Route exact path="/admin/cabinets/1" component={CabinetDetail} />
+                <Route exact path="/admin/patient-records/new" component={PatientRecordForm} />
                 {/* <Redirect to="/admin/movements-history" /> */}
             </Switch>
         </main>

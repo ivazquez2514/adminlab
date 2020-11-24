@@ -4,7 +4,7 @@ import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { withRouter } from 'react-router-dom';
 
 const ROUTES = {
-    PATIENT_RECORDS: '/',
+    PATIENT_RECORDS: '/admin/patient-records/new',
     HOSPITAL_AREAS_FORM: '/admin/hospital-areas/new',
     COLLABORATORS_FORM: '/admin/collaborators/new',
     CABINETS_FORM: '/admin/cabinets/new',
@@ -23,16 +23,16 @@ const Dialog = ({ title, onClose, history }) => {
                 <div className="p-4">
                     <button
                         onClick={() => setSelectedOption(ROUTES.PATIENT_RECORDS)}
-                        className={`${ selectedOption === ROUTES.PATIENT_RECORDS ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4`}>Expediente de Paciente</button>
+                        className={`${ selectedOption === ROUTES.PATIENT_RECORDS ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>Expediente de Paciente</button>
                     <button
                         onClick={() => setSelectedOption(ROUTES.COLLABORATORS_FORM)}
-                        className={`${ selectedOption === ROUTES.COLLABORATORS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4`}>Colaborador</button>
+                        className={`${ selectedOption === ROUTES.COLLABORATORS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>Colaborador</button>
                     <button
                         onClick={() => setSelectedOption(ROUTES.CABINETS_FORM)}
-                        className={`${ selectedOption === ROUTES.CABINETS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4`}>Gabinete</button>
+                        className={`${ selectedOption === ROUTES.CABINETS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>Gabinete</button>
                     <button
                         onClick={() => setSelectedOption(ROUTES.HOSPITAL_AREAS_FORM)}
-                        className={`${ selectedOption === ROUTES.HOSPITAL_AREAS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4`}>Area (Hospital)</button>
+                        className={`${ selectedOption === ROUTES.HOSPITAL_AREAS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>Area (Hospital)</button>
                 </div>
                 <div className="p-4 flex text-white gap-5">
                     <button

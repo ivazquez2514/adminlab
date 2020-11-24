@@ -3,6 +3,7 @@ export {default as SignIn} from './auth/sign-in.component';
 
 /* Forms */
 export {default as InputIcon} from './forms/input-icon/input-icon.component';
+export {default as NumberPicker} from './forms/number-picker/number-picker.component';
 
 /* Admin header */
 export {default as AdminHeader} from './admin-header/admin-header.component';
@@ -28,3 +29,7 @@ export {default as CollaboratorForm} from './collaborators/collaborator-form.com
 /* Cabinets */
 export {default as CabinetForm} from './cabinets/cabinet-form.component';
 export {default as CabinetList} from './cabinets/cabinet-list.component';
+export {default as CabinetDetail} from './cabinets/cabinet-detail.component';
+
+/* Patient records */
+export {default as PatientRecordForm} from './patient-records/patient-record-form.component';

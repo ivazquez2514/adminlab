@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import { ReactComponent as LaminillasIcon } from '../../assets/svg/laminillas.svg';
 
-const CabinetList = () => {
+const CabinetList = ({history}) => {
     const [listType, setListType] = useState('LAMELLAS');
 
     return (
@@ -22,15 +23,15 @@ const CabinetList = () => {
                 {/* <div className="py-4 px-6 bg-white shadow-lg absolute -ml-10 rounded-lg" style={{ top: "50%", marginTop: "-50px" }}>1</div>
                 <div className="py-4 px-6 bg-white shadow-lg absolute right-0 rounded-lg">2</div> */}
                 {
-                    [1,2,3].map(item => <ListItem key={item} item={item} />)
+                    [1,2,3].map(item => <ListItem key={item} item={item} history={history} />)
                 }
             </div>
         </div>
     );
 };
 
-const ListItem = React.memo(({item}) => (
-    <div className="w-full md:w-1/3 bg-white rounded-lg shadow-lg">
+const ListItem = React.memo(({item, history}) => (
+    <div className="w-full md:w-1/3 bg-white rounded-lg shadow-lg" onClick={() => history.push('/admin/cabinets/1')}>
         <div className="p-4 flex justify-center items-center text-blue-500 my-4">
             <LaminillasIcon />
         </div>
@@ -44,4 +45,4 @@ const ListItem = React.memo(({item}) => (
     </div>
 ));
 
-export default CabinetList;
+export default withRouter(CabinetList);

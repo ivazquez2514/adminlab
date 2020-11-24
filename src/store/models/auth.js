@@ -1,4 +1,4 @@
-export default {
+const auth = {
     state: {
         isAuthenticated: false,
         authenticatedUser: null,
@@ -20,3 +20,5 @@ export default {
         }
     }
 };
+
+export default auth;

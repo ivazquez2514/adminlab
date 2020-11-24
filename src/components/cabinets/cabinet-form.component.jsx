@@ -9,6 +9,8 @@ import { CABINET_CREATE } from '../../api/mutations'
 import { useMutation } from '@apollo/client'
 import { types } from '../notification/notification.component'
 
+import { NumberPicker } from "../";
+
 const CABINETS_TYPES = [
     {
         name: 'Laminillas',
@@ -25,7 +27,9 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
     const [ cabinetCreate ] = useMutation(CABINET_CREATE);
 
     const onSubmit = (data) => {
-        console.log({...data, cabinetNumber: 0});
+        console.log({...data});
+
+        return;
         cabinetCreate({
             variables: {
                 cabinet: {
@@ -70,6 +74,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                         Tipo de gabinete
                     </label>
                     <select
+                        tabIndex="1"
                         className="appearance-none font-medium text-gray-500 block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl"
                         id="cabinetType"
                         name="cabinetType"
@@ -79,7 +84,15 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                     </select>
                 </div>
                 <div className="w-full md:w-1/2 px-3">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
+                    <NumberPicker
+                        label="No. gabinete"
+                        inputProps={{
+                            ref: register(),
+                            name: "cabinetNumber",
+                            placeholder: "0",
+                            tabIndex: "2"
+                        }} />
+                    {/* <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
                         Cantidad de modulos
                     </label>
                     <input
@@ -88,11 +101,45 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                         name="modulesQuantity"
                         type="number"
                         placeholder="0"
-                        ref={register()} />
+                        ref={register()} /> */}
                 </div>
             </div>
             <div className="w-full flex">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <NumberPicker
+                        label="Cantidad de filas"
+                        inputProps={{
+                            ref: register(),
+                            name: "boxCapacity",
+                            placeholder: "0",
+                            tabIndex: "3"
+                        }} />
+                    {/* <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
+                        Capacidad de cajón
+                    </label>
+                    <input
+                        className="appearance-none text-center text-gray-500 font-medium block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl"
+                        id="boxCapacity"
+                        name="boxCapacity"
+                        type="number"
+                        placeholder="0"
+                        ref={register()} /> */}
+                </div>
+
+                <div className="w-full md:w-1/2">
+                    <NumberPicker
+                        label="Cantidad de columnas"
+                        inputProps={{
+                            ref: register(),
+                            name: "modulesQuantity",
+                            placeholder: "0",
+                            tabIndex: "4"
+                        }} />
+                </div>
+            </div>
+            <div className="w-full flex">
+                
+                {/* <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
                         Capacidad de cajón
                     </label>
@@ -103,7 +150,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                         type="number"
                         placeholder="0"
                         ref={register()} />
-                </div>
+                </div> */}
             </div>
             <div className="w-full px-4 mt-10 flex text-white gap-8 absolute md:relative bottom-0">
                 <button

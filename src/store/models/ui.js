@@ -1,4 +1,4 @@
-export default {
+const ui = {
     state: {
         hideFooter: false,
         activeForm: null,
@@ -19,3 +19,5 @@ export default {
         })
     }
 }
+
+export default ui;
