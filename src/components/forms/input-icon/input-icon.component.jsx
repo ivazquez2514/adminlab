@@ -2,7 +2,6 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const InputIcon = React.memo(({label, icon, error, iconProps}) => {
-    console.log(error);
     return (
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {label && <label className="block uppercase tracking-wide text-xs font-bold mb-2" htmlFor={iconProps.id}>

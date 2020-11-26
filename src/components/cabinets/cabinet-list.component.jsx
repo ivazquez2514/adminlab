@@ -1,45 +1,75 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ReactComponent as LaminillasIcon } from '../../assets/svg/laminillas.svg';
+import BlocksIcon from '../../assets/images/gabinete_bloques.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { useQuery } from '@apollo/client';
+import { CABINET_LIST } from '../../api/queries';
 
 const CabinetList = ({history}) => {
     const [listType, setListType] = useState('LAMELLAS');
+    const [offset, setOffset] = useState(0);
+    const {data} = useQuery(CABINET_LIST);
+    let list = [];
+
+    if (data && data.cabinetList) {
+        list = [...data.cabinetList];
+    }
 
     return (
-        <div>
+        <>
             <div className="w-full bg-gray-400 p-1 rounded-lg font-bold text-gray-500 text-lg mb-4">
                 <button
-                    className={`${listType === 'LAMELLAS' ? 'bg-white shadow-lg text-black' : ''} w-1/2 py-2 font-bold py-3 rounded-lg`}
-                    onClick={() => setListType('LAMELLAS')}>
+                    className={`${listType === 'LAMELLAS' ? 'bg-white shadow-lg text-black' : ''} w-1/2 py-2 font-bold py-3 rounded-lg focus:outline-none`}
+                    onClick={() => {
+                        setListType('LAMELLAS');
+                        setOffset(0);
+                    }}>
                     Gabinetes de Laminillas
                 </button>
                 <button
-                    className={`${listType === 'BLOCKS' ? 'bg-white shadow-lg text-black' : ''} w-1/2 py-2 font-bold py-3 rounded-lg`}
-                    onClick={() => setListType('BLOCKS')}>
+                    className={`${listType === 'BLOCKS' ? 'bg-white shadow-lg text-black' : ''} w-1/2 py-2 font-bold py-3 rounded-lg focus:outline-none`}
+                    onClick={() => {
+                        setListType('BLOCKS');
+                        setOffset(0);
+                    }}>
                     Gabinetes de Bloques
                 </button>
             </div>
             <div className="w-full md:flex gap-3 px-10 md:px-0 relative">
-                {/* <div className="py-4 px-6 bg-white shadow-lg absolute -ml-10 rounded-lg" style={{ top: "50%", marginTop: "-50px" }}>1</div>
-                <div className="py-4 px-6 bg-white shadow-lg absolute right-0 rounded-lg">2</div> */}
+                <button
+                    onClick={() => setOffset(offset - 3)}
+                    disabled={offset === 0}
+                    className="py-4 px-6 bg-white shadow-lg absolute -ml-20 rounded-lg text-2xl focus:outline-none"
+                    style={{ top: "50%", marginTop: "-50px" }}>
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                </button>
+                <button
+                    onClick={() => setOffset(offset + 3)}
+                    disabled={(offset + 3) === list.length}
+                    className="py-4 px-6 bg-white shadow-lg absolute right-0 -mr-20 rounded-lg text-2xl focus:outline-none"
+                    style={{ top: "50%", marginTop: "-50px" }}>
+                    <FontAwesomeIcon icon={faChevronRight} />
+                </button>
                 {
-                    [1,2,3].map(item => <ListItem key={item} item={item} history={history} />)
+                    list.filter(item => (listType === 'BLOCKS' ? 'Bloques' : 'Laminillas') === item.cabinetType).splice(offset, 3).map(item => <ListItem key={item.cabinetNumber} item={item} history={history} listType={listType} />)
                 }
             </div>
-        </div>
+        </>
     );
 };
 
-const ListItem = React.memo(({item, history}) => (
+const ListItem = React.memo(({item, history, listType}) => (
     <div className="w-full md:w-1/3 bg-white rounded-lg shadow-lg" onClick={() => history.push('/admin/cabinets/1')}>
         <div className="p-4 flex justify-center items-center text-blue-500 my-4">
-            <LaminillasIcon />
+            {listType === 'LAMELLAS' ? <LaminillasIcon /> : <img src={BlocksIcon} alt="Gabinete de bloque icono" className="w-1/4 md:w-2/3" />}
         </div>
         <div className="p-4 flex flex-col justify-center items-center">
-            <p className="text-3xl text-blue-500 font-semibold">GABINETE {item}</p>
+            <p className="text-3xl text-blue-500 font-semibold">GABINETE {item.cabinetNumber}</p>
             <span className="text-center text-gray-400 font-normal">
                 Núm. de expedientes: <br/>
-                0
+                {item.expedients.length}
             </span>
         </div>
     </div>

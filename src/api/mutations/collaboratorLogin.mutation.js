@@ -14,6 +14,10 @@ export const COLLABORATOR_LOGIN = gql`
                 id
                 username
                 role
+                area {
+                    id
+                    name
+                }
             }
         }
     }

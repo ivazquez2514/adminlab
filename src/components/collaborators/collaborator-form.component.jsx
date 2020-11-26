@@ -11,9 +11,10 @@ import { FormTitlesEnum } from '../../enums';
 import { types } from '../notification/notification.component';
 
 const ROLES = [
+    'SuperAdministrador',
     'Administrador',
     'Encargado',
-    'Usuario'
+    'Consultor'
 ];
 
 const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) => {
@@ -35,7 +36,7 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) 
                     message: 'El colaborador ha sido creado exitosamente.',
                     type: types.SUCCESS
                 });
-                history.push('/admin/movements-history');
+                history.push('../../');
             }).catch(error => {
                 setNotification({
                     message: 'Un error ha ocurrido. Favor de intentarlo de nuevo.',
@@ -119,7 +120,7 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) 
                 <button
                     type="button"
                     className="bg-red-600 w-1/2 rounded-lg py-2 text-4xl md:text-5xl"
-                    onClick={() => history.push('./')}>
+                    onClick={() => history.push('../../')}>
                     <FontAwesomeIcon icon={faTimes} />
                 </button>
                 <button

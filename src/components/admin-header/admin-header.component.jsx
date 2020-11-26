@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faSearch, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { ReactComponent as LogoNova } from '../../assets/svg/logo_nova.svg';
 import { ReactComponent as MobileLogo } from '../../assets/svg/mobile_logo.svg';
 
@@ -13,7 +13,7 @@ const AdminHeader = React.memo(({user, logoutHandler, activeForm, history}) => {
 
 const MainHeader = React.memo(({user, logoutHandler}) => (
     <header className="w-full rounded-b-lg py-4 px-3 md:px-6 shadow-lg rounded bg-white flex">
-        <div className="text-blue-400 flex justify-center w-1/6 md:w-2/12 px-3">
+        <div className="text-blue-400 flex justify-center w-1/6 md:w-3/12 px-3">
             <LogoNova className="hidden md:block"/>
             <MobileLogo className="md:hidden"/>
         </div>
@@ -30,11 +30,12 @@ const MainHeader = React.memo(({user, logoutHandler}) => (
                     placeholder="Buscar" />
             </div>
         </div>
-        <div className="user-info-container px-3 flex w-1/6 md:w-4/12">
+        <div className="user-info-container px-3 flex w-1/6 md:w-3/12">
             <div className="rounded-full h-10 w-10 flex items-center justify-center bg-blue-400 text-white text-lg">{user.username.slice(0, 1).toUpperCase()}</div>
             <div className="ml-3 hidden md:block">
-                <p className="text-blue-400 text-sm mt-1">{user.username}</p>
+                <p className="text-blue-400 text-sm">{user.username}</p>
                 <p className="text-gray-500 text-xs -mt-1">{user.role}</p>
+                <p className="text-xs -mt-1">{user.area.name}</p>
             </div>
         </div>
         <div className="hidden md:block w-1/12">
@@ -48,13 +49,27 @@ const MainHeader = React.memo(({user, logoutHandler}) => (
 ));
 
 const FormHeader = React.memo(({activeForm, history}) => (
-    <header className="w-full text-2xl rounded-b-lg py-4 px-6 shadow-lg rounded bg-white text-blue-500 text-center">
+    <header className="w-full flex justify-between text-2xl rounded-b-lg py-4 px-6 shadow-lg rounded bg-white text-blue-500 text-center">
         <div
-            className="text-xl float-left h-full flex items-center cursor-pointer"
+            className="text-xl cursor-pointer"
             onClick={() => history.push(activeForm.backUrl)}>
             <FontAwesomeIcon icon={faArrowLeft} />
         </div>
         <h4 className="text-xl md:text-2xl">{activeForm.title}</h4>
+        <div
+            className="text-lg cursor-pointer text-black invisible"
+            onClick={() => history.push(activeForm.backUrl)}>
+            <button
+                type="button"
+                className="bg-white border-2 border-gray-300 rounded-lg px-3 py-1 mr-3 focus:outline-none">
+                <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
+            <button
+                type="button"
+                className="bg-white border-2 border-gray-300 rounded-lg px-3 py-1 focus:outline-none">
+                <FontAwesomeIcon icon={faPencilAlt} />
+            </button>
+        </div>
     </header>
 ));
 

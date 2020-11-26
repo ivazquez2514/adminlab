@@ -21,10 +21,10 @@ const MovementHistory = React.memo(() => {
                             </div>
                         </div>
                         <div className="w-6/12 md:w-2/12 flex md:justify-center items-center py-2 md:py-0 text-black">
-                            <span class="md:hidden text-gray-500 ml-16 md:ml-0">Rol:&nbsp;</span>Admin
+                            <span className="md:hidden text-gray-500 ml-16 md:ml-0">Rol:&nbsp;</span>Admin
                         </div>
                         <div className="w-6/12 md:w-2/12 flex justify-center items-center py-2 md:py-0 text-black">
-                            <span class="md:hidden text-gray-500">Acción:&nbsp;</span>Modificación
+                            <span className="md:hidden text-gray-500">Acción:&nbsp;</span>Modificación
                         </div>
                         <div className="w-6/12 md:w-3/12 flex justify-center items-center">
                             <span className="ml-16">En &nbsp;<span className="text-blue-500 underline">No. 1231238821381</span></span>
