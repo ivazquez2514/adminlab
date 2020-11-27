@@ -18,6 +18,7 @@ export const CABINET_LIST = gql`
                   row
                   column
                   third
+                  updatedAt
                 }
                 blockCoordinates {
                   expedientId
@@ -26,6 +27,7 @@ export const CABINET_LIST = gql`
                   row
                   column
                   third
+                  updatedAt
                 }
             }
         }
