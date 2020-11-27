@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { ReactComponent as LaminillasIcon } from '../../assets/svg/laminillas.svg';
 import BlocksIcon from '../../assets/images/gabinete_bloques.png';
@@ -7,7 +8,7 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import { useQuery } from '@apollo/client';
 import { CABINET_LIST } from '../../api/queries';
 
-const CabinetList = ({history}) => {
+const CabinetList = ({history, setCabinet}) => {
     const [listType, setListType] = useState('LAMELLAS');
     const [offset, setOffset] = useState(0);
     const {data} = useQuery(CABINET_LIST);
@@ -53,15 +54,20 @@ const CabinetList = ({history}) => {
                     <FontAwesomeIcon icon={faChevronRight} />
                 </button>
                 {
-                    list.filter(item => (listType === 'BLOCKS' ? 'Bloques' : 'Laminillas') === item.cabinetType).splice(offset, 3).map(item => <ListItem key={item.cabinetNumber} item={item} history={history} listType={listType} />)
+                    list.filter(item => (listType === 'BLOCKS' ? 'Bloques' : 'Laminillas') === item.cabinetType)
+                        .splice(offset, 3)
+                        .map(item => <ListItem key={item.cabinetNumber} item={item} history={history} listType={listType} setCabinet={setCabinet} />)
                 }
             </div>
         </>
     );
 };
 
-const ListItem = React.memo(({item, history, listType}) => (
-    <div className="w-full md:w-1/3 bg-white rounded-lg shadow-lg" onClick={() => history.push('/admin/cabinets/1')}>
+const ListItem = React.memo(({item, history, listType, setCabinet}) => (
+    <div className="w-full md:w-1/3 bg-white rounded-lg shadow-lg" onClick={() => {
+            setCabinet(item);
+            history.push(`/admin/cabinets/${item.id}`);
+        }}>
         <div className="p-4 flex justify-center items-center text-blue-500 my-4">
             {listType === 'LAMELLAS' ? <LaminillasIcon /> : <img src={BlocksIcon} alt="Gabinete de bloque icono" className="w-1/4 md:w-2/3" />}
         </div>
@@ -75,4 +81,8 @@ const ListItem = React.memo(({item, history, listType}) => (
     </div>
 ));
 
-export default withRouter(CabinetList);
+const mapDispatchToProps = (dispatch) => ({
+    setCabinet: dispatch.cabinet.setCabinet
+});
+
+export default connect(null, mapDispatchToProps)(withRouter(CabinetList));

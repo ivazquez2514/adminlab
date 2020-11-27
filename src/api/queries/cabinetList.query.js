@@ -3,6 +3,7 @@ import { gql } from '@apollo/client';
 export const CABINET_LIST = gql`
     query CabinetList {
         cabinetList {
+            id
             cabinetNumber
             cabinetType
             rows
@@ -12,9 +13,19 @@ export const CABINET_LIST = gql`
                 caseNumber
                 lamellaCoordinates {
                   expedientId
+                  cabinetItems
+                  cabinetId
+                  row
+                  column
+                  third
                 }
-                   blockCoordinates {
+                blockCoordinates {
                   expedientId
+                  cabinetItems
+                  cabinetId
+                  row
+                  column
+                  third
                 }
             }
         }

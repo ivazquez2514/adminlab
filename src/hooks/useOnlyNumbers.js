@@ -17,16 +17,7 @@ const PERMITTED_KEYS = [
     55,
     56,
     57,
-    96,
-    97,
-    98,
-    99,
-    100,
-    101,
-    102,
-    103,
-    104,
-    105
+    96
 ];
 
 const useOnlyNumbers = function () {

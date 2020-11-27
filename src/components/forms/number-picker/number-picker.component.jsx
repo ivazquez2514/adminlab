@@ -45,7 +45,6 @@ const NumberPicker = React.memo(({label, inputProps, withLetters, error}) => {
 
     const handleChangeValue = (newValue) => {
         setValue(newValue);
-        console.log(letterOptions[newValue]);
         inputEl.value = withLetters ? letterOptions[newValue] : newValue;
     };
 
