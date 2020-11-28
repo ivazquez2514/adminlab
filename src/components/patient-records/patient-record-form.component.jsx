@@ -106,7 +106,8 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                     row: Number(data.rowLamellas),
                     column: Number(data.columnLamellas),
                     third: data.thirdLamellas,
-                    expedientId: '1'
+                    expedientId: '1',
+                    updatedAt: new Date()
                 },
                 blockCoordinates: {
                     cabinetId: blockCabinetSelected.id,
@@ -114,7 +115,8 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                     row: Number(data.rowBlocks),
                     column: Number(data.columnBlocks),
                     third: data.thirdBlocks,
-                    expedientId: '1'
+                    expedientId: '1',
+                    updatedAt: new Date()
                 }
             }
         };
@@ -131,7 +133,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                 console.error(error);
                 setNotification({
                     message: 'Un error ha ocurrido. Favor de intentarlo de nuevo.',
-                    type: types.ERRORR
+                    type: types.ERROR
                 });
             });
     }
@@ -318,7 +320,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                 <button
                     type="button"
                     className="bg-red-600 w-1/2 rounded-lg py-2 text-4xl md:text-5xl"
-                    onClick={() => history.push('../')}>
+                    onClick={() => history.push('../../')}>
                     <FontAwesomeIcon icon={faTimes} />
                 </button>
                 <button

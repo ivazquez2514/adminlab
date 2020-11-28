@@ -28,7 +28,7 @@ const AdminPage = ({logout, activeForm, notification, history}) => {
     const user = JSON.parse(localStorage.getItem('adminlab-auth')).collaborator;
 
     return (
-        <div className="min-w-screen flex flex-col items-center bg-gray-300 relative">
+        <div className="min-w-screen min-h-screen flex flex-col items-center bg-gray-300 relative">
 
             {!activeForm && <button
                 className="text-white bg-blue-400 hover:bg-blue-300 focus:bg-blue-600 focus:outline-none absolute right-0 bottom-0 mb-12 z-50 py-3 px-5 rounded-l-lg font-bold text-2xl"

@@ -45,12 +45,12 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                 message: 'El gabinete ha sido creado exitosamente.',
                 type: types.SUCCESS
             });
-            history.push('/admin/movements-history');
+            history.push('../../');
         }).catch(error => {
             console.error(error);
             setNotification({
                 message: 'Un error ha ocurrido. Favor de intentarlo de nuevo.',
-                type: types.ERRORR
+                type: types.ERROR
             });
         });
     }
@@ -58,7 +58,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
     useEffect(() => {
         setActiveForm({
             title: FormTitlesEnum.CABINET,
-            backUrl: './'
+            backUrl: '../../'
         })
 
         return () => {
@@ -75,7 +75,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                     </label>
                     <select
                         tabIndex="1"
-                        className={`${errors.cabinetType ? 'border-red-500 placeholder-red-500 text-red-500' : 'border-gray-500'} appearance-none font-medium block border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors.cabinetType ? 'border-red-500 placeholder-red-500 text-red-500' : 'border-gray-500'} appearance-none font-medium block text-gray-500 border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="cabinetType"
                         name="cabinetType"
                         ref={register({required: true})}>
@@ -125,7 +125,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                 <button
                     type="button"
                     className="bg-red-600 w-1/2 rounded-lg py-2 text-4xl md:text-5xl focus:outline-none"
-                    onClick={() => history.push('./')}>
+                    onClick={() => history.push('../../')}>
                     <FontAwesomeIcon icon={faTimes} />
                 </button>
                 <button

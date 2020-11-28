@@ -32,7 +32,7 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification}) 
                     message: 'El area ha sido creada exitosamente.',
                     type: types.SUCCESS
                 });
-                history.push('/admin/movements-history');
+                history.push('../../');
             }).catch(error => {
                 setNotification({
                     message: 'Un error ha ocurrido. Favor de intentarlo de nuevo.',
@@ -46,7 +46,7 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification}) 
     useEffect(() => {
         setActiveForm({
             title: FormTitlesEnum.HOSPITAL_AREA,
-            backUrl: './'
+            backUrl: '../../'
         });
 
         return () => {
@@ -115,7 +115,7 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification}) 
                 <button
                     type="button"
                     className="bg-red-600 w-1/2 rounded-lg py-2 text-4xl md:text-5xl"
-                    onClick={() => history.push('./')}>
+                    onClick={() => history.push('../../')}>
                     <FontAwesomeIcon icon={faTimes} />
                 </button>
                 <button

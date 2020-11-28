@@ -40,7 +40,7 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) 
             }).catch(error => {
                 setNotification({
                     message: 'Un error ha ocurrido. Favor de intentarlo de nuevo.',
-                    type: types.ERRORR
+                    type: types.ERROR
                 });
                 console.log(error);
             });
@@ -49,7 +49,7 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) 
     useEffect(() => {
         setActiveForm({
             title: FormTitlesEnum.COLLABORATOR,
-            backUrl: './'
+            backUrl: '../../'
         });
 
         return () => {
