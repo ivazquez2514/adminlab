@@ -12,7 +12,7 @@ const AdminHeader = React.memo(({user, logoutHandler, activeForm, history}) => {
 })
 
 const MainHeader = React.memo(({user, logoutHandler}) => (
-    <header className="w-full rounded-b-lg py-4 px-3 md:px-6 shadow-lg rounded bg-white flex">
+    <header className="w-full rounded-b-lg py-4 px-3 md:px-6 shadow-lg rounded bg-white flex z-49">
         <div className="text-blue-400 flex justify-center w-1/6 md:w-3/12 px-3">
             <LogoNova className="hidden md:block"/>
             <MobileLogo className="md:hidden"/>
@@ -30,12 +30,12 @@ const MainHeader = React.memo(({user, logoutHandler}) => (
                     placeholder="Buscar" />
             </div>
         </div>
-        <div className="user-info-container px-3 flex w-1/6 md:w-3/12">
-            <div className="rounded-full h-10 w-10 flex items-center justify-center bg-blue-400 text-white text-lg">{user.username.slice(0, 1).toUpperCase()}</div>
+        <div className="user-info-container justify-center md:justify-start md:px-3 flex w-1/6 md:w-3/12">
+            <div className="rounded-full h-10 w-10 flex items-center justify-center bg-blue-400 text-white text-lg">{user?.username.slice(0, 1).toUpperCase()}</div>
             <div className="ml-3 hidden md:block">
-                <p className="text-blue-400 text-sm">{user.username}</p>
-                <p className="text-gray-500 text-xs -mt-1">{user.role}</p>
-                <p className="text-xs -mt-1">{user.area.name}</p>
+                <p className="text-blue-400 text-sm">{user?.username}</p>
+                <p className="text-gray-500 text-xs -mt-1">{user?.role}</p>
+                <p className="text-xs -mt-1">{user?.area?.name}</p>
             </div>
         </div>
         <div className="hidden md:block w-1/12">

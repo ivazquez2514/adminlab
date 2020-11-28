@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { useOnlyNumbers, useOnlyLetters } from '../../../hooks';
+import { useOnlyNumbers, useOnlyLetters, useInputState } from '../../../hooks';
 
 export const letterOptions = [
     'A-A',
@@ -37,6 +37,7 @@ const NumberPicker = React.memo(({label, inputProps, withLetters, error}) => {
     const [value, setValue] = useState(0);
     const {validateFn: validateNumbersFn} = useOnlyNumbers();
     const {validateFn: validateLettersFn} = useOnlyLetters();
+    const {getInputCssClasses, getInputLabelCssClasses} = useInputState();
     const inputEl = document.getElementsByName(inputProps.name)[0];
 
     if (withLetters && value === 0 && inputEl) {
@@ -50,8 +51,8 @@ const NumberPicker = React.memo(({label, inputProps, withLetters, error}) => {
 
     return (
         <div className="w-full h-full">
-            <label className="block tracking-wide font-bold mb-2 text-gray-500">{label}</label>
-            <div className={`${error !== undefined ? 'border-red-500' : 'border-gray-500'} w-full bg-white p-2 rounded-lg border-2 flex h-20 text-2xl gap-4`}>
+            <label className={`${getInputLabelCssClasses(!!inputEl?.value, error)} block tracking-wide font-bold mb-2 text-gray-500`}>{label}</label>
+            <div className={`${getInputCssClasses(!!inputEl?.value, error)} w-full bg-white p-2 rounded-lg border-2 flex h-20 text-2xl gap-4`}>
                 <button
                     type="button"
                     disabled={value === 0}
@@ -63,7 +64,7 @@ const NumberPicker = React.memo(({label, inputProps, withLetters, error}) => {
                     {...inputProps}
                     onKeyDown={withLetters ? validateLettersFn : validateNumbersFn}
                     type="text"
-                    className="focus:outline-none w-2/4 md:w-2/6 lg:w-6/8 text-center text-gray-500 text-3xl" />
+                    className={`${getInputLabelCssClasses(!!inputEl?.value, error)} focus:outline-none w-2/4 md:w-2/6 lg:w-6/8 text-center text-gray-500 text-3xl`} />
                 <button
                     type="button"
                     disabled={withLetters !== undefined && value >= letterOptions.length - 1 }

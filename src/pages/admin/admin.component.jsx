@@ -42,13 +42,13 @@ const AdminPage = ({logout, activeForm, notification, history}) => {
             {/* Notification */}
             {notification && <Notification data={notification} />}
             
-            <div className="container w-full md:w-4/5 flex flex-col h-screen">
+            <div className="container w-full h-screen md:w-4/5 flex flex-col">
                 <AdminHeader
                     user={user}
                     logoutHandler={logoutHandler}
                     activeForm={activeForm} />
                 <Content />
-                {!activeForm && <footer className="rounded-t-lg py-4 px-6 md:pr-20 shadow-lg rounded bg-white relative">
+                {!activeForm && <footer className="rounded-t-lg py-4 px-6 shadow-lg rounded bg-white relative mt-4">
                     <nav className="w-full flex text-gray-600">
                         <div
                             onClick={() => history.push('./movements-history')} className={`${ location.pathname === ROUTES.MOVEMENTS ? 'text-blue-400' : '' } flex-1 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400`}>

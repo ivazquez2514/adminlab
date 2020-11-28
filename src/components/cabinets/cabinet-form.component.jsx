@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FormTitlesEnum } from '../../enums';
+import { useInputState } from '../../hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { CABINET_CREATE } from '../../api/mutations'
@@ -24,8 +25,9 @@ const CABINETS_TYPES = [
 ];
 
 const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors, formState } = useForm();
     const [ cabinetCreate ] = useMutation(CABINET_CREATE);
+    const { getInputCssClasses, getInputLabelCssClasses } = useInputState();
 
     const onSubmit = (data) => {
         data = {...data, rows: letterOptions.findIndex(item => item === data.rows)};
@@ -70,12 +72,12 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
         <form className="w-full h-full relative" onSubmit={handleSubmit(onSubmit)}>
             <div className="w-full md:mb-6 md:flex">
                 <div className="w-full md:w-1/2 px-3">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
+                    <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.cabinetType, !!errors.cabinetType)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="name">
                         Tipo de gabinete
                     </label>
                     <select
                         tabIndex="1"
-                        className={`${errors.cabinetType ? 'border-red-500 placeholder-red-500 text-red-500' : 'border-gray-500'} appearance-none font-medium block text-gray-500 border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${getInputCssClasses(!!formState.dirtyFields.cabinetType, !!errors.cabinetType)} appearance-none font-medium block text-gray-500 border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="cabinetType"
                         name="cabinetType"
                         ref={register({required: true})}>

@@ -9,6 +9,7 @@ import { AREA_LIST } from '../../api/queries';
 import { COLLABORATOR_CREATE } from '../../api/mutations';
 import { FormTitlesEnum } from '../../enums';
 import { types } from '../notification/notification.component';
+import { useInputState } from '../../hooks';
 
 const ROLES = [
     'SuperAdministrador',
@@ -18,9 +19,10 @@ const ROLES = [
 ];
 
 const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) => {
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors, formState } = useForm();
     const { data: areasResponse } = useQuery(AREA_LIST);
     const [ collaboratorCreate ] = useMutation(COLLABORATOR_CREATE);
+    const { getInputCssClasses, getInputLabelCssClasses } = useInputState();
 
     let areas = [];
 
@@ -61,11 +63,11 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) 
         <form className="w-full h-full relative" onSubmit={handleSubmit(onSubmit)}>
             <div className="w-full md:mb-6 md:flex">
                 <div className="w-full md:w-1/2 px-3">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
+                    <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.areaId, !!errors.areaId)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="name">
                         Área
                     </label>
                     <select
-                        className={`${errors.areaId ? 'border-red-500 placeholder-red-500 text-red-500' : 'border-gray-500'} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${getInputCssClasses(!!formState.dirtyFields.areaId, !!errors.areaId)} appearance-none font-medium block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="areaId"
                         name="areaId"
                         ref={register({required: true})}
@@ -75,11 +77,11 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) 
                     </select>
                 </div>
                 <div className="w-full md:w-1/2 px-3">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="name">
+                    <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.role, !!errors.role)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="name">
                         Rol de usuario
                     </label>
                     <select
-                        className={`${errors.role ? 'border-red-500 placeholder-red-500 text-red-500' : 'border-gray-500'} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${getInputCssClasses(!!formState.dirtyFields.role, !!errors.role)} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="role"
                         name="role"
                         ref={register({required: true})}
@@ -91,11 +93,11 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) 
             </div>
             <div className="w-full md:flex">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="username">
+                    <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.username, !!errors.username)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="username">
                         ID de usuario
                     </label>
                     <input
-                        className={`${errors.username ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${getInputCssClasses(!!formState.dirtyFields.username, !!errors.username)} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="username"
                         type="text"
                         name="username"
@@ -103,15 +105,15 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification}) 
                         placeholder="Escribir un nombre..." />
                 </div>
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                    <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="password">
+                    <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.password, !!errors.password)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="password">
                         Clave de usuario
                     </label>
                     <input
-                        className={`${errors.password ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${getInputCssClasses(!!formState.dirtyFields.password, !!errors.password)} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="password"
                         type="text"
                         name="password"
-                        ref={register({required: true})}
+                        ref={register({required: true, minLength: 6})}
                         placeholder="Asignar 6 dígitos"
                         maxLength="6" />
                 </div>

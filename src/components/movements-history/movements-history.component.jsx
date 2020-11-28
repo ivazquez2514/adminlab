@@ -1,14 +1,20 @@
-import React from 'react'
-import { useQuery } from '@apollo/client'
-import { GENERAL_LOG_LIST } from '../../api/queries'
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { GENERAL_LOG_LIST } from '../../api/queries';
 
-const MovementHistory = React.memo(() => {
-    const {data} = useQuery(GENERAL_LOG_LIST);
+const MovementHistory = React.memo(({logout, history}) => {
+    const {data, error} = useQuery(GENERAL_LOG_LIST);
     let items = [];
-
+    
     if (data && data.generalLogList) {
         items = data.generalLogList;
-        console.log(data);
+    }
+
+    if (error) {
+        localStorage.removeItem('adminlab-auth');
+        logout();
     }
 
     const formatDate = (date) => {
@@ -48,4 +54,8 @@ const MovementHistory = React.memo(() => {
     );
 });
 
-export default MovementHistory;
+const mapDispatchToProps = (dispatch) => ({
+    logout: dispatch.auth.logout
+});
+
+export default connect(null, mapDispatchToProps)(withRouter(MovementHistory));
