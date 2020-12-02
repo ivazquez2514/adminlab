@@ -51,7 +51,7 @@ const AdminPage = ({logout, activeForm, notification, history}) => {
                 {!activeForm && <footer className="rounded-t-lg py-4 px-6 shadow-lg rounded bg-white relative mt-4">
                     <nav className="w-full flex text-gray-600">
                         <div
-                            onClick={() => history.push('./movements-history')} className={`${ location.pathname === ROUTES.MOVEMENTS ? 'text-blue-400' : '' } flex-1 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400`}>
+                            onClick={() => history.push('/admin/movements-history')} className={`${ location.pathname === ROUTES.MOVEMENTS ? 'text-blue-400' : '' } flex-1 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400`}>
                             <FontAwesomeIcon icon={faColumns} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Panel de control</p>
                         </div>
@@ -61,9 +61,17 @@ const AdminPage = ({logout, activeForm, notification, history}) => {
                             <FontAwesomeIcon icon={faCubes} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Almacenamiento</p>
                         </div>
-                        <div className="flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400">
+                        <div
+                            onClick={() => history.push('/admin/collaborators')}
+                            className="flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400">
                             <FontAwesomeIcon icon={faUsers} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Colaboradores</p>
+                        </div>
+                        <div
+                            onClick={() => history.push('/admin/hospital-areas')}
+                            className="flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400">
+                            <FontAwesomeIcon icon={faUsers} className="text-2xl" />
+                            <p className="ml-4 text-lg hidden md:block">Areas</p>
                         </div>
                     </nav>
                 </footer>}

@@ -5,6 +5,10 @@ export const AREA_LIST = gql`
         areaList {
             id
             name
+            usersQuantity
+            cabinetBlocksQuantity
+            cabinetLamellasQuantity
+            createdAt
         }
     }
 `;

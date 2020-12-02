@@ -3,3 +3,7 @@ export * from './collaboratorCreate.mutation';
 export * from './areaCreate.mutation';
 export * from './cabinetCreate.mutation';
 export * from './expedientCreate.mutation';
+export * from './areaDelete.mutation';
+export * from './areaUpdate.mutation';
+export * from './collaboratorDelete.mutation';
+export * from './collaboratorUpdate.mutation';

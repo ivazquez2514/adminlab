@@ -14,17 +14,20 @@ export {default as Notification} from './notification/notification.component';
 /* Content */
 export {default as Content} from './content/content.component';
 
-/* Dialog */
+/* Dialogs */
 export {default as Dialog} from './dialog/dialog.component';
+export {default as ConfirmDialog} from './confirm-dialog/confirm-dialog.component';
 
 /* Movements history */
 export {default as MovementsHistory} from './movements-history/movements-history.component';
 
 /* Hospital areas */
 export {default as HospitalAreaForm} from './hospital-areas/hospital-area-form.component';
+export {default as HospitalAreaList} from './hospital-areas/hospital-area-list.component';
 
-/* Collaboratos */
+/* Collaborators */
 export {default as CollaboratorForm} from './collaborators/collaborator-form.component';
+export {default as CollaboratorList} from './collaborators/collaborator-list.component';
 
 /* Cabinets */
 export {default as CabinetForm} from './cabinets/cabinet-form.component';

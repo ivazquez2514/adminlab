@@ -2,7 +2,8 @@ const ui = {
     state: {
         hideFooter: false,
         activeForm: null,
-        notification: null
+        notification: null,
+        formAction: null,
     },
     reducers: {
         toggleHideFooter: (state) => ({
@@ -16,6 +17,10 @@ const ui = {
         setNotification: (state, payload) => ({
             ...state,
             notification: payload
+        }),
+        setFormAction: (state, payload) => ({
+            ...state,
+            formAction: payload
         })
     }
 }

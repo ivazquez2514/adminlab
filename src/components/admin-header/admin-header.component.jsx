@@ -1,9 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faSearch, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { ReactComponent as LogoNova } from '../../assets/svg/logo_nova.svg';
 import { ReactComponent as MobileLogo } from '../../assets/svg/mobile_logo.svg';
+import { FormActions } from '../../enums';
 
 const AdminHeader = React.memo(({user, logoutHandler, activeForm, history}) => {
     return (
@@ -48,7 +50,15 @@ const MainHeader = React.memo(({user, logoutHandler}) => (
     </header>
 ));
 
-const FormHeader = React.memo(({activeForm, history}) => (
+const mapStateToProps = (state) => ({
+    formAction: state.ui.formAction
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    setFormAction: dispatch.ui.setFormAction,
+});
+
+const FormHeader = connect(mapStateToProps, mapDispatchToProps)(React.memo(({activeForm, history, formAction, setFormAction}) => (
     <header className="w-full flex justify-between text-2xl rounded-b-lg py-4 px-6 shadow-lg rounded bg-white text-blue-500 text-center">
         <div
             className="text-xl cursor-pointer"
@@ -57,20 +67,21 @@ const FormHeader = React.memo(({activeForm, history}) => (
         </div>
         <h4 className="text-xl md:text-2xl">{activeForm.title}</h4>
         <div
-            className="text-lg cursor-pointer text-black invisible"
-            onClick={() => history.push(activeForm.backUrl)}>
+            className="text-lg cursor-pointer text-black">
             <button
+                onClick={() =>setFormAction(FormActions.DELETE)}
                 type="button"
                 className="bg-white border-2 border-gray-300 rounded-lg px-3 py-1 mr-3 focus:outline-none">
                 <FontAwesomeIcon icon={faTrashAlt} />
             </button>
             <button
+                onClick={() =>setFormAction(FormActions.UPDATE)}
                 type="button"
                 className="bg-white border-2 border-gray-300 rounded-lg px-3 py-1 focus:outline-none">
                 <FontAwesomeIcon icon={faPencilAlt} />
             </button>
         </div>
     </header>
-));
+)));
 
 export default withRouter(AdminHeader);
