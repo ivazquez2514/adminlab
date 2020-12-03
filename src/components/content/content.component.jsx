@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route} from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import {
     MovementsHistory,
@@ -28,7 +28,7 @@ const Content = () => {
                 <Route exact path="/admin/cabinets" component={CabinetList} />
                 <Route exact path="/admin/cabinets/:id" component={CabinetDetail} />
                 <Route exact path="/admin/patient-records/new" component={PatientRecordForm} />
-                {/* <Redirect to="/admin/movements-history" /> */}
+                {/* <Redirect to={initialRoute} /> */}
             </Switch>
         </main>
     );

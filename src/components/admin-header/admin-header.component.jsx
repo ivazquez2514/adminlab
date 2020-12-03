@@ -5,11 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faSearch, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { ReactComponent as LogoNova } from '../../assets/svg/logo_nova.svg';
 import { ReactComponent as MobileLogo } from '../../assets/svg/mobile_logo.svg';
-import { FormActions } from '../../enums';
+import { FormActions, Permissions } from '../../enums';
+import formTitlesEnum from '../../enums/form-titles.enum';
 
 const AdminHeader = React.memo(({user, logoutHandler, activeForm, history}) => {
     return (
-        activeForm ? <FormHeader activeForm={activeForm} history={history} /> : <MainHeader user={user} logoutHandler={logoutHandler}/>
+        activeForm ? <FormHeader activeForm={activeForm} history={history} user={user} /> : <MainHeader user={user} logoutHandler={logoutHandler}/>
     );
 })
 
@@ -58,30 +59,41 @@ const mapDispatchToProps = (dispatch) => ({
     setFormAction: dispatch.ui.setFormAction,
 });
 
-const FormHeader = connect(mapStateToProps, mapDispatchToProps)(React.memo(({activeForm, history, formAction, setFormAction}) => (
-    <header className="w-full flex justify-between text-2xl rounded-b-lg py-4 px-6 shadow-lg rounded bg-white text-blue-500 text-center">
-        <div
-            className="text-xl cursor-pointer"
-            onClick={() => history.push(activeForm.backUrl)}>
-            <FontAwesomeIcon icon={faArrowLeft} />
-        </div>
-        <h4 className="text-xl md:text-2xl">{activeForm.title}</h4>
-        <div
-            className="text-lg cursor-pointer text-black">
-            <button
-                onClick={() =>setFormAction(FormActions.DELETE)}
-                type="button"
-                className="bg-white border-2 border-gray-300 rounded-lg px-3 py-1 mr-3 focus:outline-none">
-                <FontAwesomeIcon icon={faTrashAlt} />
-            </button>
-            <button
-                onClick={() =>setFormAction(FormActions.UPDATE)}
-                type="button"
-                className="bg-white border-2 border-gray-300 rounded-lg px-3 py-1 focus:outline-none">
-                <FontAwesomeIcon icon={faPencilAlt} />
-            </button>
-        </div>
-    </header>
-)));
+const FormHeader = connect(mapStateToProps, mapDispatchToProps)(React.memo(({activeForm, history, formAction, setFormAction, user}) => {
+    const isInvisible = (action) => {
+        if (formAction === '' || formAction === null) {
+            return true;
+        } else if (activeForm.title === formTitlesEnum.HOSPITAL_AREA_DETAIL) {
+            return !Permissions.areas[user.role].includes(action);
+        } else if (activeForm.title === formTitlesEnum.COLLABORATOR_DETAIL) {
+            return !Permissions.collaborators[user.role].includes(action);
+        }
+    };
+
+    return (
+        <header className="w-full flex justify-between text-2xl rounded-b-lg py-4 px-6 shadow-lg rounded bg-white text-blue-500 text-center">
+            <div
+                className="text-xl cursor-pointer"
+                onClick={() => history.push(activeForm.backUrl)}>
+                <FontAwesomeIcon icon={faArrowLeft} />
+            </div>
+            <h4 className="text-xl md:text-2xl">{activeForm.title}</h4>
+            <div className='text-lg cursor-pointer text-black'>
+                <button
+                    onClick={() => setFormAction(FormActions.DELETE)}
+                    type="button"
+                    className={`${isInvisible(FormActions.DELETE) && 'invisible'} bg-white border-2 border-gray-300 rounded-lg px-3 py-1 mr-3 focus:outline-none`}>
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                </button>
+                <button
+                    onClick={() => setFormAction(FormActions.UPDATE)}
+                    type="button"
+                    className={`${isInvisible(FormActions.UPDATE) && 'invisible'} bg-white border-2 border-gray-300 rounded-lg px-3 py-1 focus:outline-none`}>
+                    <FontAwesomeIcon icon={faPencilAlt} />
+                </button>
+            </div>
+        </header>
+    );
+}));
 
 export default withRouter(AdminHeader);

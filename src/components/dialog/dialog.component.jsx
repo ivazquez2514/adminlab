@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useStore } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { withRouter } from 'react-router-dom';
+import { Roles, Permissions, FormActions } from '../../enums';
 
 const ROUTES = {
     PATIENT_RECORDS: '/admin/patient-records/new',
@@ -12,6 +14,20 @@ const ROUTES = {
 
 const Dialog = ({ title, onClose, history }) => {
     const [ selectedOption, setSelectedOption ] = useState('');
+    const store = useStore();
+    const user = store.getState().auth.authenticatedUser;
+
+    const displayItem = (path) => {
+        if (path === ROUTES.COLLABORATORS_FORM) {
+            return Permissions.collaborators[user.role].includes(FormActions.LIST);
+        } else if (path === ROUTES.HOSPITAL_AREAS_FORM) {
+            return Permissions.areas[user.role].includes(FormActions.LIST);
+        } else if (path === ROUTES.CABINETS_FORM) {
+            return Permissions.cabinets[user.role].includes(FormActions.LIST);
+        } else if (path === ROUTES.PATIENT_RECORDS) {
+            return Permissions.patientRecords[user.role].includes(FormActions.LIST);
+        }
+    };
 
     return (
         <div className="w-screen h-screen transition ease-in-out bg-black bg-opacity-25 absolute z-40 flex justify-center items-center">
@@ -21,18 +37,26 @@ const Dialog = ({ title, onClose, history }) => {
                     <FontAwesomeIcon icon={faTimes} className="cursor-pointer text-xl" onClick={onClose} />
                 </div>
                 <div className="p-4">
-                    <button
+                    {displayItem(ROUTES.PATIENT_RECORDS) && <button
                         onClick={() => setSelectedOption(ROUTES.PATIENT_RECORDS)}
-                        className={`${ selectedOption === ROUTES.PATIENT_RECORDS ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>Expediente de Paciente</button>
-                    <button
+                        className={`${ selectedOption === ROUTES.PATIENT_RECORDS ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>
+                            Expediente de Paciente
+                    </button>}
+                    {displayItem(ROUTES.COLLABORATORS_FORM) && <button
                         onClick={() => setSelectedOption(ROUTES.COLLABORATORS_FORM)}
-                        className={`${ selectedOption === ROUTES.COLLABORATORS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>Colaborador</button>
-                    <button
+                        className={`${ selectedOption === ROUTES.COLLABORATORS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>
+                            Colaborador
+                    </button>}
+                    {displayItem(ROUTES.CABINETS_FORM) && <button
                         onClick={() => setSelectedOption(ROUTES.CABINETS_FORM)}
-                        className={`${ selectedOption === ROUTES.CABINETS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>Gabinete</button>
-                    <button
+                        className={`${ selectedOption === ROUTES.CABINETS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>
+                            Gabinete
+                    </button>}
+                    {displayItem(ROUTES.HOSPITAL_AREAS_FORM) && <button
                         onClick={() => setSelectedOption(ROUTES.HOSPITAL_AREAS_FORM)}
-                        className={`${ selectedOption === ROUTES.HOSPITAL_AREAS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>Area (Hospital)</button>
+                        className={`${ selectedOption === ROUTES.HOSPITAL_AREAS_FORM ? 'bg-blue-500 text-white' : 'bg-white text-gray-500' } hover:bg-blue-500 w-full border border-gray-500 hover:text-white rounded-lg py-3 text-xl mb-4 focus:outline-none`}>
+                            Area (Hospital)
+                    </button>}
                 </div>
                 <div className="p-4 flex text-white gap-5">
                     <button

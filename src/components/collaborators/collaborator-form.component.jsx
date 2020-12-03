@@ -44,6 +44,7 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
         });
     };
 
+    console.log(collaboratorData);
     if (id && id !== 'new' && collaboratorData && !collaborator) {
         setCollaborator(collaboratorData.collaboratorGet);
         reset({
@@ -106,7 +107,14 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
 
     useEffect(() => {
         setActiveForm({
-            title: FormTitlesEnum.COLLABORATOR,
+            title: FormTitlesEnum[`COLLABORATOR${formAction ? `_${formAction}` : ''}`],
+            backUrl: '../../'
+        });
+    }, [formAction])
+
+    useEffect(() => {
+        setActiveForm({
+            title: FormTitlesEnum[`COLLABORATOR${formAction ? `_${formAction}` : ''}`],
             backUrl: '../../'
         });
         if (id && id !== 'new') setFormAction(FormActions.DETAIL);

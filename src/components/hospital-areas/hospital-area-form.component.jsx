@@ -79,8 +79,15 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification, f
 
     useEffect(() => {
         setActiveForm({
-            title: id ? FormTitlesEnum.HOSPITAL_AREA_EDIT : FormTitlesEnum.HOSPITAL_AREA,
-            backUrl: id ? '../../../' : '../../'
+            title: FormTitlesEnum[`HOSPITAL_AREA${formAction ? `_${formAction}` : ''}`],
+            backUrl: '../../'
+        });
+    }, [formAction])
+
+    useEffect(() => {
+        setActiveForm({
+            title: FormTitlesEnum[`HOSPITAL_AREA${formAction ? `_${formAction}` : ''}`],
+            backUrl: '../../'
         });
         if (id && id !== 'new') setFormAction(FormActions.DETAIL);
 
@@ -97,7 +104,9 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification, f
                     title="Eliminar Area"
                     msg="¿Estas seguro que quieres eliminar esta área?"
                     onAccept={deleteAreaHandler}
-                    onCancel={() => setFormAction(FormActions.DETAIL)}/>}
+                    onCancel={() => {
+                        setFormAction(FormActions.DETAIL);
+                    }}/>}
                 <div className="w-full md:mb-6">
                     <div className="w-full px-3 md:mb-0">
                         <label className={`${getInputLabelCssClasses(formState.dirtyFields.name, errors.name)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="name">

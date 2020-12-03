@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { ReactComponent as LaminillasIcon } from '../../assets/svg/laminillas.svg';
@@ -17,6 +17,11 @@ const CabinetList = ({history, setCabinet}) => {
     if (data && data.cabinetList) {
         list = [...data.cabinetList];
     }
+
+    const getItems = useCallback(() => {
+        return list.filter(item => (listType === 'BLOCKS' ? 'Bloques' : 'Laminillas') === item.cabinetType)
+            .slice(offset, 3);
+    }, [listType, data]);
 
     return (
         <>
@@ -54,9 +59,7 @@ const CabinetList = ({history, setCabinet}) => {
                     <FontAwesomeIcon icon={faChevronRight} />
                 </button>
                 {
-                    list.filter(item => (listType === 'BLOCKS' ? 'Bloques' : 'Laminillas') === item.cabinetType)
-                        .splice(offset, 3)
-                        .map(item => <ListItem key={item.cabinetNumber} item={item} history={history} listType={listType} setCabinet={setCabinet} />)
+                    getItems().map((item, index) => <ListItem key={index} item={item} history={history} listType={listType} setCabinet={setCabinet} />)
                 }
             </div>
         </>

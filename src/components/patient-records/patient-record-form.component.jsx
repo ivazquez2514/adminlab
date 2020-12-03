@@ -246,7 +246,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                         onKeyPress={validateNumbersFn}
                         disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         ref={register({required: true})}>
-                        <option value="">Selecciona una opción</option>
+                        <option value="">Ingresar el número de caso</option>
                         {letters.slice(0, 3).map(item => <option key={item.value} value={item.name}>{item.name}</option>)}
                     </select>
                 </div>
@@ -311,7 +311,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                         id="thirdBlocks"
                         name="thirdBlocks"
                         ref={register({required: true})}>
-                        <option value="">Selecciona una opción</option>
+                        <option value="">Ingresar el número de caso</option>
                         {letters.slice(0, 3).map(item => <option key={item.value} value={item.name}>{item.name}</option>)}
                     </select>
                 </div>
