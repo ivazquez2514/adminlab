@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { useOnlyNumbers, useOnlyLetters, useInputState } from '../../../hooks';
@@ -33,21 +33,28 @@ export const letterOptions = [
     'A-Z',
 ];
 
-const NumberPicker = React.memo(({label, inputProps, withLetters, error}) => {
+const NumberPicker = React.memo(({label, inputProps, withLetters, error, defaultValue = 0}) => {
     const [value, setValue] = useState(0);
     const {validateFn: validateNumbersFn} = useOnlyNumbers();
     const {validateFn: validateLettersFn} = useOnlyLetters();
     const {getInputCssClasses, getInputLabelCssClasses} = useInputState();
     const inputEl = document.getElementsByName(inputProps.name)[0];
 
-    if (withLetters && value === 0 && inputEl) {
+    /* if (withLetters && value === 0 && inputEl) {
         inputEl.value = letterOptions[value];
-    }
+    } */
 
     const handleChangeValue = (newValue) => {
         setValue(newValue);
         inputEl.value = withLetters ? letterOptions[newValue] : newValue;
     };
+    
+    useEffect(() => {
+        if (defaultValue && inputEl) {
+            setValue(defaultValue);
+            inputEl.value = withLetters ? letterOptions[defaultValue] : defaultValue;
+        }
+    }, [defaultValue]);
 
     return (
         <div className="w-full h-full">

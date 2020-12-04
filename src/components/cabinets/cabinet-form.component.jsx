@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { FormTitlesEnum } from '../../enums';
+import { FormActions, FormTitlesEnum } from '../../enums';
 import { useInputState } from '../../hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
-import { CABINET_CREATE } from '../../api/mutations'
-import { useMutation } from '@apollo/client'
+import { CABINET_CREATE, CABINET_UPDATE } from '../../api/mutations'
+import { CABINET_GET } from '../../api/queries'
+import { useMutation, useLazyQuery } from '@apollo/client'
 import { types } from '../notification/notification.component'
 import { letterOptions } from '../forms/number-picker/number-picker.component';
 
-import { NumberPicker } from "../";
+import { NumberPicker, ConfirmDialog } from "../";
 
 const CABINETS_TYPES = [
     {
@@ -24,17 +25,38 @@ const CABINETS_TYPES = [
     },
 ];
 
-const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
-    const { register, handleSubmit, errors, formState } = useForm();
+const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAction, setFormAction}) => {
+    const { register, handleSubmit, errors, formState, reset } = useForm();
     const [ cabinetCreate ] = useMutation(CABINET_CREATE);
     const { getInputCssClasses, getInputLabelCssClasses } = useInputState();
+    const { id } = useParams();
+    const [ getCabinet, { data: cabinetData, called } ] = useLazyQuery(CABINET_GET);
+    const [ cabinetUpdate ] = useMutation(CABINET_UPDATE);
+    const [ cabinet, setCabinet ] = useState(null);
+
+    if (id && id !== 'new' && !called) {
+        getCabinet({variables: {id}});
+    }
+
+    if (id && id !== 'new' && cabinetData && !cabinet) {
+        setCabinet(cabinetData.cabinetGet);
+        console.log(cabinetData.cabinetGet);
+        reset({
+            cabinetType: cabinetData.cabinetGet.cabinetType,
+            cabinetNumber: cabinetData.cabinetGet.cabinetNumber,
+            columns: cabinetData.cabinetGet.columns,
+            rows: cabinetData.cabinetGet.rows
+        });
+    }
 
     const onSubmit = (data) => {
         data = {...data, rows: letterOptions.findIndex(item => item === data.rows)};
 
-        cabinetCreate({
+        const fn = cabinet ? cabinetUpdate : cabinetCreate;
+        fn({
             variables: {
                 cabinet: {
+                    id: cabinet ? cabinet.id : undefined,
                     cabinetType: data.cabinetType,
                     cabinetNumber: Number(data.cabinetNumber),
                     rows: Number(data.rows),
@@ -59,12 +81,14 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
 
     useEffect(() => {
         setActiveForm({
-            title: FormTitlesEnum.CABINET,
-            backUrl: '../../'
+            title: FormTitlesEnum[`CABINET${formAction ? `_${formAction}` : ''}`],
+            backUrl: id ? `../` : '/admin/cabinets'
         })
+        if (id && id !== 'new') setFormAction(FormActions.UPDATE);
 
         return () => {
             setActiveForm(null)
+            setFormAction(null);
         }
     }, []);
 
@@ -89,6 +113,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                     <NumberPicker
                         label="No. gabinete"
                         error={errors.cabinetNumber}
+                        defaultValue={cabinet?.cabinetNumber || 0}
                         inputProps={{
                             ref: register({required: true}),
                             name: "cabinetNumber",
@@ -103,6 +128,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                         withLetters
                         label="Cantidad de filas"
                         error={errors.rows}
+                        defaultValue={cabinet?.rows || 0}
                         inputProps={{
                             ref: register({required: true}),
                             name: "rows",
@@ -115,6 +141,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
                     <NumberPicker
                         label="Cantidad de columnas"
                         error={errors.columns}
+                        defaultValue={cabinet?.columns || 0}
                         inputProps={{
                             ref: register({required: true}),
                             name: "columns",
@@ -140,9 +167,14 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification}) => {
     );
 })
 
+const mapStateToProps = (state) => ({
+    formAction: state.ui.formAction
+}) 
+
 const mapDispatchToProps = (dispatch) => ({
     setActiveForm: dispatch.ui.setActiveForm,
+    setFormAction: dispatch.ui.setFormAction,
     setNotification: dispatch.ui.setNotification,
 })
 
-export default connect(null, mapDispatchToProps)(withRouter(CabinetForm));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CabinetForm));

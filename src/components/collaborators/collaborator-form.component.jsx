@@ -44,7 +44,6 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
         });
     };
 
-    console.log(collaboratorData);
     if (id && id !== 'new' && collaboratorData && !collaborator) {
         setCollaborator(collaboratorData.collaboratorGet);
         reset({

@@ -7,3 +7,5 @@ export * from './areaDelete.mutation';
 export * from './areaUpdate.mutation';
 export * from './collaboratorDelete.mutation';
 export * from './collaboratorUpdate.mutation';
+export * from './cabinetUpdate.mutation';
+export * from './cabinetDelete.mutation';

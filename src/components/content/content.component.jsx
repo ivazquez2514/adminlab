@@ -26,8 +26,10 @@ const Content = () => {
                 <Route path="/admin/collaborators/new" component={CollaboratorForm} />
                 <Route exact path="/admin/cabinets/new" component={CabinetForm} />
                 <Route exact path="/admin/cabinets" component={CabinetList} />
+                <Route exact path="/admin/cabinets/:id/edit" component={CabinetForm} />
                 <Route exact path="/admin/cabinets/:id" component={CabinetDetail} />
                 <Route exact path="/admin/patient-records/new" component={PatientRecordForm} />
+                <Route exact path="/admin/patient-records/:id" component={PatientRecordForm} />
                 {/* <Redirect to={initialRoute} /> */}
             </Switch>
         </main>
