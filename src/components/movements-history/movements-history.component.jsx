@@ -25,7 +25,7 @@ const MovementHistory = React.memo(({logout, history}) => {
         <div>
             <div className="table-head flex flex-col md:flex-row md:justify-between border-b border-gray-500">
                 <p className="md:py-4 text-xl text-blue-500">Historial de movimientos</p>
-                <p className="pb-2 md:py-4 text-gray-500">Última actualización: 27 Octubre, 2020 3:40 p.m.</p>
+                <p className="pb-2 md:py-4 text-gray-500">{items && items.length && formatDate(items[0].updatedAt)}</p>
             </div>
             <div className="table-data">
                 {items.map((item, index) =>

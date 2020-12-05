@@ -1,5 +1,6 @@
 /* Auth */
 export {default as SignIn} from './auth/sign-in.component';
+export {default as AskSession} from './auth/ask-session.component';
 
 /* Forms */
 export {default as InputIcon} from './forms/input-icon/input-icon.component';

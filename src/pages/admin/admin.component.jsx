@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,10 +22,14 @@ const ROUTES = {
 const AdminPage = ({logout, activeForm, notification, history}) => {
     const [openDialog, setOpenDialog] = useState(false);
     const location = useLocation();
+    // const { close, startInterval, intervalRef } = useCheckSession();
+    const [intervalRef, setIntervalRef] = useState();
     
     const logoutHandler = () => {
+        clearInterval(intervalRef);
+        setIntervalRef('adminlab-auth');
         logout();
-        localStorage.removeItem('adminlab-auth');
+        history.push('/auth');
     };
 
     const displayFooterItem = (path) => {
@@ -41,6 +45,19 @@ const AdminPage = ({logout, activeForm, notification, history}) => {
     };
 
     const user = JSON.parse(localStorage.getItem('adminlab-auth')).collaborator;
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const lastInteraction = localStorage.getItem('adminlab-lastInteraction');
+            const lastInteracionDate = new Date(new Date(Number(lastInteraction)));
+            const differenceInMinutes = (new Date() - lastInteracionDate) / 1000 / 60;
+
+            if (differenceInMinutes > 10) {
+                logoutHandler();
+            }
+        }, 5000);
+        setIntervalRef(interval);
+    }, []);
 
     return (
         <div className="min-w-screen min-h-screen flex flex-col items-center bg-gray-300 relative">

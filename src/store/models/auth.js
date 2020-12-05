@@ -12,6 +12,8 @@ const auth = {
             }
         },
         logout(state) {
+            localStorage.removeItem('adminlab-lastInteraction');
+            localStorage.removeItem('adminlab-auth');
             return {
                 ...state,
                 isAuthenticated: false,
