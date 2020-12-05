@@ -8,5 +8,7 @@ export default {
     HOSPITAL_AREA: 'Nueva área (Hospital)',
     HOSPITAL_AREA_UPDATE: 'Editar área (Hospital)',
     HOSPITAL_AREA_DETAIL: 'Detalle de área (Hospital)',
-    PATIENT_RECORD: 'Nuevo expediente',
+    PATIENT_RECORD_CREATE: 'Nuevo expediente',
+    PATIENT_RECORD_UPDATE: 'Editar expediente',
+    PATIENT_RECORD_DETAIL: 'Detalle de expediente',
 };

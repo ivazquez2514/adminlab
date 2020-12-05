@@ -9,3 +9,5 @@ export * from './collaboratorDelete.mutation';
 export * from './collaboratorUpdate.mutation';
 export * from './cabinetUpdate.mutation';
 export * from './cabinetDelete.mutation';
+export * from './expedientUpdate.mutation';
+export * from './expedientDelete.mutation';
