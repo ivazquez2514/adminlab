@@ -19,23 +19,26 @@ function App({isAuthenticated, authenticatedUser, authenticate}) {
     authenticate(authInfo.collaborator);
   }
 
-  const initialRoute = `${authInfo?.collaborator?.role === Roles.SuperAdministrador ? '/admin/hospital-areas' : '/admin/movements-history'}`;
-  console.log(initialRoute);
-  console.log(isAuthenticated);
+  const initialRoute = () => {
+    if (authInfo) {
+      console.log(`${authInfo?.collaborator?.role === Roles.SuperAdministrador ? '/admin/hospital-areas' : '/admin/movements-history'}`);
+      return `${authInfo?.collaborator?.role === Roles.SuperAdministrador ? '/admin/hospital-areas' : '/admin/movements-history'}`;
+    } else {
+      return '/auth/sign-in';
+    }
+  }
+
+  document.addEventListener('click', () => {
+    localStorage.setItem('adminlab-lastInteraction', new Date().getTime());
+  });
 
   return (
     <div className="App min-h-screen min-w-screen font-poppins">
-      {
-        isAuthenticated ?
-          <Switch>
-            <Route path="/admin" component={AdminPage} />
-            <Redirect to={initialRoute} />
-          </Switch> :
-          <Switch>
-            <Route path="/auth" component={AuthPage} />
-            <Redirect to="/auth" />
-          </Switch>
-      }
+      <Switch>
+        <Route path="/auth" component={AuthPage} />
+        <Route path="/admin" component={AdminPage} />
+        <Redirect to={initialRoute() || 'auth'} />
+      </Switch>
     </div>
   );
 }
