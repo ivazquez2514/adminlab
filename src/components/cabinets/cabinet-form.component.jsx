@@ -88,7 +88,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
     useEffect(() => {
         setActiveForm({
             title: FormTitlesEnum[`CABINET${formAction ? `_${formAction}` : ''}`],
-            backUrl: id ? `../` : '/admin/cabinets'
+            backUrl: id ? `/admin` : '/admin/cabinets'
         })
         if (id && id !== 'new') setFormAction(FormActions.UPDATE);
 
