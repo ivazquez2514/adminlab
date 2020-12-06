@@ -1,8 +1,10 @@
+import { useCallback, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { COLLABORATOR_LIST } from '../../api/queries';
 
-const CollaboratorList = ({history}) => {
+const CollaboratorList = ({history, search, setSearch}) => {
     const { data } = useQuery(COLLABORATOR_LIST);
     let items = [];
 
@@ -10,9 +12,22 @@ const CollaboratorList = ({history}) => {
         items = data.collaboratorList;
     }
 
-    const formatDate = (date) => {
-        return new Intl.DateTimeFormat('en-MX').format(new Date())
-    }
+    const filteredItems = useCallback(() => {
+        if (search) {
+            return items.filter(item =>
+                item.area?.name.includes(search)
+                || item.username.includes(search)
+                || item.role.includes(search));
+        }
+
+        return items;
+    }, [search, items]);
+
+    useEffect(() => {
+        return () => {
+            setSearch('');
+        }
+    }, []);
 
     return (
         <div>
@@ -20,7 +35,7 @@ const CollaboratorList = ({history}) => {
                 <p className="md:py-4 text-xl text-blue-500">Colaboradores</p>
             </div>
             <div className="table-data">
-                {items.map((item, index) =>
+                {filteredItems().map((item, index) =>
                     <div
                         onClick={() => history.push(`/admin/collaborators/${item.id}`)}
                         key={index}
@@ -45,4 +60,12 @@ const CollaboratorList = ({history}) => {
     );
 };
 
-export default withRouter(CollaboratorList);
+const mapStateToProps = (st) => ({
+    search: st.ui.searchbar
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    setSearch: dispatch.ui.setSearch
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CollaboratorList));

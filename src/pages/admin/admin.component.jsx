@@ -19,7 +19,7 @@ const ROUTES = {
     COLLABORATORS: '/admin/collaborators',
 };
 
-const AdminPage = ({logout, activeForm, notification, history}) => {
+const AdminPage = ({logout, activeForm, notification, history, search, setSearch}) => {
     const [openDialog, setOpenDialog] = useState(false);
     const location = useLocation();
     // const { close, startInterval, intervalRef } = useCheckSession();
@@ -78,7 +78,9 @@ const AdminPage = ({logout, activeForm, notification, history}) => {
                 <AdminHeader
                     user={user}
                     logoutHandler={logoutHandler}
-                    activeForm={activeForm} />
+                    activeForm={activeForm}
+                    search={search}
+                    setSearch={setSearch} />
                 <Content />
                 {!activeForm && <footer className="rounded-t-lg py-4 px-6 shadow-lg rounded bg-white relative mt-4">
                     <nav className="w-full flex text-gray-600">
@@ -115,11 +117,13 @@ const AdminPage = ({logout, activeForm, notification, history}) => {
 const mapStateToProps = (state) => ({
     hideFooter: state.ui.hideFooter,
     activeForm: state.ui.activeForm,
-    notification: state.ui.notification
+    notification: state.ui.notification,
+    search: state.ui.searchbar
 });
 
 const mapDispatchToProps = (dispatch) => ({
     logout: dispatch.auth.logout,
+    setSearch: dispatch.ui.setSearch
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AdminPage));

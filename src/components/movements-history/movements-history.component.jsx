@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GENERAL_LOG_LIST } from '../../api/queries';
 
-const MovementHistory = React.memo(({logout, history}) => {
+const MovementHistory = React.memo(({logout, history, search, setSearch}) => {
     const {data, error} = useQuery(GENERAL_LOG_LIST);
     let items = [];
     
@@ -21,6 +21,26 @@ const MovementHistory = React.memo(({logout, history}) => {
         return new Intl.DateTimeFormat('en-MX').format(new Date())
     }
 
+    const filteredItems = useCallback(() => {
+        if (search) {
+            return items.filter(item =>
+                item.logType.includes(search)
+                || formatDate(item.updatedAt).includes(search)
+                || item.actionType.includes(search)
+                || item.generalId.includes(search)
+                || item.owner.username.includes(search)
+                || item.owner.role.includes(search));
+        }
+
+        return items;
+    }, [search, items]);
+
+    useEffect(() => {
+        return () => {
+            setSearch('');
+        }
+    }, []);
+
     return (
         <div>
             <div className="table-head flex flex-col md:flex-row md:justify-between border-b border-gray-500">
@@ -28,10 +48,10 @@ const MovementHistory = React.memo(({logout, history}) => {
                 <p className="pb-2 md:py-4 text-gray-500">{items && items.length && formatDate(items[0].updatedAt)}</p>
             </div>
             <div className="table-data">
-                {items.map((item, index) =>
+                {filteredItems().map((item, index) =>
                     <div key={index} className="row w-full flex flex-wrap md:flex-nowrap py-3 px-3 bg-white shadow-lg rounded my-4 text-gray-500 ">
                         <div className="flex items-center w-full md:w-3/12">
-                            <div className="rounded-full h-12 w-12 flex items-center justify-center bg-blue-400 text-white text-lg">M</div>
+                            <div className="rounded-full h-12 w-12 flex items-center justify-center bg-blue-400 text-white text-lg">{item.owner.username.slice(0, 1).toUpperCase()}</div>
                             <div className="w-2/3 ml-4">
                                 <p className="text-blue-400 text-lg md:text-sm mt-1">{item.owner.username}</p>
                                 <p className="text-gray-500 text-md md:text-xs -mt-1">{item.owner.role}</p>
@@ -54,8 +74,13 @@ const MovementHistory = React.memo(({logout, history}) => {
     );
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    logout: dispatch.auth.logout
+const mapStateToProps = (dispatch) => ({
+    search: dispatch.ui.searchbar
 });
 
-export default connect(null, mapDispatchToProps)(withRouter(MovementHistory));
+const mapDispatchToProps = (dispatch) => ({
+    logout: dispatch.auth.logout,
+    setSearch: dispatch.ui.setSearch
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MovementHistory));

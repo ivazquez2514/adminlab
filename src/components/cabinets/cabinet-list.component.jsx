@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { ReactComponent as LaminillasIcon } from '../../assets/svg/laminillas.svg';
@@ -8,7 +8,7 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import { useQuery } from '@apollo/client';
 import { CABINET_LIST } from '../../api/queries';
 
-const CabinetList = ({history, setCabinet}) => {
+const CabinetList = ({history, setCabinet, search, setSearch}) => {
     const [listType, setListType] = useState('LAMELLAS');
     const [offset, setOffset] = useState(0);
     const {data} = useQuery(CABINET_LIST);
@@ -22,6 +22,22 @@ const CabinetList = ({history, setCabinet}) => {
         return list.filter(item => (listType === 'BLOCKS' ? 'Bloques' : 'Laminillas') === item.cabinetType)
             .slice(offset, 3);
     }, [listType, data]);
+
+    const filteredItems = useCallback(() => {
+        if (search) {
+            return getItems().filter(item =>
+                String(item.cabinetNumber).toLowerCase().includes(search.toLowerCase())
+                || String(item.expedients.length).includes(search.toLowerCase()));
+        }
+
+        return getItems();
+    }, [search, list]);
+
+    useEffect(() => {
+        return () => {
+            setSearch('');
+        }
+    }, []);
 
     return (
         <>
@@ -59,7 +75,7 @@ const CabinetList = ({history, setCabinet}) => {
                     <FontAwesomeIcon icon={faChevronRight} />
                 </button>
                 {
-                    getItems().map((item, index) => <ListItem key={index} item={item} history={history} listType={listType} setCabinet={setCabinet} />)
+                    filteredItems().map((item, index) => <ListItem key={index} item={item} history={history} listType={listType} setCabinet={setCabinet} />)
                 }
             </div>
         </>
@@ -84,8 +100,13 @@ const ListItem = React.memo(({item, history, listType, setCabinet}) => (
     </div>
 ));
 
-const mapDispatchToProps = (dispatch) => ({
-    setCabinet: dispatch.cabinet.setCabinet
+const mapStateToProps = (st) => ({
+    search: st.ui.searchbar
 });
 
-export default connect(null, mapDispatchToProps)(withRouter(CabinetList));
+const mapDispatchToProps = (dispatch) => ({
+    setCabinet: dispatch.cabinet.setCabinet,
+    setSearch: dispatch.ui.setSearch
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CabinetList));
