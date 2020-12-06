@@ -18,6 +18,7 @@ export {default as Content} from './content/content.component';
 /* Dialogs */
 export {default as Dialog} from './dialog/dialog.component';
 export {default as ConfirmDialog} from './confirm-dialog/confirm-dialog.component';
+export {default as AlertDialog} from './alert-dialog/alert-dialog.component';
 
 /* Movements history */
 export {default as MovementsHistory} from './movements-history/movements-history.component';

@@ -6,3 +6,4 @@ export * from './collaboratorGet.query';
 export * from './collaboratorList.query';
 export * from './cabinateGet.query';
 export * from './expedientGet.query';
+export * from './areaLogList.query';

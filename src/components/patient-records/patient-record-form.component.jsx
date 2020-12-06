@@ -13,7 +13,8 @@ import { types } from '../notification/notification.component';
 
 import {
     NumberPicker,
-    ConfirmDialog
+    ConfirmDialog,
+    AlertDialog
 } from '../';
 
 export const letters = [
@@ -59,6 +60,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
     const [patientRecord, setPatientRecord] = useState(null);
     const [expedientUpdate] = useMutation(EXPEDIENT_UPDATE);
     const [deleteExpedient] = useMutation(EXPEDIENT_DELETE);
+    const [showAlert, setShowAlert] = useState(false);
 
     const getCabinetListByType = useCallback((type) => {
         return data ? data.cabinetList.filter(item => type === item.cabinetType) : [];
@@ -134,32 +136,53 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
             });
     }
 
-    /* const isComplete = (data, type) => {
+    const isComplete = (data) => {
+        let result;
         if (data.cabinetItemsLamellas && data.rowLamellas && data.columnLamellas
             && data.thirdLamellas) {
-                return {
-                    cabinetId: lamellaCabinetSelected.id,
-                    cabinetItems: Number(data.cabinetItemsLamellas),
-                    row: Number(data.rowLamellas),
-                    column: Number(data.columnLamellas),
-                    third: data.thirdLamellas,
-                    expedientId: id ? patientRecord.id : undefined,
-                    updatedAt: new Date()
+                result = {
+                    lamellaCoordinates: {
+                        cabinetId: lamellaCabinetSelected.id,
+                        cabinetItems: Number(data.cabinetItemsLamellas),
+                        row: Number(data.rowLamellas),
+                        column: Number(data.columnLamellas),
+                        third: data.thirdLamellas,
+                        expedientId: id ? patientRecord.id : undefined,
+                        updatedAt: new Date()
+                    }
                 }
-        } else if (data.cabinetItemsLamellas && data.rowLamellas && data.columnLamellas
-            && data.thirdLamellas) {
+        } else if (data.cabinetItemsBlocks && data.rowBlocks && data.columnBlocks
+            && data.thirdBlocks) {
+                result = {
+                    ...result,
+                    blockCoordinates: {
+                        cabinetId: blockCabinetSelected.id,
+                        cabinetItems: Number(data.cabinetItemsBlocks),
+                        row: Number(data.rowBlocks),
+                        column: Number(data.columnBlocks),
+                        third: data.thirdBlocks,
+                        expedientId: id ? patientRecord.id : undefined,
+                        updatedAt: new Date()
+                    }
+                }
+        }
 
-            }
-
-        return undefined;
-    } */
+        return result;
+    }
 
     const onSubmit = (data) => {
+        const validationResult = isComplete(data);
+        if (!validationResult) {
+            setShowAlert(true);
+            return;
+        }
+
         data = {
             expedient: {
                 id: id ? patientRecord.id : undefined,
                 caseNumber: data.caseNumber,
-                lamellaCoordinates: {
+                ...validationResult
+                /* lamellaCoordinates: {
                     cabinetId: lamellaCabinetSelected.id,
                     cabinetItems: Number(data.cabinetItemsLamellas),
                     row: Number(data.rowLamellas),
@@ -176,7 +199,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                     third: data.thirdBlocks,
                     expedientId: id ? patientRecord.id : undefined,
                     updatedAt: new Date()
-                }
+                } */
             }
         };
 
@@ -224,6 +247,10 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                 msg="¿Estas seguro que quieres eliminar este expediente?"
                 onAccept={deleteExpedientHandler}
                 onCancel={() => setFormAction(FormActions.DETAIL)}/>}
+            {showAlert && <AlertDialog
+                title="Alerta"
+                msg="No puedes guardar un expediente vacio."
+                close={() => setShowAlert(false)}/>}
             <div className="w-full">
                 <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="username">
                     No. de Caso
@@ -272,14 +299,14 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Gabinete
                     </label>
                     <select
-                        className={`${errors?.cabinetIdLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.cabinetIdLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="cabinetIdLamellas"
                         name="cabinetIdLamellas"
                         disabled={formAction === FormActions.DETAIL}
                         onChange={handleCabinetChange}
                         ref={register()}>
                         <option value="">Selecciona una opción</option>
-                        {getCabinetListByType('Laminillas').map(item => <option key={item.id} value={item.id}>{item.cabinetNumber}</option>)}
+                        {getCabinetListByType('Laminillas').map(item => <option key={`a${item.id}`} value={item.id}>{item.cabinetNumber}</option>)}
                     </select>
                 </div>
                 <div className="w-full md:w-1/6">
@@ -287,7 +314,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Fila
                     </label>
                     <select
-                        className={`${errors?.rowLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.rowLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="rowLamellas"
                         name="rowLamellas"
                         disabled={formAction === FormActions.DETAIL}
@@ -295,7 +322,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         // disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         >
                         <option value="">Selecciona una opción</option>
-                        {(lamellaCabinetSelected ? letters.slice(0, lamellaCabinetSelected.rows) : []).map(item => <option key={item.value} value={item.value}>{item.name}</option>)}
+                        {(lamellaCabinetSelected ? letters.slice(0, lamellaCabinetSelected.rows) : []).map(item => <option key={`b${item.value}`} value={item.value}>{item.name}</option>)}
                     </select>
                 </div>
                 <div className="w-full md:w-1/6">
@@ -319,7 +346,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Tercio
                     </label>
                     <select
-                        className={`${errors?.thirdLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.thirdLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="thirdLamellas"
                         name="thirdLamellas"
                         onKeyPress={validateNumbersFn}
@@ -350,14 +377,14 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Gabinete
                     </label>
                     <select
-                        className={`${errors?.cabinetIdBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.cabinetIdBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="cabinetIdBlocks"
                         name="cabinetIdBlocks"
                         onChange={handleCabinetChange}
                         disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
                         <option value="">Selecciona una opcion</option>
-                        {getCabinetListByType('Bloques').map(item => <option key={item.id} value={item.id}>{item.cabinetNumber}</option>)}
+                        {getCabinetListByType('Bloques').map(item => <option key={`c${item.id}`} value={item.id}>{item.cabinetNumber}</option>)}
                     </select>
                 </div>
                 <div className="w-full md:w-1/6">
@@ -365,13 +392,13 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Fila
                     </label>
                     <select
-                        className={`${errors?.rowBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.rowBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="rowBlocks"
                         name="rowBlocks"
                         disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
                         <option value="">Selecciona una opción</option>
-                        {(blockCabinetSelected ? letters.slice(0, blockCabinetSelected.rows) : []).map(item => <option key={item.value} value={item.value}>{item.name}</option>)}
+                        {(blockCabinetSelected ? letters.slice(0, blockCabinetSelected.rows) : []).map(item => <option key={`d${item.value}`} value={item.value}>{item.name}</option>)}
                     </select>
                 </div>
                 <div className="w-full md:w-1/6">
@@ -393,7 +420,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Tercio
                     </label>
                     <select
-                        className={`${errors?.thirdBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.thirdBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="thirdBlocks"
                         name="thirdBlocks"
                         disabled={formAction === FormActions.DETAIL}

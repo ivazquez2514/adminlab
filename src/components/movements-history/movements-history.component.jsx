@@ -49,7 +49,7 @@ const MovementHistory = React.memo(({logout, history, search, setSearch}) => {
         <div style={{height: 'calc(100vh - 200px)'}} className="overflow-y-auto list-container">
             <div className="table-head flex flex-col md:flex-row md:justify-between border-b border-gray-500">
                 <p className="md:py-4 text-xl text-blue-500">Historial de movimientos</p>
-                <p className="pb-2 md:py-4 text-gray-500">{items && items.length && formatDate(items[0].updatedAt)}</p>
+                <p className="pb-2 md:py-4 text-gray-500">{items && items.length && formatDate(items[0].updatedAt) || ''}</p>
             </div>
             <div className="table-data">
                 {filteredItems().map((item, index) =>
