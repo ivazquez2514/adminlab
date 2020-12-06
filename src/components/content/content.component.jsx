@@ -15,7 +15,7 @@ import {
 
 const Content = () => {
     return (
-        <main className="py-5 px-3 md:px-0 overflow-y-auto main-container flex-1">
+        <main className="pt-5 px-3 md:px-0 main-container flex-1">
             <Switch>
                 <Route path="/admin/movements-history" component={MovementsHistory} />
                 <Route exact path="/admin/hospital-areas" component={HospitalAreaList} />

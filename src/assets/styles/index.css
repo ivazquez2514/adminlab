@@ -10,7 +10,7 @@
 }
   
 /* Hide scrollbar for IE, Edge and Firefox */
-.main-container {
+.list-container {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
