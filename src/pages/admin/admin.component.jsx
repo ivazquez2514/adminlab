@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withRouter, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faColumns, faCubes, faUsers, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faColumns, faCubes, faUsers, faPlus, faClinicMedical } from '@fortawesome/free-solid-svg-icons'
 import { Permissions, FormActions } from '../../enums'
 
 import {
@@ -51,9 +51,11 @@ const AdminPage = ({logout, activeForm, notification, history, search, setSearch
             const lastInteraction = localStorage.getItem('adminlab-lastInteraction');
             const lastInteracionDate = new Date(new Date(Number(lastInteraction)));
             const differenceInMinutes = (new Date() - lastInteracionDate) / 1000 / 60;
+            // console.log(differenceInMinutes);
 
             if (differenceInMinutes > 10) {
-                logoutHandler();
+                // logoutHandler();
+                history.push('/auth');
             }
         }, 5000);
         setIntervalRef(interval);
@@ -85,26 +87,26 @@ const AdminPage = ({logout, activeForm, notification, history, search, setSearch
                 {!activeForm && <footer className="rounded-t-lg py-4 px-6 shadow-lg rounded bg-white relative mt-4">
                     <nav className="w-full flex text-gray-600">
                         {displayFooterItem(ROUTES.MOVEMENTS) && <div
-                            onClick={() => history.push('/admin/movements-history')} className={`${ location.pathname === ROUTES.MOVEMENTS ? 'text-blue-400' : '' } flex-1 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400`}>
+                            onClick={() => history.push('/admin/movements-history')} className={`${ location.pathname === ROUTES.MOVEMENTS ? 'text-blue-500' : '' } flex-1 flex py-1 items-center justify-center cursor-pointer hover:text-blue-500`}>
                             <FontAwesomeIcon icon={faColumns} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Panel de control</p>
                         </div>}
                         {displayFooterItem(ROUTES.CABINETS) && <div
                             onClick={() => history.push('./cabinets')}
-                            className={`${ location.pathname === ROUTES.CABINETS ? 'text-blue-400' : '' } flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400`}>
+                            className={`${ location.pathname === ROUTES.CABINETS ? 'text-blue-500' : '' } flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-500`}>
                             <FontAwesomeIcon icon={faCubes} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Almacenamiento</p>
                         </div>}
                         {displayFooterItem(ROUTES.COLLABORATORS) && <div
                             onClick={() => history.push('/admin/collaborators')}
-                            className="flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400">
+                            className={`${ location.pathname === ROUTES.COLLABORATORS ? 'text-blue-500' : '' } flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-500`}>
                             <FontAwesomeIcon icon={faUsers} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Colaboradores</p>
                         </div>}
                         {displayFooterItem(ROUTES.AREAS) && <div
                             onClick={() => history.push('/admin/hospital-areas')}
-                            className="flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-400">
-                            <FontAwesomeIcon icon={faUsers} className="text-2xl" />
+                            className={`${ location.pathname === ROUTES.AREAS ? 'text-blue-500' : '' } flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-500`}>
+                            <FontAwesomeIcon icon={faClinicMedical} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Areas</p>
                         </div>}
                     </nav>

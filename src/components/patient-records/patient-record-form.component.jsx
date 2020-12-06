@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { withRouter, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { FormTitlesEnum } from '../../enums';
+import { FormTitlesEnum, FormActions } from '../../enums';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import { CABINET_LIST, EXPEDIENT_GET } from '../../api/queries';
-import { EXPEDIENT_CREATE } from '../../api/mutations';
+import { EXPEDIENT_CREATE, EXPEDIENT_UPDATE, EXPEDIENT_DELETE } from '../../api/mutations';
 import { useOnlyNumbers } from '../../hooks';
 import { types } from '../notification/notification.component';
-import { v4 as uuid } from 'uuid';
 
 import {
-    NumberPicker
+    NumberPicker,
+    ConfirmDialog
 } from '../';
 
 export const letters = [
@@ -46,68 +46,56 @@ export const letters = [
     { name: 'Z', value: 27 },
 ];
 
-const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
+const PatientRecordForm = ({history, setActiveForm, setNotification, formAction, setFormAction}) => {
     const {validateFn: validateNumbersFn} = useOnlyNumbers();
-    const {register, errors, handleSubmit, setValue, reset} = useForm();
+    const {register, errors, handleSubmit, setValue, reset, watch} = useForm();
     const [listType, setListType] = useState('LAMELLAS');
     const [lamellaCabinetSelected, setLamellaCabinetSelected] = useState(null);
     const [blockCabinetSelected, setBlockCabinetSelected] = useState(null);
-    const [lamellasList, setLamellasList] = useState([]);
-    const [blocksList, setBlocksList] = useState([]);
     const {data} = useQuery(CABINET_LIST);
     const [expedientCreate] = useMutation(EXPEDIENT_CREATE);
     const { id } = useParams();
     const [getExpedient, { data: patientRecordData }] = useLazyQuery(EXPEDIENT_GET);
     const [patientRecord, setPatientRecord] = useState(null);
+    const [expedientUpdate] = useMutation(EXPEDIENT_UPDATE);
+    const [deleteExpedient] = useMutation(EXPEDIENT_DELETE);
 
-    if (data && data.cabinetList && data.cabinetList.length && lamellasList.length === 0) {
-        setLamellasList([...data.cabinetList].filter(item => 'Laminillas' === item.cabinetType));
-        setBlocksList([...data.cabinetList].filter(item => 'Bloques' === item.cabinetType));
-    }
-
-    if (id && id !== 'new' && patientRecordData && !patientRecord) {
-        setPatientRecord(patientRecordData.expedientGet);
-        console.log(patientRecordData.expedientGet);
-        console.log({
-            caseNumber: patientRecordData.expedientGet?.caseNumber,
-            cabinetItemsLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.cabinetItems,
-            cabinetIdLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.cabinetId,
-            rowLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.row,
-            columnLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.column,
-            thirdLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.third,
-            cabinetItemsBlocks: patientRecordData.expedientGet?.blockCoordinates?.cabinetItems,
-            cabinetIdBlocks: patientRecordData.expedientGet?.blockCoordinates?.cabinetId,
-            rowBlocks: patientRecordData.expedientGet?.blockCoordinates?.row,
-            columnBlocks: patientRecordData.expedientGet?.blockCoordinates?.column,
-            thirdBlocks: patientRecordData.expedientGet?.blockCoordinates?.third,
-        });
-        reset({
-            caseNumber: patientRecordData.expedientGet?.caseNumber,
-            cabinetItemsLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.cabinetItems,
-            cabinetIdLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.cabinetId,
-            rowLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.row,
-            columnLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.column,
-            thirdLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.third,
-            cabinetItemsBlocks: patientRecordData.expedientGet?.blockCoordinates?.cabinetItems,
-            cabinetIdBlocks: patientRecordData.expedientGet?.blockCoordinates?.cabinetId,
-            rowBlocks: patientRecordData.expedientGet?.blockCoordinates?.row,
-            columnBlocks: patientRecordData.expedientGet?.blockCoordinates?.column,
-            thirdBlocks: patientRecordData.expedientGet?.blockCoordinates?.third,
-        });
-        setLamellaCabinetSelected(lamellasList.find(item => item.id === patientRecordData.expedientGet?.lamellaCoordinates?.cabinetId));
-    }
+    const getCabinetListByType = useCallback((type) => {
+        return data ? data.cabinetList.filter(item => type === item.cabinetType) : [];
+    }, [data])
+    
+    useEffect(() => {
+        if (patientRecordData) {
+            setPatientRecord(patientRecordData.expedientGet);
+            reset({
+                caseNumber: patientRecordData.expedientGet?.caseNumber,
+                cabinetItemsLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.cabinetItems,
+                cabinetIdLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.cabinetId,
+                rowLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.row,
+                columnLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.column,
+                thirdLamellas: patientRecordData.expedientGet?.lamellaCoordinates?.third,
+                cabinetItemsBlocks: patientRecordData.expedientGet?.blockCoordinates?.cabinetItems,
+                cabinetIdBlocks: patientRecordData.expedientGet?.blockCoordinates?.cabinetId,
+                rowBlocks: patientRecordData.expedientGet?.blockCoordinates?.row,
+                columnBlocks: patientRecordData.expedientGet?.blockCoordinates?.column,
+                thirdBlocks: patientRecordData.expedientGet?.blockCoordinates?.third,
+            });
+            setLamellaCabinetSelected(getCabinetListByType('Laminillas').find(item => item.id === patientRecordData.expedientGet?.lamellaCoordinates?.cabinetId));
+            setBlockCabinetSelected(getCabinetListByType('Bloques').find(item => item.id === patientRecordData.expedientGet?.blockCoordinates?.cabinetId));
+        }
+    }, [patientRecordData])
 
     const handleCabinetChange = (e) => {
         if (listType === 'LAMELLAS') {
             setValue('rowLamellas', '');
             setValue('columnLamellas', '');
             setValue('thirdLamellas', '');
-            setLamellaCabinetSelected(lamellasList.find(item => item.id === e.target.value));
+            setLamellaCabinetSelected(getCabinetListByType('Laminillas').find(item => item.id === e.target.value));
         } else {
             setValue('rowBlocks', '');
             setValue('columnBlocks', '');
             setValue('thirdBlocks', '');
-            setBlockCabinetSelected(blocksList.find(item => item.id === e.target.value));
+            setBlockCabinetSelected(getCabinetListByType('Bloques').find(item => item.id === e.target.value));
         }
     }
 
@@ -115,8 +103,6 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
         const value = Number(e.target.value);
         if (listType === 'LAMELLAS' && (value > lamellaCabinetSelected.columns || value === 0)) {
             setValue('columnLamellas', '1');
-        } else {
-            setValue('columnBlocks', '1');
         }
 
     }
@@ -129,11 +115,49 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
         }
     }
 
+    const deleteExpedientHandler = () => {
+        deleteExpedient({variables: {id}})
+            .then(response => {
+                console.log(response);
+                setFormAction(FormActions.DETAIL)
+                setNotification({
+                    message: 'El expediente ha sido eliminada exitosamente.',
+                    type: types.SUCCESS
+                });
+                history.push('../../../');
+            }).catch(error => {
+                setNotification({
+                    message: 'Un error ha ocurrido. Favor de intentarlo de nuevo.',
+                    type: types.ERROR
+                });
+                console.log(error);
+            });
+    }
+
+    /* const isComplete = (data, type) => {
+        if (data.cabinetItemsLamellas && data.rowLamellas && data.columnLamellas
+            && data.thirdLamellas) {
+                return {
+                    cabinetId: lamellaCabinetSelected.id,
+                    cabinetItems: Number(data.cabinetItemsLamellas),
+                    row: Number(data.rowLamellas),
+                    column: Number(data.columnLamellas),
+                    third: data.thirdLamellas,
+                    expedientId: id ? patientRecord.id : undefined,
+                    updatedAt: new Date()
+                }
+        } else if (data.cabinetItemsLamellas && data.rowLamellas && data.columnLamellas
+            && data.thirdLamellas) {
+
+            }
+
+        return undefined;
+    } */
+
     const onSubmit = (data) => {
-        console.log('Submit');
         data = {
             expedient: {
-                id: '1',
+                id: id ? patientRecord.id : undefined,
                 caseNumber: data.caseNumber,
                 lamellaCoordinates: {
                     cabinetId: lamellaCabinetSelected.id,
@@ -141,7 +165,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                     row: Number(data.rowLamellas),
                     column: Number(data.columnLamellas),
                     third: data.thirdLamellas,
-                    expedientId: '1',
+                    expedientId: id ? patientRecord.id : undefined,
                     updatedAt: new Date()
                 },
                 blockCoordinates: {
@@ -150,17 +174,18 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                     row: Number(data.rowBlocks),
                     column: Number(data.columnBlocks),
                     third: data.thirdBlocks,
-                    expedientId: '1',
+                    expedientId: id ? patientRecord.id : undefined,
                     updatedAt: new Date()
                 }
             }
         };
 
-        expedientCreate({ variables: data })
+        const fn = id ? expedientUpdate : expedientCreate;
+        fn({ variables: data })
             .then(response => {
                 console.log(response);
                 setNotification({
-                    message: 'El expediente ha sido creado exitosamente.',
+                    message: `El expediente ha sido ${id ? 'editado' : 'creado'} exitosamente.`,
                     type: types.SUCCESS
                 });
                 history.push('../../');
@@ -176,22 +201,29 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
     useEffect(() => {
         if (id && id !== 'new') {
             getExpedient({ variables: {id} });
+            setFormAction(FormActions.DETAIL);
         }
     }, [id])
 
     useEffect(() => {
         setActiveForm({
-            title: FormTitlesEnum.PATIENT_RECORD,
+            title: FormTitlesEnum[`PATIENT_RECORD${formAction ? `_${formAction}` : ''}`],
             backUrl: '../../'
         })
 
         return () => {
-            setActiveForm(null)
+            setActiveForm(null);
+            setFormAction(null);
         }
     }, []);
 
     return (
-        <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+        <form className="w-full relative" onSubmit={handleSubmit(onSubmit)}>
+            {formAction === FormActions.DELETE && <ConfirmDialog
+                title="Eliminar Expediente"
+                msg="¿Estas seguro que quieres eliminar este expediente?"
+                onAccept={deleteExpedientHandler}
+                onCancel={() => setFormAction(FormActions.DETAIL)}/>}
             <div className="w-full">
                 <label className="block tracking-wide font-bold mb-2 text-gray-500" htmlFor="username">
                     No. de Caso
@@ -201,6 +233,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                     type="text"
                     id="caseNumber"
                     name="caseNumber"
+                    disabled={formAction === FormActions.DETAIL}
                     onKeyPress={validateNumbersFn}
                     ref={register({required: true})}
                     placeholder="Escribir el número de caso..."
@@ -221,11 +254,12 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                     Gabinetes de Bloques
                 </button>
             </div>
-            <div className={`${listType === 'LAMELLAS' ? '' : 'hidden'} w-full flex flex-col md:flex-row gap-6 mt-6`}>
+            {<div className={`${listType !== 'LAMELLAS' && 'hidden'} w-full flex flex-col md:flex-row gap-6 mt-6`}>
                 <div className="w-full md:w-2/6">
                     <NumberPicker
                         label="No. Laminillas"
                         error={errors?.rowLamellas}
+                        defaultValue={patientRecordData?.expedientGet?.lamellaCoordinates?.cabinetItems || 0}
                         inputProps={{
                             ref: register(),
                             name: "cabinetItemsLamellas",
@@ -241,10 +275,11 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                         className={`${errors?.cabinetIdLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="cabinetIdLamellas"
                         name="cabinetIdLamellas"
+                        disabled={formAction === FormActions.DETAIL}
                         onChange={handleCabinetChange}
                         ref={register()}>
                         <option value="">Selecciona una opción</option>
-                        {lamellasList.map(item => <option key={uuid()} value={item.id}>{item.cabinetNumber}</option>)}
+                        {getCabinetListByType('Laminillas').map(item => <option key={item.id} value={item.id}>{item.cabinetNumber}</option>)}
                     </select>
                 </div>
                 <div className="w-full md:w-1/6">
@@ -255,11 +290,12 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                         className={`${errors?.rowLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="rowLamellas"
                         name="rowLamellas"
+                        disabled={formAction === FormActions.DETAIL}
                         ref={register()}
                         // disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         >
                         <option value="">Selecciona una opción</option>
-                        {(lamellaCabinetSelected ? letters.slice(0, lamellaCabinetSelected.rows) : []).map(item => <option key={uuid()} value={item.value}>{item.name}</option>)}
+                        {(lamellaCabinetSelected ? letters.slice(0, lamellaCabinetSelected.rows) : []).map(item => <option key={item.value} value={item.value}>{item.name}</option>)}
                     </select>
                 </div>
                 <div className="w-full md:w-1/6">
@@ -274,7 +310,8 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                         onKeyPress={validateNumbersFn}
                         onBlur={handleColumnBlur}
                         autoComplete="off"
-                        disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
+                        disabled={formAction === FormActions.DETAIL}
+                        // disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         ref={register()} />
                 </div>
                 <div className="w-full md:w-1/6">
@@ -286,17 +323,21 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                         id="thirdLamellas"
                         name="thirdLamellas"
                         onKeyPress={validateNumbersFn}
-                        disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
+                        disabled={formAction === FormActions.DETAIL}
+                        // disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         ref={register()}>
                         <option value="">Ingresar el número de caso</option>
-                        {[{name: 'a', value: 1}, {name: 'b', value: 1}, {name: 'c', value: 1}].map(item => <option key={uuid()} value={item.name}>{item.name}</option>)}
+                        {[{name: 'a', value: 1}, {name: 'b', value: 1}, {name: 'c', value: 1}].map(item => <option key={`lamella${item.name}`} value={item.name}>{item.name}</option>)}
                     </select>
                 </div>
-            </div>
-            <div className={`${listType === 'BLOCKS' ? '' : 'hidden'} w-full flex flex-col md:flex-row gap-6 mt-6`}>
+            </div>}
+            {/* BLOCKS */}
+            {<div className={`${listType !== 'BLOCKS' && 'hidden'} w-full flex flex-col md:flex-row gap-6 mt-6`}>
                 <div className="w-full md:w-2/6">
                     <NumberPicker
                         label="No. Bloques"
+                        disabled={formAction === FormActions.DETAIL}
+                        defaultValue={patientRecordData?.expedientGet?.blockCoordinates?.cabinetItems || 0}
                         inputProps={{
                             ref: register(),
                             name: "cabinetItemsBlocks",
@@ -313,9 +354,10 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                         id="cabinetIdBlocks"
                         name="cabinetIdBlocks"
                         onChange={handleCabinetChange}
+                        disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
                         <option value="">Selecciona una opcion</option>
-                        {blocksList.map(item => <option key={uuid()} value={item.id}>{item.cabinetNumber}</option>)}
+                        {getCabinetListByType('Bloques').map(item => <option key={item.id} value={item.id}>{item.cabinetNumber}</option>)}
                     </select>
                 </div>
                 <div className="w-full md:w-1/6">
@@ -326,9 +368,10 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                         className={`${errors?.rowBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="rowBlocks"
                         name="rowBlocks"
+                        disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
                         <option value="">Selecciona una opción</option>
-                        {(blockCabinetSelected ? letters.slice(0, blockCabinetSelected.rows) : []).map(item => <option key={uuid()} value={item.value}>{item.name}</option>)}
+                        {(blockCabinetSelected ? letters.slice(0, blockCabinetSelected.rows) : []).map(item => <option key={item.value} value={item.value}>{item.name}</option>)}
                     </select>
                 </div>
                 <div className="w-full md:w-1/6">
@@ -341,6 +384,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                         id="columnBlocks"
                         name="columnBlocks"
                         autoComplete="off"
+                        disabled={formAction === FormActions.DETAIL}
                         onKeyPress={validateNumbersFn}
                         ref={register()} />
                 </div>
@@ -352,13 +396,14 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                         className={`${errors?.thirdBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="thirdBlocks"
                         name="thirdBlocks"
+                        disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
                         <option value="">Ingresar el número de caso</option>
-                        {[{name: 'a', value: 1}, {name: 'b', value: 1}, {name: 'c', value: 1}].map(item => <option key={uuid()} value={item.name}>{item.name}</option>)}
+                        {[{name: 'a', value: 1}, {name: 'b', value: 1}, {name: 'c', value: 1}].map(item => <option key={`block${item.name}`} value={item.name}>{item.name}</option>)}
                     </select>
                 </div>
-            </div>
-            <div className="w-full mt-10 flex text-white gap-8 bottom-0">
+            </div>}
+            {[null, '', FormActions.UPDATE].includes(formAction) && <div className="w-full mt-10 flex text-white gap-8 bottom-0">
                 <button
                     type="button"
                     className="bg-red-600 w-1/2 rounded-lg py-2 text-4xl md:text-5xl"
@@ -370,14 +415,19 @@ const PatientRecordForm = ({history, setActiveForm, setNotification}) => {
                     className="bg-green-500 w-1/2 rounded-lg py-2 text-4xl md:text-5xl">
                     <FontAwesomeIcon icon={faCheck} />
                 </button>
-            </div>
+            </div>}
         </form>
     );
 };
 
+const mapStateToProps = (state) => ({
+    formAction: state.ui.formAction
+});
+
 const mapDispatchToProps = (dispatch) => ({
     setActiveForm: dispatch.ui.setActiveForm,
     setNotification: dispatch.ui.setNotification,
+    setFormAction: dispatch.ui.setFormAction,
 })
 
-export default connect(null, mapDispatchToProps)(withRouter(PatientRecordForm));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PatientRecordForm));

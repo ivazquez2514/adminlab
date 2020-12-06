@@ -40,45 +40,45 @@ const CabinetList = ({history, setCabinet, search, setSearch}) => {
     }, []);
 
     return (
-        <>
-            <div className="w-full bg-gray-400 p-1 rounded-lg font-bold text-gray-500 text-lg mb-4">
-                <button
-                    className={`${listType === 'LAMELLAS' ? 'bg-white shadow-lg text-black' : ''} w-1/2 py-2 font-bold py-3 rounded-lg focus:outline-none`}
-                    onClick={() => {
-                        setListType('LAMELLAS');
-                        setOffset(0);
-                    }}>
-                    Gabinetes de Laminillas
-                </button>
-                <button
-                    className={`${listType === 'BLOCKS' ? 'bg-white shadow-lg text-black' : ''} w-1/2 py-2 font-bold py-3 rounded-lg focus:outline-none`}
-                    onClick={() => {
-                        setListType('BLOCKS');
-                        setOffset(0);
-                    }}>
-                    Gabinetes de Bloques
-                </button>
-            </div>
-            <div className="w-full md:flex gap-3 px-10 md:px-0 relative">
-                <button
-                    onClick={() => setOffset(offset - 3)}
-                    disabled={offset === 0}
-                    className="py-4 px-6 bg-white shadow-lg absolute -ml-20 rounded-lg text-2xl focus:outline-none"
-                    style={{ top: "50%", marginTop: "-50px" }}>
-                    <FontAwesomeIcon icon={faChevronLeft} />
-                </button>
-                <button
-                    onClick={() => setOffset(offset + 3)}
-                    disabled={(offset + 3) === list.length}
-                    className="py-4 px-6 bg-white shadow-lg absolute right-0 -mr-20 rounded-lg text-2xl focus:outline-none"
-                    style={{ top: "50%", marginTop: "-50px" }}>
-                    <FontAwesomeIcon icon={faChevronRight} />
-                </button>
-                {
-                    filteredItems().map((item, index) => <ListItem key={index} item={item} history={history} listType={listType} setCabinet={setCabinet} />)
-                }
-            </div>
-        </>
+        <div className="relative h-full md:flex flex-col items-center justify-center">
+                <div className="w-full bg-gray-400 p-1 rounded-lg font-bold text-gray-500 text-lg mb-4 block md:absolute top-0">
+                    <button
+                        className={`${listType === 'LAMELLAS' ? 'bg-white shadow-lg text-black' : ''} w-1/2 py-2 font-bold py-3 rounded-lg focus:outline-none`}
+                        onClick={() => {
+                            setListType('LAMELLAS');
+                            setOffset(0);
+                        }}>
+                        Gabinetes de Laminillas
+                    </button>
+                    <button
+                        className={`${listType === 'BLOCKS' ? 'bg-white shadow-lg text-black' : ''} w-1/2 py-2 font-bold py-3 rounded-lg focus:outline-none`}
+                        onClick={() => {
+                            setListType('BLOCKS');
+                            setOffset(0);
+                        }}>
+                        Gabinetes de Bloques
+                    </button>
+                </div>
+                <div className="w-full md:flex gap-3 px-10 md:px-0 relative">
+                    <button
+                        onClick={() => setOffset(offset - 3)}
+                        disabled={offset === 0}
+                        className="py-4 px-6 bg-white shadow-lg absolute -ml-20 rounded-lg text-2xl focus:outline-none"
+                        style={{ top: "50%", marginTop: "-50px" }}>
+                        <FontAwesomeIcon icon={faChevronLeft} />
+                    </button>
+                    <button
+                        onClick={() => setOffset(offset + 3)}
+                        disabled={(offset + 3) === list.length}
+                        className="py-4 px-6 bg-white shadow-lg absolute right-0 -mr-20 rounded-lg text-2xl focus:outline-none"
+                        style={{ top: "50%", marginTop: "-50px" }}>
+                        <FontAwesomeIcon icon={faChevronRight} />
+                    </button>
+                    {
+                        filteredItems().map((item, index) => <ListItem key={index} item={item} history={history} listType={listType} setCabinet={setCabinet} />)
+                    }
+                </div>
+        </div>
     );
 };
 
@@ -88,7 +88,7 @@ const ListItem = React.memo(({item, history, listType, setCabinet}) => (
             history.push(`/admin/cabinets/${item.id}`);
         }}>
         <div className="p-4 flex justify-center items-center text-blue-500 my-4">
-            {listType === 'LAMELLAS' ? <LaminillasIcon /> : <img src={BlocksIcon} alt="Gabinete de bloque icono" className="w-1/4 md:w-2/3" />}
+            {listType === 'LAMELLAS' ? <LaminillasIcon /> : <img src={BlocksIcon} alt="Gabinete de bloque icono" className="w-1/4 md:w-3/6" />}
         </div>
         <div className="p-4 flex flex-col justify-center items-center">
             <p className="text-3xl text-blue-500 font-semibold">GABINETE {item.cabinetNumber}</p>

@@ -7,8 +7,8 @@ import { useInputState } from '../../hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { CABINET_CREATE, CABINET_UPDATE } from '../../api/mutations'
-import { CABINET_GET } from '../../api/queries'
-import { useMutation, useLazyQuery } from '@apollo/client'
+import { CABINET_GET, CABINET_LIST } from '../../api/queries'
+import { useMutation, useLazyQuery, useQuery } from '@apollo/client'
 import { types } from '../notification/notification.component'
 import { letterOptions } from '../forms/number-picker/number-picker.component';
 
@@ -26,13 +26,19 @@ const CABINETS_TYPES = [
 ];
 
 const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAction, setFormAction}) => {
-    const { register, handleSubmit, errors, formState, reset } = useForm();
+    const { register, handleSubmit, errors, formState, reset, watch } = useForm();
     const [ cabinetCreate ] = useMutation(CABINET_CREATE);
     const { getInputCssClasses, getInputLabelCssClasses } = useInputState();
     const { id } = useParams();
     const [ getCabinet, { data: cabinetData, called } ] = useLazyQuery(CABINET_GET);
     const [ cabinetUpdate ] = useMutation(CABINET_UPDATE);
     const [ cabinet, setCabinet ] = useState(null);
+    const { data: cabinetsData } = useQuery(CABINET_LIST);
+
+    let cabinets = [];
+    if (cabinetsData && cabinetsData.cabinetList) {
+        cabinets = cabinetsData.cabinetList;
+    }
 
     if (id && id !== 'new' && !called) {
         getCabinet({variables: {id}});
@@ -153,7 +159,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
             <div className="w-full px-4 mt-10 flex text-white gap-8 absolute md:relative bottom-0">
                 <button
                     type="button"
-                    className="bg-red-600 w-1/2 rounded-lg py-2 text-4xl md:text-5xl focus:outline-none"
+                    className="bg-red-500 w-1/2 rounded-lg py-2 text-4xl md:text-5xl focus:outline-none"
                     onClick={() => history.push('../../')}>
                     <FontAwesomeIcon icon={faTimes} />
                 </button>

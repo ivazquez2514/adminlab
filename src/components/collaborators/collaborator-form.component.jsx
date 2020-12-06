@@ -21,9 +21,9 @@ const ROLES = [
     'Consultor'
 ];
 
-const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, formAction, setFormAction}) => {
-    const { register, handleSubmit, errors, formState, reset } = useForm();
-    const { data: areasResponse } = useQuery(AREA_LIST);
+const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, formAction, setFormAction, user}) => {
+    const { register, handleSubmit, errors, formState, reset, setValue, watch } = useForm();
+    /* const { data: areasResponse } = useQuery(AREA_LIST); */
     const [ collaboratorCreate ] = useMutation(COLLABORATOR_CREATE);
     const { getInputCssClasses, getInputLabelCssClasses } = useInputState();
     const { id } = useParams();
@@ -53,11 +53,11 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
         });
     }
 
-    let areas = [];
+    /* let areas = [];
 
     if (areasResponse) {
         areas = areasResponse.areaList;
-    }
+    } */
 
     const deleteCollaboratorHandler = () => {
         deleteCollaborator({variables: {id}})
@@ -84,6 +84,7 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
                 collaborator: {
                     id: id || undefined,
                     password: id ? undefined : data.password,
+                    areaId: user.area.id,
                     ...data
                 }
             }
@@ -116,12 +117,16 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
             title: FormTitlesEnum[`COLLABORATOR${formAction ? `_${formAction}` : ''}`],
             backUrl: '../../'
         });
+
         if (id && id !== 'new') setFormAction(FormActions.DETAIL);
+        else setFormAction('');
 
         return () => {
             setActiveForm(null);
         };
     }, [])
+
+    console.log(watch());
 
     return (
         <form className="w-full h-full relative" onSubmit={handleSubmit(onSubmit)}>
@@ -132,22 +137,25 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
                 onCancel={() => setFormAction(FormActions.DETAIL)}/>}
             <div className="w-full md:mb-6 md:flex">
                 <div className="w-full md:w-1/2 px-3">
-                    <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.areaId, !!errors.areaId)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="name">
+                    <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.areaId, !!errors.areaId)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="areaId">
                         Área
                     </label>
-                    <select
-                        className={`${getInputCssClasses(!!formState.dirtyFields.areaId, !!errors.areaId)} appearance-none font-medium block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                    <div className="font-medium block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:bg-white text-xl md:text-3xl text-gray-500 border-gray-500">
+                        {user.area.name}
+                    </div>
+                    {/* <select
+                        className={`${getInputCssClasses(!!formState.dirtyFields.areaId, !!errors.areaId)} font-medium block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="areaId"
                         name="areaId"
-                        disabled={formAction === FormActions.DETAIL}
+                        defaultValue={user.area.id}
                         ref={register({required: true})}
                         placeholder="Seleccionar Área (Hospital)">
                         <option value="">Selecciona una opción</option>
                         {areas.map(area => <option key={area.id} value={area.id}>{area.name}</option>)}
-                    </select>
+                    </select> */}
                 </div>
                 <div className="w-full md:w-1/2 px-3">
-                    <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.role, !!errors.role)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="name">
+                    <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.role, !!errors.role)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="role">
                         Rol de usuario
                     </label>
                     <select
@@ -194,9 +202,9 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
             {[null, '', FormActions.UPDATE].includes(formAction) && <div className="w-full px-4 mt-10 flex text-white gap-8 absolute md:relative bottom-0">
                 <button
                     type="button"
-                    className="bg-red-600 w-1/2 rounded-lg py-2 text-4xl md:text-5xl"
+                    className="bg-red-500 w-1/2 rounded-lg py-2 text-4xl md:text-5xl"
                     onClick={() => {
-                        if (id) {
+                        if (id && id !== 'new') {
                             setFormAction(FormActions.DETAIL)
                             resetForm();
                         } else {
@@ -216,7 +224,8 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
 })
 
 const mapStateToProps = (state) => ({
-    formAction: state.ui.formAction
+    formAction: state.ui.formAction,
+    user: state.auth.authenticatedUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({

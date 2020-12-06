@@ -26,7 +26,7 @@ const MainHeader = React.memo(({user, logoutHandler, setSearch, search}) => {
 
     return (
         <header className="w-full rounded-b-lg py-4 px-3 md:px-6 shadow-lg rounded bg-white flex z-49">
-            <div className="text-blue-400 flex justify-center w-1/6 md:w-3/12 px-3">
+            <div className="text-blue-500 flex justify-center w-1/6 md:w-3/12 px-3">
                 <LogoNova className="hidden md:block"/>
                 <MobileLogo className="md:hidden"/>
             </div>
@@ -47,9 +47,9 @@ const MainHeader = React.memo(({user, logoutHandler, setSearch, search}) => {
                 </div>
             </div>
             <div className="hidden md:flex user-info-container justify-center md:justify-start md:px-3 w-1/6 md:w-3/12">
-                <div className="rounded-full h-10 w-10 flex items-center justify-center bg-blue-400 text-white text-lg">{user?.username.slice(0, 1).toUpperCase()}</div>
+                <div className="rounded-full h-10 w-10 flex items-center justify-center bg-blue-500 text-white text-lg">{user?.username.slice(0, 1).toUpperCase()}</div>
                 <div className="ml-3 hidden md:block">
-                    <p className="text-blue-400 text-sm">{user?.username}</p>
+                    <p className="text-blue-500 text-sm">{user?.username}</p>
                     <p className="text-gray-500 text-xs -mt-1">{user?.role}</p>
                     <p className="text-xs -mt-1">{user?.area?.name}</p>
                 </div>
@@ -57,7 +57,7 @@ const MainHeader = React.memo(({user, logoutHandler, setSearch, search}) => {
             <div className="md:hidden user-info-container justify-center md:justify-start md:px-3 flex w-1/6 md:w-3/12 relative">
                 <div
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="rounded-full h-10 w-10 flex items-center justify-center bg-blue-400 text-white text-lg cursor-pointer">{user?.username.slice(0, 1).toUpperCase()}</div>
+                    className="rounded-full h-10 w-10 flex items-center justify-center bg-blue-500 text-white text-lg cursor-pointer">{user?.username.slice(0, 1).toUpperCase()}</div>
                 <div
                     onClick={logoutHandler}
                     className={`${!isMenuOpen ? 'hidden' : ''} ml-3 absolute mt-12 mr-12 bg-white shadow-lg py-4 px-8 hover:bg-red-500 hover:text-white rounded cursor-pointer`}>
@@ -67,7 +67,7 @@ const MainHeader = React.memo(({user, logoutHandler, setSearch, search}) => {
             <div className="hidden md:block w-1/12">
                 <button
                     onClick={logoutHandler}
-                    className="bg-red-600 hover:bg-red-500 focus:bg-red-700 focus:outline-none text-white w-full h-full rounded">
+                    className="bg-red-500 hover:bg-red-400 focus:bg-red-600 focus:outline-none text-white w-full h-full rounded">
                     Salir
                 </button>
             </div>
