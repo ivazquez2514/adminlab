@@ -1,8 +1,10 @@
+import { useCallback, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { AREA_LIST } from '../../api/queries';
 
-const HospitalAreaList = ({history}) => {
+const HospitalAreaList = ({history, search, setSearch}) => {
     const { data } = useQuery(AREA_LIST);
     let items = [];
 
@@ -14,13 +16,30 @@ const HospitalAreaList = ({history}) => {
         return new Intl.DateTimeFormat('en-MX').format(new Date())
     }
 
+    const filteredItems = useCallback(() => {
+        if (search) {
+            return items.filter(item =>
+                item.id.toLowerCase().includes(search.toLowerCase())
+                || item.name.toLowerCase().includes(search.toLowerCase())
+                || formatDate(item.createdAt).includes(search.toLowerCase()));
+        }
+
+        return items;
+    }, [search, items]);
+
+    useEffect(() => {
+        return () => {
+            setSearch('');
+        }
+    }, []);
+
     return (
         <div>
             <div className="table-head flex flex-col md:flex-row border-b border-gray-500">
                 <p className="md:py-4 text-xl text-blue-500">Áreas</p>
             </div>
             <div className="table-data">
-                {items.map((item, index) =>
+                {filteredItems().map((item, index) =>
                     <div key={index} className="row w-full flex flex-wrap md:flex-nowrap py-3 px-3 bg-white shadow-lg rounded my-4 text-gray-500 ">
                         <div
                             onClick={() => history.push(`/admin/hospital-areas/${item.id}`)}
@@ -37,4 +56,12 @@ const HospitalAreaList = ({history}) => {
     );
 };
 
-export default withRouter(HospitalAreaList);
+const mapStateToProps = (st) => ({
+    search: st.ui.searchbar
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    setSearch: dispatch.ui.setSearch
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HospitalAreaList));

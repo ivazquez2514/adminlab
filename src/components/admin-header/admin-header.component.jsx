@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,14 +8,21 @@ import { ReactComponent as MobileLogo } from '../../assets/svg/mobile_logo.svg';
 import { FormActions, FormTitlesEnum, Permissions } from '../../enums';
 import formTitlesEnum from '../../enums/form-titles.enum';
 
-const AdminHeader = React.memo(({user, logoutHandler, activeForm, history}) => {
+const AdminHeader = React.memo(({user, logoutHandler, activeForm, history, setSearch, search}) => {
     return (
-        activeForm ? <FormHeader activeForm={activeForm} history={history} user={user} /> : <MainHeader user={user} logoutHandler={logoutHandler}/>
+        activeForm ? <FormHeader activeForm={activeForm} history={history} user={user} /> : <MainHeader user={user} search={search} setSearch={setSearch} logoutHandler={logoutHandler}/>
     );
 })
 
-const MainHeader = React.memo(({user, logoutHandler}) => {
+const MainHeader = React.memo(({user, logoutHandler, setSearch, search}) => {
     const [ isMenuOpen, setIsMenuOpen ] = useState(false);
+    const searchEl = useRef(null);
+
+    useEffect(() => {
+        if (search === '') {
+            searchEl.current.value = '';
+        }
+    }, [search])
 
     return (
         <header className="w-full rounded-b-lg py-4 px-3 md:px-6 shadow-lg rounded bg-white flex z-49">
@@ -33,7 +40,10 @@ const MainHeader = React.memo(({user, logoutHandler}) => {
                         className="appearance-none pl-12 py-2 px-2 block w-full bg-gray-400 focus:bg-gray-300 text-gray-700 placeholder-gray-700 rounded-md focus:outline-none"
                         id="grid-first-name"
                         type="text"
-                        placeholder="Buscar" />
+                        placeholder="Buscar"
+                        autoComplete="off"
+                        ref={searchEl}
+                        onKeyUp={(e)=> setSearch(e.target.value)} />
                 </div>
             </div>
             <div className="hidden md:flex user-info-container justify-center md:justify-start md:px-3 w-1/6 md:w-3/12">
@@ -66,11 +76,11 @@ const MainHeader = React.memo(({user, logoutHandler}) => {
 });
 
 const mapStateToProps = (state) => ({
-    formAction: state.ui.formAction
+    formAction: state.ui.formAction,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setFormAction: dispatch.ui.setFormAction,
+    setFormAction: dispatch.ui.setFormAction
 });
 
 const FormHeader = connect(mapStateToProps, mapDispatchToProps)(React.memo(({activeForm, history, formAction, setFormAction, user}) => {
