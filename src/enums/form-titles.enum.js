@@ -1,4 +1,4 @@
-export default {
+const FormTitles = {
     COLLABORATOR: 'Nuevo colaborador',
     COLLABORATOR_UPDATE: 'Editar colaborador',
     COLLABORATOR_DETAIL: 'Detalle de colaborador',
@@ -12,3 +12,5 @@ export default {
     PATIENT_RECORD_UPDATE: 'Editar expediente',
     PATIENT_RECORD_DETAIL: 'Detalle de expediente',
 };
+
+export default FormTitles;

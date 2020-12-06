@@ -15,7 +15,8 @@ const AuthPage = ({user}) => {
             <div className="w-full md:w-3/4">
                 <div className="flex flex-col items-center">
                     <Logo />
-                    <h1 className="text-center text-xl mt-3">Sistema de Administración de laminillas y bloques.</h1>
+                    <h1 className="text-center text-md md:text-xl mt-3">Sistema de Administración de laminillas y bloques.</h1>
+                    <h2 className="text-center text-md md:text-xl mt-1 md:mt-3 font-bold uppdercase">Anatomía patologíca</h2>
                 </div>
                 
                 <Switch>

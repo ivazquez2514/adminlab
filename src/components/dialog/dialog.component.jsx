@@ -30,7 +30,7 @@ const Dialog = ({ title, onClose, history }) => {
     };
 
     return (
-        <div className="w-screen h-screen transition ease-in-out bg-black bg-opacity-25 absolute z-40 flex justify-center items-center">
+        <div className="w-screen h-screen transition ease-in-out bg-black bg-opacity-25 absolute z-50 flex justify-center items-center">
             <div className="bg-white rounded shadow-lg m-4 max-w-sm max-h-full overflow-y-auto">
                 <div className="p-4 border-b border-gray-400 flex justify-between items-center text-2xl font-medium">
                     <p>{title}</p>
@@ -61,7 +61,7 @@ const Dialog = ({ title, onClose, history }) => {
                 <div className="p-4 flex text-white gap-5">
                     <button
                         onClick={onClose}
-                        className="bg-red-600 w-1/2 rounded-lg py-2 text-3xl">
+                        className="bg-red-500 w-1/2 rounded-lg py-2 text-3xl">
                         <FontAwesomeIcon icon={faTimes} />
                     </button>
                     <button
