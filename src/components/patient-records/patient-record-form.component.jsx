@@ -272,7 +272,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Gabinete
                     </label>
                     <select
-                        className={`${errors?.cabinetIdLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.cabinetIdLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="cabinetIdLamellas"
                         name="cabinetIdLamellas"
                         disabled={formAction === FormActions.DETAIL}
@@ -287,7 +287,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Fila
                     </label>
                     <select
-                        className={`${errors?.rowLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.rowLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="rowLamellas"
                         name="rowLamellas"
                         disabled={formAction === FormActions.DETAIL}
@@ -319,7 +319,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Tercio
                     </label>
                     <select
-                        className={`${errors?.thirdLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.thirdLamellas ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="thirdLamellas"
                         name="thirdLamellas"
                         onKeyPress={validateNumbersFn}
@@ -350,7 +350,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Gabinete
                     </label>
                     <select
-                        className={`${errors?.cabinetIdBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.cabinetIdBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="cabinetIdBlocks"
                         name="cabinetIdBlocks"
                         onChange={handleCabinetChange}
@@ -365,7 +365,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Fila
                     </label>
                     <select
-                        className={`${errors?.rowBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.rowBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="rowBlocks"
                         name="rowBlocks"
                         disabled={formAction === FormActions.DETAIL}
@@ -393,7 +393,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         Tercio
                     </label>
                     <select
-                        className={`${errors?.thirdBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} appearance-none font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${errors?.thirdBlocks ? 'border-red-500 placeholder-red-500' : 'border-gray-500'} font-medium text-center text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="thirdBlocks"
                         name="thirdBlocks"
                         disabled={formAction === FormActions.DETAIL}

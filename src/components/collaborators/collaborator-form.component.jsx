@@ -159,7 +159,7 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
                         Rol de usuario
                     </label>
                     <select
-                        className={`${getInputCssClasses(!!formState.dirtyFields.role, !!errors.role)} appearance-none font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${getInputCssClasses(!!formState.dirtyFields.role, !!errors.role)} font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="role"
                         name="role"
                         disabled={formAction === FormActions.DETAIL}

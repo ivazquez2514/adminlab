@@ -32,10 +32,10 @@ const SignIn = ({authenticate, history}) => {
 
     return (
         <>
-            <h4 className="text-3xl font-bold mt-12">Inicia sesión</h4>
-            <p className="mb-8 font-thin">Ingresa tus datos correctamente para poder entrar.</p>
+            <h4 className="text-2xl md:text-3xl font-bold mt-8 md:mt-12">Inicia sesión</h4>
+            <p className="mb-8 font-thin text-sm">Ingresa tus datos correctamente para poder entrar.</p>
             <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-                <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="flex flex-wrap -mx-3 mb-4 md:mb-6">
                     <InputIcon
                         icon={faUserCircle}
                         label="ID de usuario"
@@ -44,7 +44,9 @@ const SignIn = ({authenticate, history}) => {
                             placeholder: "Ingresa un ID válido",
                             ref: register({required: true}),
                             id: "username",
-                            name: "username"
+                            name: "username",
+                            style:{height: '60px'},
+                            autocomplete: 'off'
                         }} />
                     <InputIcon
                         icon={faKey}
@@ -54,13 +56,16 @@ const SignIn = ({authenticate, history}) => {
                             placeholder: "Ingresa tus 6 dígitos",
                             ref: register({required: true}),
                             id: "password",
-                            name: "password"
+                            name: "password",
+                            style:{height: '60px'},
+                            autocomplete: 'off'
                         }} />
 
-                    <div className="keyboard-container text-center mt-10 w-full">
+                    <div className="keyboard-container text-center mt-2 md:mt-10 w-full">
                         <button
+                            style={{height: '60px'}}
                             type="submit"
-                            className="bg-blue-500 hover:bg-blue-600 text-white shadow-md active:shadow-none font-bold outline-none py-2 rounded w-2/5 text-3xl">
+                            className="bg-blue-500 hover:bg-blue-400 text-white shadow-md active:shadow-none font-bold outline-none py-2 rounded w-4/5 md:w-2/5 text-3xl">
                             <FontAwesomeIcon icon={faKeyboard} />
                         </button>
 

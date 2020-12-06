@@ -107,7 +107,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
                     </label>
                     <select
                         tabIndex="1"
-                        className={`${getInputCssClasses(!!formState.dirtyFields.cabinetType, !!errors.cabinetType)} appearance-none font-medium block text-gray-500 border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        className={`${getInputCssClasses(!!formState.dirtyFields.cabinetType, !!errors.cabinetType)} font-medium block text-gray-500 border-gray-500 w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="cabinetType"
                         name="cabinetType"
                         ref={register({required: true})}>
