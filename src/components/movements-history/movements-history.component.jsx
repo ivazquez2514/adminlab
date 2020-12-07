@@ -10,11 +10,11 @@ const MovementHistory = React.memo(({logout, history, search, setSearch}) => {
     let items = [];
     
     if (data && data.generalLogList) {
-        items = [...new Set(data.generalLogList.map(item => item.generalId))]
+        items = data.generalLogList;
+        /* [...new Set(data.generalLogList.map(item => item.generalId))]
             .map(item => ({
                 ...data.generalLogList.find(log => log.generalId === item)
-            }));
-        console.log(items);
+            })); */
     }
 
     if (error) {

@@ -82,7 +82,7 @@ const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNo
                 <div className="w-3/12">Fecha</div>
             </div>
             {
-                (cabinet ? cabinet.expedients : []).map(item => (
+                (cabinet ? cabinet.expedients.filter(item => cabinet.cabinetType === 'Laminillas' ? item.blockCoordinates === null : item.lamellaCoordinates === null) : []).map(item => (
                     <div key={item.id} className="w-full flex text-center bg-white rounded my-4 shadow-lg py-10 px-2 text-xl">
                         <div className="w-1/12">
                             {cabinet.cabinetType === 'Laminillas' ? <LaminillasIcon className="w-full h-24" /> : <img src={BlocksIcon} alt="Gabinete de bloque icono" className="w-1/4 md:w-2/3" />}
