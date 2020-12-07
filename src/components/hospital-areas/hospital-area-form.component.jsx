@@ -40,7 +40,7 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification, f
             cabinetLamellasQuantity: Number(data.cabinetLamellasQuantity),
             createdAt: new Date(),
             updatedAt: new Date(),
-            deletedAt: new Date(),
+            deletedAt: id && id !== 'new' ? undefined : new Date(),
         }}})
             .then(response => {
                 console.log(response);

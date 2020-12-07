@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { AREA_LOG_LIST } from '../../api/queries';
+import { RingLoader } from 'react-spinners';
 
 const HospitalAreaList = ({history, search, setSearch}) => {
-    const { data } = useQuery(AREA_LOG_LIST);
+    const { data, loading } = useQuery(AREA_LOG_LIST);
     let items = [];
 
     if (data && data.areaLogList) {
@@ -43,6 +44,10 @@ const HospitalAreaList = ({history, search, setSearch}) => {
                 <p className="pb-2 md:py-4 text-gray-500">{items && items.length && formatDate(items[0].updatedAt) || ''}</p>
             </div>
             <div className="table-data">
+                <div className="flex justify-center mt-8"><RingLoader
+                    size={100}
+                    color={"#02b8ff"}
+                    loading={loading}/></div>
                 {filteredItems().map((item, index) =>
                     <div key={index} className="row w-full flex flex-wrap md:flex-nowrap py-3 px-3 bg-white shadow-lg rounded my-4 text-gray-500 ">
                         <div

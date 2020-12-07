@@ -102,17 +102,18 @@ const FormHeader = connect(mapStateToProps, mapDispatchToProps)(React.memo(({act
                 <FontAwesomeIcon icon={faArrowLeft} />
             </div>
             <h4 className="text-xl md:text-2xl">{activeForm.title}</h4>
-            <div className='text-lg cursor-pointer text-black'>
+            <div>
+                <p className="invisible">hola</p>
                 <button
                     onClick={() => setFormAction(FormActions.DELETE)}
                     type="button"
-                    className={`${isInvisible(FormActions.DELETE) && 'invisible'} bg-white border-2 border-gray-300 rounded-lg px-3 py-1 mr-3 focus:outline-none`}>
+                    className={`${isInvisible(FormActions.DELETE) && 'hidden'} bg-white border-2 border-gray-300 rounded-lg px-3 py-1 mr-3 focus:outline-none`}>
                     <FontAwesomeIcon icon={faTrashAlt} />
                 </button>
                 <button
                     onClick={() => setFormAction(FormActions.UPDATE)}
                     type="button"
-                    className={`${isInvisible(FormActions.UPDATE) && 'invisible'} bg-white border-2 border-gray-300 rounded-lg px-3 py-1 focus:outline-none`}>
+                    className={`${isInvisible(FormActions.UPDATE) && 'hidden'} bg-white border-2 border-gray-300 rounded-lg px-3 py-1 focus:outline-none`}>
                     <FontAwesomeIcon icon={faPencilAlt} />
                 </button>
             </div>

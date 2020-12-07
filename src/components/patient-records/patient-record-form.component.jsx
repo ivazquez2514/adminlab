@@ -230,8 +230,8 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
 
     useEffect(() => {
         setActiveForm({
-            title: FormTitlesEnum[`PATIENT_RECORD${formAction ? `_${formAction}` : ''}`],
-            backUrl: '../../'
+            title: id ? FormTitlesEnum[`PATIENT_RECORD${formAction ? `_${formAction}` : ''}`] : FormTitlesEnum.PATIENT_RECORD_CREATE,
+            backUrl: '/admin'
         })
 
         return () => {
@@ -305,7 +305,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         disabled={formAction === FormActions.DETAIL}
                         onChange={handleCabinetChange}
                         ref={register()}>
-                        <option value="">Selecciona una opción</option>
+                        <option value="">Ingresar una opción</option>
                         {getCabinetListByType('Laminillas').map(item => <option key={`a${item.id}`} value={item.id}>{item.cabinetNumber}</option>)}
                     </select>
                 </div>
@@ -321,7 +321,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         ref={register()}
                         // disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         >
-                        <option value="">Selecciona una opción</option>
+                        <option value="">Ingresar una opción</option>
                         {(lamellaCabinetSelected ? letters.slice(0, lamellaCabinetSelected.rows) : []).map(item => <option key={`b${item.value}`} value={item.value}>{item.name}</option>)}
                     </select>
                 </div>
@@ -383,7 +383,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         onChange={handleCabinetChange}
                         disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
-                        <option value="">Selecciona una opcion</option>
+                        <option value="">Ingresar una opcion</option>
                         {getCabinetListByType('Bloques').map(item => <option key={`c${item.id}`} value={item.id}>{item.cabinetNumber}</option>)}
                     </select>
                 </div>
@@ -397,7 +397,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         name="rowBlocks"
                         disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
-                        <option value="">Selecciona una opción</option>
+                        <option value="">Ingresar una opción</option>
                         {(blockCabinetSelected ? letters.slice(0, blockCabinetSelected.rows) : []).map(item => <option key={`d${item.value}`} value={item.value}>{item.name}</option>)}
                     </select>
                 </div>

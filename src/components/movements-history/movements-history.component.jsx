@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GENERAL_LOG_LIST } from '../../api/queries';
+import { RingLoader } from 'react-spinners';
 
 const MovementHistory = React.memo(({logout, history, search, setSearch}) => {
-    const {data, error} = useQuery(GENERAL_LOG_LIST);
+    const {data, error, loading} = useQuery(GENERAL_LOG_LIST);
     let items = [];
     
     if (data && data.generalLogList) {
@@ -52,6 +53,10 @@ const MovementHistory = React.memo(({logout, history, search, setSearch}) => {
                 <p className="pb-2 md:py-4 text-gray-500">{items && items.length && formatDate(items[0].updatedAt) || ''}</p>
             </div>
             <div className="table-data">
+                <div className="flex justify-center mt-8"><RingLoader
+                    size={100}
+                    color={"#02b8ff"}
+                    loading={loading}/></div>
                 {filteredItems().map((item, index) =>
                     <div key={index} className="row w-full flex flex-wrap md:flex-nowrap py-3 px-3 bg-white shadow-lg rounded my-4 text-gray-500 ">
                         <div className="flex items-center w-full md:w-3/12">
