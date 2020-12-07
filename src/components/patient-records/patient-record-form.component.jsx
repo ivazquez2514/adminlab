@@ -67,7 +67,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
     }, [data])
     
     useEffect(() => {
-        if (patientRecordData) {
+        if (patientRecordData && data) {
             setPatientRecord(patientRecordData.expedientGet);
             reset({
                 caseNumber: patientRecordData.expedientGet?.caseNumber,
@@ -85,7 +85,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
             setLamellaCabinetSelected(getCabinetListByType('Laminillas').find(item => item.id === patientRecordData.expedientGet?.lamellaCoordinates?.cabinetId));
             setBlockCabinetSelected(getCabinetListByType('Bloques').find(item => item.id === patientRecordData.expedientGet?.blockCoordinates?.cabinetId));
         }
-    }, [patientRecordData])
+    }, [patientRecordData, data])
 
     const handleCabinetChange = (e) => {
         if (listType === 'LAMELLAS') {
