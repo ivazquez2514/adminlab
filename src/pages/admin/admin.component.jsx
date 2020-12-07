@@ -3,7 +3,7 @@ import { withRouter, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faColumns, faCubes, faUsers, faPlus, faClinicMedical } from '@fortawesome/free-solid-svg-icons'
-import { Permissions, FormActions } from '../../enums'
+import { Permissions, FormActions, Roles } from '../../enums'
 
 import {
     Content,
@@ -63,7 +63,7 @@ const AdminPage = ({logout, activeForm, notification, history, search, setSearch
     return (
         <div className="min-w-screen min-h-screen flex flex-col items-center bg-gray-300 relative">
 
-            {!activeForm && <button
+            {!activeForm && user.role !== Roles.Consultor && <button
                 className="text-white bg-blue-400 hover:bg-blue-300 focus:bg-blue-600 focus:outline-none absolute right-0 bottom-0 mb-12 z-50 py-3 px-5 rounded-l-lg font-bold text-2xl"
                 onClick={() => setOpenDialog(true)}>
                 <FontAwesomeIcon icon={faPlus} />
@@ -92,7 +92,7 @@ const AdminPage = ({logout, activeForm, notification, history, search, setSearch
                         </div>}
                         {displayFooterItem(ROUTES.CABINETS) && <div
                             onClick={() => history.push('./cabinets')}
-                            className={`${ location.pathname === ROUTES.CABINETS ? 'text-blue-500' : '' } flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-500`}>
+                            className={`${ location.pathname === ROUTES.CABINETS ? 'text-blue-500' : '' } ${user.role !== Roles.Consultor ? 'border-l border-gray-400' : ''} flex-1 flex py-1 items-center justify-center cursor-pointer hover:text-blue-500`}>
                             <FontAwesomeIcon icon={faCubes} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Almacenamiento</p>
                         </div>}

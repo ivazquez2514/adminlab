@@ -103,7 +103,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
 
     const handleColumnBlur = (e) => {
         const value = Number(e.target.value);
-        if (listType === 'LAMELLAS' && (value > lamellaCabinetSelected.columns || value === 0)) {
+        if (listType === 'LAMELLAS' && (value > lamellaCabinetSelected?.columns || value === 0)) {
             setValue('columnLamellas', '1');
         }
 
@@ -232,7 +232,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
 
     useEffect(() => {
         setActiveForm({
-            title: id ? FormTitlesEnum[`PATIENT_RECORD${formAction ? `_${formAction}` : ''}`] : FormTitlesEnum.PATIENT_RECORD_CREATE,
+            title: id && id !== 'new' ? FormTitlesEnum[`PATIENT_RECORD${formAction ? `_${formAction}` : ''}`] : FormTitlesEnum.PATIENT_RECORD,
             backUrl: '/admin'
         })
 

@@ -21,8 +21,8 @@ const CabinetList = ({history, setCabinet, search, setSearch}) => {
 
     const getItems = useCallback(() => {
         return list.filter(item => (listType === 'BLOCKS' ? 'Bloques' : 'Laminillas') === item.cabinetType)
-            .slice(offset, 3);
-    }, [listType, data]);
+            .splice(offset, 3);
+    }, [listType, data, offset]);
 
     const filteredItems = useCallback(() => {
         if (search) {
@@ -32,7 +32,7 @@ const CabinetList = ({history, setCabinet, search, setSearch}) => {
         }
 
         return getItems();
-    }, [search, list]);
+    }, [search, list, offset]);
 
     useEffect(() => {
         return () => {

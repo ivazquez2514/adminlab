@@ -1,17 +1,19 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams, withRouter } from 'react-router-dom';
 import { ReactComponent as LaminillasIcon } from '../../assets/svg/laminillas.svg';
 import BlocksIcon from '../../assets/images/gabinete_bloques.png';
-import { FormActions, FormTitlesEnum } from '../../enums';
+import { FormActions, FormTitlesEnum, Roles } from '../../enums';
 import { CABINET_GET } from '../../api/queries';
 import { CABINET_DELETE } from '../../api/mutations';
 import { useQuery, useMutation } from '@apollo/client';
 import { types } from '../notification/notification.component';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPencilAlt, faTrashAlt, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 import { ConfirmDialog } from '../';
 
-const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNotification}) => {
+const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNotification, search, user}) => {
     const { id } = useParams();
     const { data } = useQuery(CABINET_GET, { variables: { id } });
     const [ cabinetDelete ] = useMutation(CABINET_DELETE);
@@ -53,17 +55,26 @@ const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNo
     }, [formAction]);
 
     useEffect(() => {
-        setActiveForm({
-            title: FormTitlesEnum.CABINET_DETAIL,
-            backUrl: './'
-        });
-        setFormAction(FormActions.DETAIL);
+        setActiveForm(null);
+        setFormAction(null);
         
         return () => {
             setActiveForm(null);
             setFormAction(null);
         };
     }, []);
+
+    const getFilteredExpedients = useCallback(() => {
+        return (cabinet ? cabinet.expedients.filter(item => cabinet.cabinetType === 'Laminillas' ? item.blockCoordinates === null : item.lamellaCoordinates === null) : [])
+            .filter(item =>
+                String(item.caseNumber).toLowerCase().includes(search)
+                || String(item.cabinetNumber).toLowerCase().includes(search)
+                || String(cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.row : item.blockCoordinates?.row).toLowerCase().includes(search)
+                || String(cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.column : item.blockCoordinates?.column).toLowerCase().includes(search)
+                || String(cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.third : item.blockCoordinates?.third).toLowerCase().includes(search)
+                || String(formatDate(cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.updatedAt : item.blockCoordinates?.updatedAt)).toLowerCase().includes(search)
+            );
+    }, [cabinet, search]);
 
     return (
         <div className="w-full relative">
@@ -72,6 +83,25 @@ const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNo
                 msg="¿Estas seguro que quieres eliminar este gabinete?"
                 onAccept={deleteCabinetHandler}
                 onCancel={() => setFormAction(null)}/>}
+            <div className="table-head flex flex-col md:flex-row md:justify-between bg-white rounded-lg px-4 shadow-lg mb-4">
+                <p className="md:py-4 text-xl text-blue-500">
+                    <FontAwesomeIcon icon={faArrowLeft} className="mr-4 cursor-pointer" onClick={() => history.push('./')} />
+                    Gabinete-{cabinet?.cabinetType === 'Laminillas' ? 'L' : 'B'} {cabinet?.cabinetNumber}</p>
+                <div className={`${user?.role === Roles.Consultor ? 'invisible' : ''} pb-2 md:py-4 text-gray-500`}>
+                    <button
+                        onClick={() => setFormAction(FormActions.DELETE)}
+                        type="button"
+                        className={`bg-white border-2 border-gray-300 rounded-lg px-3 py-1 mr-3 focus:outline-none`}>
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                    </button>
+                    <button
+                        onClick={() => setFormAction(FormActions.UPDATE)}
+                        type="button"
+                        className={`bg-white border-2 border-gray-300 rounded-lg px-3 py-1 focus:outline-none`}>
+                        <FontAwesomeIcon icon={faPencilAlt} />
+                    </button>
+                </div>
+            </div>
             <div className="w-full flex text-gray-500 border-b-2 border-gray-500 text-center py-4 px-2">
                 <div className="w-1/12">Tipo</div>
                 <div className="w-2/12">No. Expediente</div>
@@ -82,7 +112,7 @@ const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNo
                 <div className="w-3/12">Fecha</div>
             </div>
             {
-                (cabinet ? cabinet.expedients.filter(item => cabinet.cabinetType === 'Laminillas' ? item.blockCoordinates === null : item.lamellaCoordinates === null) : []).map(item => (
+                getFilteredExpedients().map(item => (
                     <div key={item.id} className="w-full flex text-center bg-white rounded my-4 shadow-lg py-10 px-2 text-xl">
                         <div className="w-1/12">
                             {cabinet.cabinetType === 'Laminillas' ? <LaminillasIcon className="w-full h-24" /> : <img src={BlocksIcon} alt="Gabinete de bloque icono" className="w-1/4 md:w-2/3" />}
@@ -104,6 +134,8 @@ const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNo
 const mapStateToProps = (state) => ({
     cabinet: state.cabinet.cabinet,
     formAction: state.ui.formAction,
+    search: state.ui.searchbar,
+    user: state.auth.authenticatedUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({

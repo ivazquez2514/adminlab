@@ -13,10 +13,7 @@ const permissions = {
             FormActions.LIST,
             FormActions.DETAIL
         ],
-        Consultor: [
-            FormActions.LIST,
-            FormActions.DETAIL
-        ]
+        Consultor: []
     },
     cabinets: {
         SuperAdministrador: [],
@@ -25,8 +22,7 @@ const permissions = {
             FormActions.DETAIL
         ],
         Encargado: [
-            FormActions.LIST,
-            FormActions.DETAIL
+            FormActions.LIST
         ],
         Consultor: [
             FormActions.LIST,
@@ -45,10 +41,7 @@ const permissions = {
             FormActions.UPDATE,
             FormActions.DELETE
         ],
-        Encargado: [
-            FormActions.LIST,
-            FormActions.DETAIL
-        ],
+        Encargado: [],
         Consultor: []
     },
     areas: {
