@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 import { AREA_LIST, COLLABORATOR_GET } from '../../api/queries';
 import { COLLABORATOR_CREATE, COLLABORATOR_DELETE, COLLABORATOR_UPDATE } from '../../api/mutations';
-import { FormTitlesEnum, FormActions } from '../../enums';
+import { FormTitlesEnum, FormActions, Roles } from '../../enums';
 import { types } from '../notification/notification.component';
 import { useInputState } from '../../hooks';
 
@@ -31,6 +31,12 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
     const [ deleteCollaborator ] = useMutation(COLLABORATOR_DELETE);
     const [ updateCollaborator ] = useMutation(COLLABORATOR_UPDATE);
     const [ collaborator, setCollaborator ] = useState(null);
+    const { data: areaListData } = useQuery(AREA_LIST);
+
+    let areas = [];
+    if (areaListData && areaListData.areaList) {
+        areas = areaListData.areaList;
+    }
 
     if (id && id !== 'new' && !called) {
         getCollaborator({variables: {id}});
@@ -84,7 +90,8 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
                 collaborator: {
                     id: id || undefined,
                     password: id ? undefined : data.password,
-                    areaId: user.area.id,
+                    areaId: user.role === Roles.SuperAdministrador ? data.areaId : user.area.id,
+                    role: user.role === Roles.SuperAdministrador ? Roles.Administrador : data.role,
                     ...data
                 }
             }
@@ -140,9 +147,19 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
                     <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.areaId, !!errors.areaId)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="areaId">
                         Área
                     </label>
-                    <div className="font-medium block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:bg-white text-xl md:text-3xl text-gray-500 border-gray-500">
+                    {user.role !== Roles.SuperAdministrador ? <div className="font-medium block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:bg-white text-xl md:text-3xl text-gray-500 border-gray-500">
                         {user.area.name}
                     </div>
+                    : <select
+                        className={`${getInputCssClasses(!!formState.dirtyFields.areaId, !!errors.areaId)} font-medium block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
+                        id="areaId"
+                        name="areaId"
+                        defaultValue={user.area.id}
+                        ref={register({required: true})}
+                        placeholder="Seleccionar Área (Hospital)">
+                        <option value="">Selecciona una opción</option>
+                        {areas.map(area => <option key={area.id} value={area.id}>{area.name}</option>)}
+                    </select>}
                     {/* <select
                         className={`${getInputCssClasses(!!formState.dirtyFields.areaId, !!errors.areaId)} font-medium block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="areaId"
@@ -158,7 +175,10 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
                     <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.role, !!errors.role)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="role">
                         Rol de usuario
                     </label>
-                    <select
+                    {user.role === Roles.SuperAdministrador ? <div className="font-medium block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:bg-white text-xl md:text-3xl text-gray-500 border-gray-500">
+                        {user.role}
+                    </div>
+                    : <select
                         className={`${getInputCssClasses(!!formState.dirtyFields.role, !!errors.role)} font-medium text-gray-500 block w-full bg-gray-200 border-2 rounded-lg py-3 md:py-5 px-5 mb-3 leading-tight focus:outline-none focus:bg-white text-xl md:text-3xl`}
                         id="role"
                         name="role"
@@ -167,7 +187,7 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
                         placeholder="Seleccionar rol">
                         <option value="">Selecciona una opción</option>
                         {ROLES.map(role => <option key={role} value={role}>{role}</option>)}
-                    </select>
+                    </select>}
                 </div>
             </div>
             <div className="w-full md:flex">

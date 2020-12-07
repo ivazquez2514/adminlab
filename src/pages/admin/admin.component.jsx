@@ -22,7 +22,6 @@ const ROUTES = {
 const AdminPage = ({logout, activeForm, notification, history, search, setSearch}) => {
     const [openDialog, setOpenDialog] = useState(false);
     const location = useLocation();
-    // const { close, startInterval, intervalRef } = useCheckSession();
     const [intervalRef, setIntervalRef] = useState();
     
     const logoutHandler = () => {
