@@ -26,6 +26,19 @@ const MovementHistory = React.memo(({logout, history, search, setSearch}) => {
         return new Intl.DateTimeFormat('en-MX').format(new Date())
     }
 
+    const getEntityNameByType = (item) => {
+        switch (item.logType) {
+            case 'GABINETE':
+                return `Gabinete-${item.cabinet.cabinetType === 'Laminillas' ? 'L' : 'B'} ` + item.cabinet.cabinetNumber;
+            case 'EXPEDIENTE':
+                return '#' + item.expedient.caseNumber;
+            case 'COLABORADOR':
+                return item.collaborator.username;
+            case 'AREA':
+                return 'Area ' + item.area.name;
+        }
+    }
+
     const filteredItems = useCallback(() => {
         if (search) {
             return items.filter(item =>
@@ -73,7 +86,7 @@ const MovementHistory = React.memo(({logout, history, search, setSearch}) => {
                             <span className="md:hidden text-gray-500">Acción:&nbsp;</span>{item.actionType}
                         </div>
                         <div className="w-6/12 md:w-3/12 flex justify-center items-center">
-                            <span className="ml-16">No. &nbsp;<span className="text-blue-500 underline">{item.generalId}</span></span>
+                            <span className="ml-16"><span className="text-blue-500 underline">{getEntityNameByType(item)}</span></span>
                         </div>
                         <div className="w-6/12 md:w-2/12 flex justify-center items-center">{formatDate(item.updatedAt)}</div>
                     </div>
