@@ -153,7 +153,9 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         updatedAt: new Date()
                     }
                 }
-        } else if (data.cabinetItemsBlocks && data.rowBlocks && data.columnBlocks
+        }
+        
+        if (data.cabinetItemsBlocks && data.rowBlocks && data.columnBlocks
             && data.thirdBlocks) {
                 result = {
                     ...result,

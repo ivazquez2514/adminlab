@@ -11,8 +11,7 @@ import { CABINET_GET, CABINET_LIST } from '../../api/queries'
 import { useMutation, useLazyQuery, useQuery } from '@apollo/client'
 import { types } from '../notification/notification.component'
 import { letterOptions } from '../forms/number-picker/number-picker.component';
-
-import { NumberPicker, ConfirmDialog } from "../";
+import { NumberPicker, AlertDialog } from "../";
 
 const CABINETS_TYPES = [
     {
@@ -25,8 +24,8 @@ const CABINETS_TYPES = [
     },
 ];
 
-const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAction, setFormAction}) => {
-    const { register, handleSubmit, errors, formState, reset, watch } = useForm();
+const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAction, setFormAction, user}) => {
+    const { register, handleSubmit, errors, formState, reset, getValues } = useForm();
     const [ cabinetCreate ] = useMutation(CABINET_CREATE);
     const { getInputCssClasses, getInputLabelCssClasses } = useInputState();
     const { id } = useParams();
@@ -34,6 +33,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
     const [ cabinetUpdate ] = useMutation(CABINET_UPDATE);
     const [ cabinet, setCabinet ] = useState(null);
     const { data: cabinetsData } = useQuery(CABINET_LIST);
+    const [ showAlert, setShowAlert ] = useState(false);
 
     let cabinets = [];
     if (cabinetsData && cabinetsData.cabinetList) {
@@ -67,6 +67,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
                     cabinetNumber: Number(data.cabinetNumber),
                     rows: Number(data.rows),
                     columns: Number(data.columns),
+                    areaId: user.area.id,
                 }
             }
         }).then(response => {
@@ -100,6 +101,10 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
 
     return (
         <form className="w-full h-full relative" onSubmit={handleSubmit(onSubmit)}>
+            {showAlert && <AlertDialog
+                title="Alerta"
+                msg="Este número de gabinete ya existe."
+                close={() => setShowAlert(false)}/>}
             <div className="w-full md:mb-6 md:flex">
                 <div className="w-full md:w-1/2 px-3">
                     <label className={`${getInputLabelCssClasses(!!formState.dirtyFields.cabinetType, !!errors.cabinetType)} block tracking-wide font-bold mb-2 text-gray-500`} htmlFor="name">
@@ -174,7 +179,8 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
 })
 
 const mapStateToProps = (state) => ({
-    formAction: state.ui.formAction
+    formAction: state.ui.formAction,
+    user: state.auth.authenticatedUser,
 }) 
 
 const mapDispatchToProps = (dispatch) => ({
