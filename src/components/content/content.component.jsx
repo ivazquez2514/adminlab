@@ -16,6 +16,20 @@ import {
 } from '../../components';
 
 const Content = ({user}) => {
+
+    const getDefaultRedirect = () => {
+        switch(user.role) {
+            case Roles.Consultor:
+                return '/admin/cabinets';
+            case Roles.SuperAdministrador:
+                return '/admin/hospital-areas';
+            case Roles.Administrador:
+                return '/admin/movements-history';
+            case Roles.Encargado:
+                return '/admin/movements-history';
+        }
+    }
+
     return (
         <main className="pt-5 px-3 md:px-0 main-container flex-1">
             <Switch>
@@ -32,7 +46,7 @@ const Content = ({user}) => {
                 <Route exact path="/admin/cabinets/:id" component={CabinetDetail} />
                 <Route exact path="/admin/patient-records/new" component={PatientRecordForm} />
                 <Route exact path="/admin/patient-records/:id" component={PatientRecordForm} />
-                <Redirect to={`${user.role === Roles.SuperAdministrador ? '/admin/hospital-areas': '/admin/movements-history'}`} />
+                <Redirect to={getDefaultRedirect()} />
             </Switch>
         </main>
     );
