@@ -89,7 +89,7 @@ const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNo
                         </div>
                         <div
                             onClick={() => history.push(`/admin/patient-records/${cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.expedientId : item.blockCoordinates?.expedientId}`)}
-                            className="w-2/12 text-blue-500 flex justify-center items-center cursor-pointer">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.expedientId : item.blockCoordinates?.expedientId}</div>
+                            className="w-2/12 text-blue-500 flex justify-center items-center cursor-pointer">{item.caseNumber}</div>
                         <div className="w-2/12 flex justify-center items-center">{cabinet.cabinetNumber}</div>
                         <div className="w-1/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.row : item.blockCoordinates?.row}</div>
                         <div className="w-2/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.column : item.blockCoordinates?.column}</div>

@@ -136,6 +136,8 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
             });
     }
 
+    console.log(watch());
+
     const isComplete = (data) => {
         let result;
         if (data.cabinetItemsLamellas && data.rowLamellas && data.columnLamellas
@@ -263,7 +265,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                     disabled={formAction === FormActions.DETAIL}
                     onKeyPress={validateNumbersFn}
                     ref={register({required: true})}
-                    placeholder="Escribir el número de caso..."
+                    placeholder="Ingresar el número de expediente"
                     autoComplete="off" />
             </div>
             <hr className="border-1 border-gray-500 mt-6 mb-8"/>
@@ -305,7 +307,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         disabled={formAction === FormActions.DETAIL}
                         onChange={handleCabinetChange}
                         ref={register()}>
-                        <option value="">Ingresar una opción</option>
+                        <option value="">Elegir una opción</option>
                         {getCabinetListByType('Laminillas').map(item => <option key={`a${item.id}`} value={item.id}>{item.cabinetNumber}</option>)}
                     </select>
                 </div>
@@ -321,7 +323,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         ref={register()}
                         // disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         >
-                        <option value="">Ingresar una opción</option>
+                        <option value="">Elegir una opción</option>
                         {(lamellaCabinetSelected ? letters.slice(0, lamellaCabinetSelected.rows) : []).map(item => <option key={`b${item.value}`} value={item.value}>{item.name}</option>)}
                     </select>
                 </div>
@@ -353,8 +355,8 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         disabled={formAction === FormActions.DETAIL}
                         // disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         ref={register()}>
-                        <option value="">Ingresar el número de caso</option>
-                        {[{name: 'a', value: 1}, {name: 'b', value: 1}, {name: 'c', value: 1}].map(item => <option key={`lamella${item.name}`} value={item.name}>{item.name}</option>)}
+                        <option value="">Elegir una opción</option>
+                        {[{name: 'a', value: 1}, {name: 'b', value: 2}, {name: 'c', value: 3}].map(item => <option key={`lamella${item.value}`} value={item.name}>{item.name}</option>)}
                     </select>
                 </div>
             </div>}
@@ -383,7 +385,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         onChange={handleCabinetChange}
                         disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
-                        <option value="">Ingresar una opcion</option>
+                        <option value="">Elegir una opción</option>
                         {getCabinetListByType('Bloques').map(item => <option key={`c${item.id}`} value={item.id}>{item.cabinetNumber}</option>)}
                     </select>
                 </div>
@@ -397,7 +399,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         name="rowBlocks"
                         disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
-                        <option value="">Ingresar una opción</option>
+                        <option value="">Elegir una opción</option>
                         {(blockCabinetSelected ? letters.slice(0, blockCabinetSelected.rows) : []).map(item => <option key={`d${item.value}`} value={item.value}>{item.name}</option>)}
                     </select>
                 </div>
@@ -425,8 +427,8 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         name="thirdBlocks"
                         disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
-                        <option value="">Ingresar el número de caso</option>
-                        {[{name: 'a', value: 1}, {name: 'b', value: 1}, {name: 'c', value: 1}].map(item => <option key={`block${item.name}`} value={item.name}>{item.name}</option>)}
+                        <option value="">Elegir una opción</option>
+                        {[{name: 'a', value: 1}, {name: 'b', value: 2}, {name: 'c', value: 3}].map(item => <option key={`block${item.value}`} value={item.name}>{item.name}</option>)}
                     </select>
                 </div>
             </div>}
