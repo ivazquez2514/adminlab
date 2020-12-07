@@ -34,7 +34,11 @@ const permissions = {
         ]
     },
     collaborators: {
-        SuperAdministrador: [],
+        SuperAdministrador: [
+            FormActions.DETAIL,
+            FormActions.UPDATE,
+            FormActions.DELETE
+        ],
         Administrador: [
             FormActions.LIST,
             FormActions.DETAIL,

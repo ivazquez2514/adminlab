@@ -19,7 +19,8 @@ const Dialog = ({ title, onClose, history }) => {
 
     const displayItem = (path) => {
         if (path === ROUTES.COLLABORATORS_FORM) {
-            return Permissions.collaborators[user.role].includes(FormActions.LIST);
+            console.log(Permissions.collaborators[user.role], Permissions.collaborators[user.role].includes(FormActions.LIST));
+            return Permissions.collaborators[user.role].includes(FormActions.LIST) || Permissions.collaborators[user.role].includes(FormActions.DETAIL);
         } else if (path === ROUTES.HOSPITAL_AREAS_FORM) {
             return Permissions.areas[user.role].includes(FormActions.LIST);
         } else if (path === ROUTES.CABINETS_FORM) {
