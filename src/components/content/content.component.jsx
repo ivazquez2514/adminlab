@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { Roles } from '../../enums';
 
 import {
     MovementsHistory,
@@ -13,7 +15,7 @@ import {
     HospitalAreaList
 } from '../../components';
 
-const Content = () => {
+const Content = ({user}) => {
     return (
         <main className="pt-5 px-3 md:px-0 main-container flex-1">
             <Switch>
@@ -30,10 +32,14 @@ const Content = () => {
                 <Route exact path="/admin/cabinets/:id" component={CabinetDetail} />
                 <Route exact path="/admin/patient-records/new" component={PatientRecordForm} />
                 <Route exact path="/admin/patient-records/:id" component={PatientRecordForm} />
-                <Redirect to={'/admin/movements-history'} />
+                <Redirect to={`${user.role === Roles.SuperAdministrador ? '/admin/hospital-areas': '/admin/movements-history'}`} />
             </Switch>
         </main>
     );
 }
 
-export default Content;
+const mapStateToProps = (st) => ({
+    user: st.auth.authenticatedUser
+});
+
+export default connect(mapStateToProps)(Content);

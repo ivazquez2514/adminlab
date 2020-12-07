@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { COLLABORATOR_LIST } from '../../api/queries';
+import { RingLoader } from 'react-spinners';
 
 const CollaboratorList = ({history, search, setSearch}) => {
-    const { data } = useQuery(COLLABORATOR_LIST);
+    const { data, loading } = useQuery(COLLABORATOR_LIST);
     let items = [];
 
     if (data && data.collaboratorList) {
@@ -35,6 +36,10 @@ const CollaboratorList = ({history, search, setSearch}) => {
                 <p className="md:py-4 text-xl text-blue-500">Colaboradores</p>
             </div>
             <div className="table-data">
+                <div className="flex justify-center mt-8"><RingLoader
+                    size={100}
+                    color={"#02b8ff"}
+                    loading={loading}/></div>
                 {filteredItems().map((item, index) =>
                     <div
                         onClick={() => history.push(`/admin/collaborators/${item.id}`)}

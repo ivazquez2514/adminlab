@@ -88,13 +88,13 @@ const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNo
                             {cabinet.cabinetType === 'Laminillas' ? <LaminillasIcon className="w-full h-24" /> : <img src={BlocksIcon} alt="Gabinete de bloque icono" className="w-1/4 md:w-2/3" />}
                         </div>
                         <div
-                            onClick={() => history.push(`/admin/patient-records/${cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates.expedientId : item.blockCoordinates.expedientId}`)}
-                            className="w-2/12 text-blue-500 flex justify-center items-center cursor-pointer">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates.expedientId : item.blockCoordinates.expedientId}</div>
+                            onClick={() => history.push(`/admin/patient-records/${cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.expedientId : item.blockCoordinates?.expedientId}`)}
+                            className="w-2/12 text-blue-500 flex justify-center items-center cursor-pointer">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.expedientId : item.blockCoordinates?.expedientId}</div>
                         <div className="w-2/12 flex justify-center items-center">{cabinet.cabinetNumber}</div>
-                        <div className="w-1/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates.row : item.blockCoordinates.row}</div>
-                        <div className="w-2/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates.column : item.blockCoordinates.column}</div>
-                        <div className="w-1/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates.third : item.blockCoordinates.third}</div>
-                        <div className="w-3/12 flex justify-center items-center">{formatDate(cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates.updatedAt : item.blockCoordinates.updatedAt)}</div>
+                        <div className="w-1/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.row : item.blockCoordinates?.row}</div>
+                        <div className="w-2/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.column : item.blockCoordinates?.column}</div>
+                        <div className="w-1/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.third : item.blockCoordinates?.third}</div>
+                        <div className="w-3/12 flex justify-center items-center">{formatDate(cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.updatedAt : item.blockCoordinates?.updatedAt)}</div>
                     </div>
                 ))}
         </div>

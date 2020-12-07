@@ -105,7 +105,7 @@ const AdminPage = ({logout, activeForm, notification, history, search, setSearch
                         </div>}
                         {displayFooterItem(ROUTES.AREAS) && <div
                             onClick={() => history.push('/admin/hospital-areas')}
-                            className={`${ location.pathname === ROUTES.AREAS ? 'text-blue-500' : '' } flex-1 border-l border-gray-400 flex py-1 items-center justify-center cursor-pointer hover:text-blue-500`}>
+                            className={`${ location.pathname === ROUTES.AREAS ? 'text-blue-500' : '' } flex-1 flex py-1 items-center justify-center cursor-pointer hover:text-blue-500`}>
                             <FontAwesomeIcon icon={faClinicMedical} className="text-2xl" />
                             <p className="ml-4 text-lg hidden md:block">Areas</p>
                         </div>}

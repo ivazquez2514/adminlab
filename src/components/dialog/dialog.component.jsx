@@ -31,7 +31,7 @@ const Dialog = ({ title, onClose, history }) => {
 
     return (
         <div className="w-screen h-screen transition ease-in-out bg-black bg-opacity-25 absolute z-50 flex justify-center items-center">
-            <div className="bg-white rounded shadow-lg m-4 max-w-sm max-h-full overflow-y-auto">
+            <div className="bg-white rounded shadow-lg m-4 max-w-sm max-h-full overflow-y-auto" style={{minWidth: '300px'}}>
                 <div className="p-4 border-b border-gray-400 flex justify-between items-center text-2xl font-medium">
                     <p>{title}</p>
                     <FontAwesomeIcon icon={faTimes} className="cursor-pointer text-xl" onClick={onClose} />
