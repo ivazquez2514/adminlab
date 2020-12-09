@@ -309,7 +309,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         disabled={formAction === FormActions.DETAIL}
                         onChange={handleCabinetChange}
                         ref={register()}>
-                        <option value="">Elegir una opción</option>
+                        <option value="">Elegir</option>
                         {getCabinetListByType('Laminillas').map(item => <option key={`a${item.id}`} value={item.id}>{item.cabinetNumber}</option>)}
                     </select>
                 </div>
@@ -325,7 +325,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         ref={register()}
                         // disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         >
-                        <option value="">Elegir una opción</option>
+                        <option value="">Elegir</option>
                         {(lamellaCabinetSelected ? letters.slice(0, lamellaCabinetSelected.rows) : []).map(item => <option key={`b${item.value}`} value={item.value}>{item.name}</option>)}
                     </select>
                 </div>
@@ -357,7 +357,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         disabled={formAction === FormActions.DETAIL}
                         // disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         ref={register()}>
-                        <option value="">Elegir una opción</option>
+                        <option value="">Elegir</option>
                         {[{name: 'a', value: 1}, {name: 'b', value: 2}, {name: 'c', value: 3}].map(item => <option key={`lamella${item.value}`} value={item.name}>{item.name}</option>)}
                     </select>
                 </div>
@@ -387,7 +387,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         onChange={handleCabinetChange}
                         disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
-                        <option value="">Elegir una opción</option>
+                        <option value="">Elegir</option>
                         {getCabinetListByType('Bloques').map(item => <option key={`c${item.id}`} value={item.id}>{item.cabinetNumber}</option>)}
                     </select>
                 </div>
@@ -401,7 +401,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         name="rowBlocks"
                         disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
-                        <option value="">Elegir una opción</option>
+                        <option value="">Elegir</option>
                         {(blockCabinetSelected ? letters.slice(0, blockCabinetSelected.rows) : []).map(item => <option key={`d${item.value}`} value={item.value}>{item.name}</option>)}
                     </select>
                 </div>
@@ -429,7 +429,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         name="thirdBlocks"
                         disabled={formAction === FormActions.DETAIL}
                         ref={register()}>
-                        <option value="">Elegir una opción</option>
+                        <option value="">Elegir</option>
                         {[{name: 'a', value: 1}, {name: 'b', value: 2}, {name: 'c', value: 3}].map(item => <option key={`block${item.value}`} value={item.name}>{item.name}</option>)}
                     </select>
                 </div>

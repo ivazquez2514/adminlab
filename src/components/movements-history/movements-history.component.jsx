@@ -42,12 +42,12 @@ const MovementHistory = React.memo(({logout, history, search, setSearch}) => {
     const filteredItems = useCallback(() => {
         if (search) {
             return items.filter(item =>
-                item.logType.includes(search)
-                || formatDate(item.updatedAt).includes(search)
-                || item.actionType.includes(search)
-                || item.generalId.includes(search)
-                || item.owner.username.includes(search)
-                || item.owner.role.includes(search));
+                item.logType.toLowerCase().includes(search.toLowerCase())
+                || formatDate(item.updatedAt).includes(search.toLowerCase())
+                || item.actionType.toLowerCase().includes(search.toLowerCase())
+                || item.generalId.toLowerCase().includes(search.toLowerCase())
+                || item.owner.username.toLowerCase().includes(search.toLowerCase())
+                || item.owner.role.toLowerCase().includes(search.toLowerCase()));
         }
 
         return items;

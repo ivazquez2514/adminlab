@@ -4,7 +4,8 @@ const ui = {
         activeForm: null,
         notification: null,
         formAction: null,
-        searchbar: ''
+        searchbar: '',
+        inputRef: null,
     },
     reducers: {
         toggleHideFooter: (state) => ({
@@ -26,6 +27,10 @@ const ui = {
         setSearch: (state, payload) => ({
             ...state,
             searchbar: payload
+        }),
+        setInputRef: (state, payload) => ({
+            ...state,
+            inputRef: payload
         })
     }
 }
