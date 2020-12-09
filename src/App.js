@@ -8,10 +8,14 @@ import {
   AdminPage
 } from './pages';
 
+import {
+  VirtualKeyboard
+} from './components';
+
 import './assets/styles/tailwind.css';
 import './App.css';
 
-function App({isAuthenticated, authenticatedUser, authenticate}) {
+function App({isAuthenticated, authenticatedUser, authenticate, inputRef}) {
 
   const authInfo = JSON.parse(localStorage.getItem('adminlab-auth'));
   
@@ -39,13 +43,15 @@ function App({isAuthenticated, authenticatedUser, authenticate}) {
         <Route path="/admin" component={AdminPage} />
         <Redirect to={initialRoute() || 'auth'} />
       </Switch>
+      {false && <VirtualKeyboard />}
     </div>
   );
 }
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  authenticatedUser: state.auth.authenticatedUser
+const mapStateToProps = (st) => ({
+  isAuthenticated: st.auth.isAuthenticated,
+  authenticatedUser: st.auth.authenticatedUser,
+  inputRef: st.ui.inputRef
 });
 
 const mapDispatchToProps = (dispatch) => ({

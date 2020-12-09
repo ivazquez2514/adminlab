@@ -38,3 +38,6 @@ export {default as CabinetDetail} from './cabinets/cabinet-detail.component';
 
 /* Patient records */
 export {default as PatientRecordForm} from './patient-records/patient-record-form.component';
+
+/* Virtual keyboard */
+export {default as VirtualKeyboard} from './virtual-keyboard/virtual-keyboard.component';

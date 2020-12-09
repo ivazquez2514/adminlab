@@ -52,7 +52,7 @@ const CabinetList = ({history, setCabinet, search, setSearch}) => {
     }, []);
 
     return (
-        <div className="relative h-full md:flex flex-col items-center justify-center list-container overflow-y-auto" style={{height: 'calc(100vh - 200px)'}}>
+        <div className="relative h-full md:flex flex-col items-center justify-center list-container" style={{height: 'calc(100vh - 200px)'}}>
                 <div className="w-full bg-gray-400 p-1 rounded-lg font-bold text-gray-500 text-lg mb-4 block md:absolute top-0">
                     <button
                         className={`${listType === 'LAMELLAS' ? 'bg-white shadow-lg text-black' : ''} w-1/2 py-2 font-bold py-3 rounded-lg focus:outline-none`}
