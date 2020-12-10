@@ -9,7 +9,7 @@ import { useQuery } from '@apollo/client';
 import { CABINET_LIST } from '../../api/queries';
 import { RingLoader } from 'react-spinners';
 
-const CabinetList = ({history, setCabinet, search, setSearch}) => {
+const CabinetList = ({history, setCabinet, search, setSearch, setInputRef}) => {
     const [listType, setListType] = useState('LAMELLAS');
     const [offset, setOffset] = useState(0);
     const {data, loading} = useQuery(CABINET_LIST);
@@ -47,6 +47,7 @@ const CabinetList = ({history, setCabinet, search, setSearch}) => {
 
     useEffect(() => {
         return () => {
+            setInputRef(null);
             setSearch('');
         }
     }, []);
@@ -126,7 +127,8 @@ const mapStateToProps = (st) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     setCabinet: dispatch.cabinet.setCabinet,
-    setSearch: dispatch.ui.setSearch
+    setSearch: dispatch.ui.setSearch,
+    setInputRef: dispatch.ui.setInputRef,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CabinetList));

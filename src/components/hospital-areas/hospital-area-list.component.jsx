@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { AREA_LOG_LIST } from '../../api/queries';
 import { RingLoader } from 'react-spinners';
 
-const HospitalAreaList = ({history, search, setSearch}) => {
+const HospitalAreaList = ({history, search, setSearch, setInputRef}) => {
     const { data, loading } = useQuery(AREA_LOG_LIST);
     let items = [];
 
@@ -33,6 +33,7 @@ const HospitalAreaList = ({history, search, setSearch}) => {
 
     useEffect(() => {
         return () => {
+            setInputRef(null);
             setSearch('');
         }
     }, []);
@@ -74,7 +75,8 @@ const mapStateToProps = (st) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setSearch: dispatch.ui.setSearch
+    setSearch: dispatch.ui.setSearch,
+    setInputRef: dispatch.ui.setInputRef,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HospitalAreaList));

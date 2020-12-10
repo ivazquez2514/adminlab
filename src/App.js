@@ -43,7 +43,7 @@ function App({isAuthenticated, authenticatedUser, authenticate, inputRef}) {
         <Route path="/admin" component={AdminPage} />
         <Redirect to={initialRoute() || 'auth'} />
       </Switch>
-      {false && <VirtualKeyboard />}
+      {inputRef && <VirtualKeyboard />}
     </div>
   );
 }

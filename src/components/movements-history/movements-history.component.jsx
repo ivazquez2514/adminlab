@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { GENERAL_LOG_LIST } from '../../api/queries';
 import { RingLoader } from 'react-spinners';
 
-const MovementHistory = React.memo(({logout, history, search, setSearch}) => {
+const MovementHistory = React.memo(({logout, history, search, setSearch, setInputRef}) => {
     const {data, error, loading} = useQuery(GENERAL_LOG_LIST);
     let items = [];
     
@@ -55,6 +55,7 @@ const MovementHistory = React.memo(({logout, history, search, setSearch}) => {
 
     useEffect(() => {
         return () => {
+            setInputRef(null);
             setSearch('');
         }
     }, []);
@@ -102,7 +103,8 @@ const mapStateToProps = (dispatch) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     logout: dispatch.auth.logout,
-    setSearch: dispatch.ui.setSearch
+    setSearch: dispatch.ui.setSearch,
+    setInputRef: dispatch.ui.setInputRef
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(MovementHistory));
