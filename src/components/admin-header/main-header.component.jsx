@@ -17,13 +17,13 @@ const MainHeader = React.memo(({user, logoutHandler, setSearch, search, setInput
 
     return (
         <header className="w-full rounded-b-lg py-4 px-3 md:px-6 shadow-lg rounded bg-white flex z-49">
-            <div className="text-blue-500 flex justify-center w-1/6 md:w-3/12 px-3">
+            <div className="text-blue-500 flex justify-center items-center w-1/6 md:w-3/12 px-3">
                 <LogoNova className="hidden md:block"/>
                 <MobileLogo className="md:hidden"/>
             </div>
             
-            <div className="w-4/6 md:w-5/12 px-2 md:px-3">
-                <div className="searchbar relative">
+            <div className="w-4/6 md:w-5/12 px-2 md:px-3 flex items-center">
+                <div className="searchbar relative w-full">
                     <div className="absolute px-4 h-full flex items-center leading-normal border-0 rounded rounded-r-none text-gray-700">
                         <FontAwesomeIcon icon={faSearch} />
                     </div>

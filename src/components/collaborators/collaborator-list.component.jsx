@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { COLLABORATOR_LIST } from '../../api/queries';
 import { RingLoader } from 'react-spinners';
 
-const CollaboratorList = ({history, search, setSearch}) => {
+const CollaboratorList = ({history, search, setSearch, setInputRef}) => {
     const { data, loading } = useQuery(COLLABORATOR_LIST);
     let items = [];
 
@@ -26,6 +26,7 @@ const CollaboratorList = ({history, search, setSearch}) => {
 
     useEffect(() => {
         return () => {
+            setInputRef(null);
             setSearch('');
         }
     }, []);
@@ -70,7 +71,8 @@ const mapStateToProps = (st) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setSearch: dispatch.ui.setSearch
+    setSearch: dispatch.ui.setSearch,
+    setInputRef: dispatch.ui.setInputRef,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CollaboratorList));

@@ -13,7 +13,7 @@ import {faPencilAlt, faTrashAlt, faArrowLeft } from '@fortawesome/free-solid-svg
 
 import { ConfirmDialog } from '../';
 
-const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNotification, search, user}) => {
+const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNotification, search, user, setInputRef}) => {
     const { id } = useParams();
     const { data } = useQuery(CABINET_GET, { variables: { id } });
     const [ cabinetDelete ] = useMutation(CABINET_DELETE);
@@ -25,7 +25,7 @@ const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNo
     }
 
     const formatDate = useCallback((date) => {
-        return new Intl.DateTimeFormat('en-MX').format(new Date())
+        return new Intl.DateTimeFormat('en-MX').format(new Date());
     });
 
     const deleteCabinetHandler = () => {
@@ -59,6 +59,7 @@ const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNo
         setFormAction(null);
         
         return () => {
+            setInputRef(null);
             setActiveForm(null);
             setFormAction(null);
         };
@@ -142,6 +143,7 @@ const mapDispatchToProps = (dispatch) => ({
     setActiveForm: dispatch.ui.setActiveForm,
     setFormAction: dispatch.ui.setFormAction,
     setNotification: dispatch.ui.setNotification,
+    setInputRef: dispatch.ui.setInputRef,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CabinetDetail));
