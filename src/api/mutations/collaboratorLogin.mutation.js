@@ -17,6 +17,9 @@ export const COLLABORATOR_LOGIN = gql`
                 area {
                     id
                     name
+                    usersQuantity
+                    cabinetLamellasQuantity
+                    cabinetBlocksQuantity
                 }
             }
         }
