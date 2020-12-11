@@ -47,9 +47,9 @@ export const letters = [
     { name: 'Z', value: 27 },
 ];
 
-const PatientRecordForm = ({history, setActiveForm, setNotification, formAction, setFormAction}) => {
+const PatientRecordForm = ({history, setActiveForm, setNotification, formAction, setFormAction, setInputRef}) => {
     const {validateFn: validateNumbersFn} = useOnlyNumbers();
-    const {register, errors, handleSubmit, setValue, reset, watch} = useForm();
+    const {register, errors, handleSubmit, setValue, reset} = useForm();
     const [listType, setListType] = useState('LAMELLAS');
     const [lamellaCabinetSelected, setLamellaCabinetSelected] = useState(null);
     const [blockCabinetSelected, setBlockCabinetSelected] = useState(null);
@@ -135,8 +135,6 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                 console.log(error);
             });
     }
-
-    console.log(watch());
 
     const isComplete = (data) => {
         let result;
@@ -239,6 +237,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
         })
 
         return () => {
+            setInputRef(null);
             setActiveForm(null);
             setFormAction(null);
         }
@@ -268,6 +267,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                     onKeyPress={validateNumbersFn}
                     ref={register({required: true})}
                     placeholder="Ingresar el número de expediente"
+                    onFocus={() => setInputRef('caseNumber')}
                     autoComplete="off" />
             </div>
             <hr className="border-1 border-gray-500 mt-6 mb-8"/>
@@ -341,6 +341,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         onKeyPress={validateNumbersFn}
                         onBlur={handleColumnBlur}
                         autoComplete="off"
+                        onFocus={() => setInputRef('columnLamellas')}
                         disabled={formAction === FormActions.DETAIL}
                         // disabled={lamellaCabinetSelected === null || lamellaCabinetSelected === undefined}
                         ref={register()} />
@@ -415,7 +416,9 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         id="columnBlocks"
                         name="columnBlocks"
                         autoComplete="off"
+                        onFocus={() => setInputRef('columnBlocks')}
                         disabled={formAction === FormActions.DETAIL}
+                        onChange={(e) => console.log(e.target.value)}
                         onKeyPress={validateNumbersFn}
                         ref={register()} />
                 </div>
@@ -452,13 +455,14 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
 };
 
 const mapStateToProps = (state) => ({
-    formAction: state.ui.formAction
+    formAction: state.ui.formAction,
 });
 
 const mapDispatchToProps = (dispatch) => ({
     setActiveForm: dispatch.ui.setActiveForm,
     setNotification: dispatch.ui.setNotification,
     setFormAction: dispatch.ui.setFormAction,
+    setInputRef: dispatch.ui.setInputRef,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PatientRecordForm));

@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const InputIcon = React.memo(({label, icon, error, iconProps}) => {
+const InputIcon = React.memo(({label, icon, error, iconProps, setInputRef}) => {
+
+    useEffect(() => {
+        return () => {
+            setInputRef(null);
+        }
+    }, []);
+
     return (
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             {label && <label className="block uppercase tracking-wide text-xs font-bold mb-2" htmlFor={iconProps.id}>
@@ -14,6 +22,7 @@ const InputIcon = React.memo(({label, icon, error, iconProps}) => {
                 <input
                     className={`${ error ? 'border-red-500 border-2 placeholder-red-500' : 'border-gray-400 border-2' } text-black appearance-none font-bold pl-12 block w-full bg-gray-200 rounded-md py-4 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                     type="text"
+                    onFocus={() => setInputRef(iconProps.id)}
                     {...iconProps} />
             </div>
             {error && <p className="text-red-500 text-xs italic">{error}</p>}
@@ -21,4 +30,8 @@ const InputIcon = React.memo(({label, icon, error, iconProps}) => {
     );
 });
 
-export default InputIcon;
+const mapDispatchToProps = (dispatch) => ({
+    setInputRef: dispatch.ui.setInputRef
+});
+
+export default connect(null, mapDispatchToProps)(InputIcon);

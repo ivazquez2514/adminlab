@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackspace, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBackspace, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const VirtualKeyBoard = ({inputRef, setSearch, setInputRef}) => {
     const keyClickHandler = useCallback((value) => {
@@ -30,7 +30,7 @@ const VirtualKeyBoard = ({inputRef, setSearch, setInputRef}) => {
                     <button className="w-1/10 rounded-lg shadow bg-white focus:outline-none font-semibold" onClick={() => keyClickHandler(8)}>8</button>
                     <button className="w-1/10 rounded-lg shadow bg-white focus:outline-none font-semibold" onClick={() => keyClickHandler(9)}>9</button>
                     <button className="w-1/10 rounded-lg shadow bg-white focus:outline-none font-semibold" onClick={() => keyClickHandler(0)}>0</button>
-                    <button className="w-1/10 rounded-lg shadow-lg bg-red-500 text-white focus:outline-none font-semibold" onClick={() => keyClickHandler('backspace')}>
+                    <button className="w-1/10 rounded-lg shadow-lg bg-white text-white focus:outline-none font-semibold text-red-500" onClick={() => keyClickHandler('backspace')}>
                         <FontAwesomeIcon icon={faBackspace} />
                     </button>
                 </div>
@@ -67,8 +67,9 @@ const VirtualKeyBoard = ({inputRef, setSearch, setInputRef}) => {
                     <button className="w-1/10 rounded-lg shadow bg-white focus:outline-none font-semibold" onClick={() => keyClickHandler('n')}>N</button>
                     <button className="w-1/10 rounded-lg shadow bg-white focus:outline-none font-semibold" onClick={() => keyClickHandler('m')}>M</button>
                     <button className="w-2/10 rounded-lg shadow bg-white focus:outline-none font-semibold" onClick={() => keyClickHandler(' ')}>Espacio</button>
-                    <button className="w-1/10 rounded-lg shadow bg-white focus:outline-none font-semibold" onClick={() => setInputRef(null)}>
-                        <FontAwesomeIcon icon={faTimesCircle} />
+                    <button className="w-1/10 rounded-lg shadow bg-red-500 focus:outline-none font-semibold text-white flex flex-col justify-center items-center" onClick={() => setInputRef(null)}>
+                        <FontAwesomeIcon icon={faTimes} />
+                        <span className="text-sm">Cerrar</span>
                     </button>
                 </div>
             </div>
