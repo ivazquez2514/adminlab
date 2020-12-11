@@ -25,7 +25,7 @@ const CABINETS_TYPES = [
 ];
 
 const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAction, setFormAction, user}) => {
-    const { register, handleSubmit, errors, formState, reset, getValues } = useForm();
+    const { register, handleSubmit, errors, formState, reset, watch } = useForm();
     const [ cabinetCreate ] = useMutation(CABINET_CREATE);
     const { getInputCssClasses, getInputLabelCssClasses } = useInputState();
     const { id } = useParams();
@@ -46,16 +46,35 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
 
     if (id && id !== 'new' && cabinetData && !cabinet) {
         setCabinet(cabinetData.cabinetGet);
-        console.log(cabinetData.cabinetGet);
         reset({
             cabinetType: cabinetData.cabinetGet.cabinetType,
             cabinetNumber: cabinetData.cabinetGet.cabinetNumber,
             columns: cabinetData.cabinetGet.columns,
-            rows: cabinetData.cabinetGet.rows
+            rows: Number(cabinetData.cabinetGet.rows) - 1
         });
     }
 
     const onSubmit = (data) => {
+
+        if (data.cabinetType === 'Laminillas') {
+            if (user.area.cabinetLamellasQuantity < Number(data.cabinetNumber)) {
+                setShowAlert('Excediste el límite de entradas permitidas. Consulta al administrador.');
+                return;
+            } else if (!formAction && cabinets.filter(item => item.cabinetType === 'Laminillas' && item.cabinetNumber === Number(data.cabinetNumber)).length) {
+                setShowAlert('Este número de gabinete ya existe.');
+                return;
+            }
+
+        } else if (data.cabinetType === 'Bloques') {
+            if (user.area.cabinetBlocksQuantity < Number(data.cabinetNumber)) {
+                setShowAlert('Excediste el límite de entradas permitidas. Consulta al administrador.');
+                return;
+            } else if (!formAction && cabinets.filter(item => item.cabinetType === 'Bloques' && item.cabinetNumber === Number(data.cabinetNumber)).length) {
+                setShowAlert('Este número de gabinete ya existe.');
+                return;
+            }
+        }
+
         data = {...data, rows: letterOptions.findIndex(item => item === data.rows)};
 
         const fn = cabinet ? cabinetUpdate : cabinetCreate;
@@ -65,7 +84,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
                     id: cabinet ? cabinet.id : undefined,
                     cabinetType: data.cabinetType,
                     cabinetNumber: Number(data.cabinetNumber),
-                    rows: Number(data.rows),
+                    rows: Number(data.rows) + 1,
                     columns: Number(data.columns),
                     areaId: user.area.id,
                 }
@@ -103,7 +122,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
         <form className="w-full h-full relative" onSubmit={handleSubmit(onSubmit)}>
             {showAlert && <AlertDialog
                 title="Alerta"
-                msg="Este número de gabinete ya existe."
+                msg={showAlert}
                 close={() => setShowAlert(false)}/>}
             <div className="w-full md:mb-6 md:flex">
                 <div className="w-full md:w-1/2 px-3">
@@ -139,7 +158,7 @@ const CabinetForm = React.memo(({setActiveForm, history, setNotification, formAc
                         withLetters
                         label="Cantidad de filas"
                         error={errors.rows}
-                        defaultValue={cabinet?.rows || 0}
+                        defaultValue={Number(cabinet?.rows) - 1 || 0}
                         inputProps={{
                             ref: register({required: true}),
                             name: "rows",

@@ -105,6 +105,8 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
         const value = Number(e.target.value);
         if (listType === 'LAMELLAS' && (value > lamellaCabinetSelected?.columns || value === 0)) {
             setValue('columnLamellas', '1');
+        } else if (listType === 'BLOCKS' && (value > blockCabinetSelected?.columns || value === 0)) {
+            setValue('columnBlocks', '1');
         }
 
     }
@@ -418,7 +420,7 @@ const PatientRecordForm = ({history, setActiveForm, setNotification, formAction,
                         autoComplete="off"
                         onFocus={() => setInputRef('columnBlocks')}
                         disabled={formAction === FormActions.DETAIL}
-                        onChange={(e) => console.log(e.target.value)}
+                        onBlur={handleColumnBlur}
                         onKeyPress={validateNumbersFn}
                         ref={register()} />
                 </div>
