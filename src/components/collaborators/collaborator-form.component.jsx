@@ -21,7 +21,7 @@ const ROLES = [
     'Consultor'
 ];
 
-const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, formAction, setFormAction, user}) => {
+const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, formAction, setFormAction, user, setInputRef}) => {
     const { register, handleSubmit, errors, formState, reset, setValue, watch } = useForm();
     /* const { data: areasResponse } = useQuery(AREA_LIST); */
     const [ collaboratorCreate ] = useMutation(COLLABORATOR_CREATE);
@@ -129,6 +129,7 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
         else setFormAction('');
 
         return () => {
+            setInputRef(null);
             setActiveForm(null);
         };
     }, [])
@@ -202,6 +203,8 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
                         name="username"
                         disabled={formAction === FormActions.DETAIL}
                         ref={register({required: true})}
+                        autoComplete="off"
+                        onFocus={() => setInputRef('username')}
                         placeholder="Escribir un nombre..." />
                 </div>
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -216,6 +219,8 @@ const CollaboratorForm = React.memo(({history, setActiveForm, setNotification, f
                         disabled={formAction === FormActions.DETAIL}
                         ref={register({required: id ? false : true, minLength: 6})}
                         placeholder="Asignar 6 dígitos"
+                        autoComplete="off"
+                        onFocus={() => setInputRef('password')}
                         maxLength="6" />
                 </div>
             </div>
@@ -252,6 +257,7 @@ const mapDispatchToProps = (dispatch) => ({
     setActiveForm: dispatch.ui.setActiveForm,
     setNotification: dispatch.ui.setNotification,
     setFormAction: dispatch.ui.setFormAction,
+    setInputRef: dispatch.ui.setInputRef,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CollaboratorForm));

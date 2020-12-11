@@ -13,7 +13,7 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 
 import { ConfirmDialog } from '../';
 
-const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification, formAction, setFormAction}) => {
+const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification, formAction, setFormAction, setInputRef}) => {
     const { register, handleSubmit, errors, formState } = useForm();
     const [ areaCreate ] = useMutation(AREA_CREATE);
     const [ areaUpdate ] = useMutation(AREA_UPDATE);
@@ -91,6 +91,7 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification, f
         if (id && id !== 'new') setFormAction(FormActions.DETAIL);
 
         return () => {
+            setInputRef(null);
             setActiveForm(null);
             setFormAction('');
         };
@@ -119,6 +120,7 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification, f
                             disabled={formAction === FormActions.DETAIL}
                             defaultValue={area?.name}
                             ref={register({required: true})}
+                            onFocus={() => setInputRef('name')}
                             placeholder="Asignar un nombre..." />
                     </div>
                 </div>
@@ -133,6 +135,7 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification, f
                             name="usersQuantity"
                             type="text"
                             placeholder="0"
+                            onFocus={() => setInputRef('usersQuantity')}
                             disabled={formAction === FormActions.DETAIL}
                             defaultValue={area?.usersQuantity}
                             ref={register({required: true})}
@@ -148,6 +151,7 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification, f
                             type="text"
                             name="cabinetLamellasQuantity"
                             placeholder="0"
+                            onFocus={() => setInputRef('cabinetLamellasQuantity')}
                             disabled={formAction === FormActions.DETAIL}
                             defaultValue={area?.cabinetLamellasQuantity}
                             ref={register({required: true})}
@@ -163,6 +167,7 @@ const HospitalAreaForm = React.memo(({history, setActiveForm, setNotification, f
                             type="text"
                             name="cabinetBlocksQuantity"
                             placeholder="0"
+                            onFocus={() => setInputRef('cabinetBlocksQuantity')}
                             disabled={formAction === FormActions.DETAIL}
                             defaultValue={area?.cabinetBlocksQuantity}
                             ref={register({required: true})}
@@ -195,6 +200,7 @@ const mapDispatchToProps = (dispatch) => ({
     setActiveForm: dispatch.ui.setActiveForm,
     setNotification: dispatch.ui.setNotification,
     setFormAction: dispatch.ui.setFormAction,
+    setInputRef: dispatch.ui.setInputRef,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(HospitalAreaForm));
