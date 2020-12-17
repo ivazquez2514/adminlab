@@ -10,6 +10,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { types } from '../notification/notification.component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faPencilAlt, faTrashAlt, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { letters } from '../patient-records/patient-record-form.component';
 
 import { ConfirmDialog } from '../';
 
@@ -122,7 +123,7 @@ const CabinetDetail = ({setActiveForm, setFormAction, history, formAction, setNo
                             onClick={() => history.push(`/admin/patient-records/${cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.expedientId : item.blockCoordinates?.expedientId}`)}
                             className="w-2/12 text-blue-500 flex justify-center items-center cursor-pointer">{item.caseNumber}</div>
                         <div className="w-2/12 flex justify-center items-center">{cabinet.cabinetNumber}</div>
-                        <div className="w-1/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.row : item.blockCoordinates?.row}</div>
+                        <div className="w-1/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? letters[item.lamellaCoordinates?.row].name : letters[item.blockCoordinates?.row].name}</div>
                         <div className="w-2/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.column : item.blockCoordinates?.column}</div>
                         <div className="w-1/12 flex justify-center items-center">{cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.third : item.blockCoordinates?.third}</div>
                         <div className="w-3/12 flex justify-center items-center">{formatDate(cabinet.cabinetType === 'Laminillas' ? item.lamellaCoordinates?.updatedAt : item.blockCoordinates?.updatedAt)}</div>
