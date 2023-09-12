@@ -1,29 +1,29 @@
 {
   "files": {
-    "main.css": "/adminlab/static/css/main.86fd564a.chunk.css",
-    "main.js": "/adminlab/static/js/main.4bbb035e.chunk.js",
-    "main.js.map": "/adminlab/static/js/main.4bbb035e.chunk.js.map",
-    "runtime-main.js": "/adminlab/static/js/runtime-main.87d18077.js",
-    "runtime-main.js.map": "/adminlab/static/js/runtime-main.87d18077.js.map",
-    "static/js/2.44a2d022.chunk.js": "/adminlab/static/js/2.44a2d022.chunk.js",
-    "static/js/2.44a2d022.chunk.js.map": "/adminlab/static/js/2.44a2d022.chunk.js.map",
-    "static/js/3.dee0aa15.chunk.js": "/adminlab/static/js/3.dee0aa15.chunk.js",
-    "static/js/3.dee0aa15.chunk.js.map": "/adminlab/static/js/3.dee0aa15.chunk.js.map",
+    "main.css": "/adminlab/static/css/main.b8b9f56b.chunk.css",
+    "main.js": "/adminlab/static/js/main.c76740b5.chunk.js",
+    "main.js.map": "/adminlab/static/js/main.c76740b5.chunk.js.map",
+    "runtime-main.js": "/adminlab/static/js/runtime-main.4dca38c8.js",
+    "runtime-main.js.map": "/adminlab/static/js/runtime-main.4dca38c8.js.map",
+    "static/js/2.d9bf66bc.chunk.js": "/adminlab/static/js/2.d9bf66bc.chunk.js",
+    "static/js/2.d9bf66bc.chunk.js.map": "/adminlab/static/js/2.d9bf66bc.chunk.js.map",
+    "static/js/3.ce26b4d0.chunk.js": "/adminlab/static/js/3.ce26b4d0.chunk.js",
+    "static/js/3.ce26b4d0.chunk.js.map": "/adminlab/static/js/3.ce26b4d0.chunk.js.map",
     "index.html": "/adminlab/index.html",
     "service-worker.js": "/adminlab/service-worker.js",
     "service-worker.js.map": "/adminlab/service-worker.js.map",
-    "static/css/main.86fd564a.chunk.css.map": "/adminlab/static/css/main.86fd564a.chunk.css.map",
-    "static/js/2.44a2d022.chunk.js.LICENSE.txt": "/adminlab/static/js/2.44a2d022.chunk.js.LICENSE.txt",
+    "static/css/main.b8b9f56b.chunk.css.map": "/adminlab/static/css/main.b8b9f56b.chunk.css.map",
+    "static/js/2.d9bf66bc.chunk.js.LICENSE.txt": "/adminlab/static/js/2.d9bf66bc.chunk.js.LICENSE.txt",
     "static/media/auth.3fdfc46f.png": "/adminlab/static/media/auth.3fdfc46f.png",
     "static/media/laminillas.367e1a3b.svg": "/adminlab/static/media/laminillas.367e1a3b.svg",
-    "static/media/logo.3f1bd720.svg": "/adminlab/static/media/logo.3f1bd720.svg",
+    "static/media/logo.08211a9a.svg": "/adminlab/static/media/logo.08211a9a.svg",
     "static/media/logo_nova.63a29c22.svg": "/adminlab/static/media/logo_nova.63a29c22.svg",
     "static/media/mobile_logo.e677ed29.svg": "/adminlab/static/media/mobile_logo.e677ed29.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.87d18077.js",
-    "static/js/2.44a2d022.chunk.js",
-    "static/css/main.86fd564a.chunk.css",
-    "static/js/main.4bbb035e.chunk.js"
+    "static/js/runtime-main.4dca38c8.js",
+    "static/js/2.d9bf66bc.chunk.js",
+    "static/css/main.b8b9f56b.chunk.css",
+    "static/js/main.c76740b5.chunk.js"
   ]
 }
