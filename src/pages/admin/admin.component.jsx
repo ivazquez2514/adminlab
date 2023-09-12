@@ -43,7 +43,7 @@ const AdminPage = ({logout, activeForm, notification, history, search, setSearch
         }
     };
 
-    const user = JSON.parse(localStorage.getItem('adminlab-auth')).collaborator;
+    const user = JSON.parse(localStorage.getItem('adminlab-auth'))?.collaborator;
 
     useEffect(() => {
         const interval = setInterval(() => {
